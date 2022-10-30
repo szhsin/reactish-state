@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "run-p watch \"types -- --watch\"",
+    "bundle": "rollup -c",
+    "watch": "rollup -c -w",
+    "clean": "rm -Rf dist types",
+    "post-build": "rm -Rf types/__tests__",
+    "types": "tsc"
   },
   "author": "Zheng Song",
   "license": "MIT",
