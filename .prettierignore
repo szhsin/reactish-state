@@ -1,0 +1,9 @@
+build/
+static/
+coverage/
+dist/
+types/
+example/out/
+.next/
+_next/
+.docusaurus/

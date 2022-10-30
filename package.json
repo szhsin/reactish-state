@@ -9,7 +9,12 @@
     "watch": "rollup -c -w",
     "clean": "rm -Rf dist types",
     "post-build": "rm -Rf types/__tests__",
-    "types": "tsc"
+    "types": "tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "pret": "prettier -c .",
+    "pret:fix": "prettier -w .",
+    "build": "run-s pret clean lint types bundle post-build"
   },
   "author": "Zheng Song",
   "license": "MIT",
