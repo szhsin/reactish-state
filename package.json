@@ -2,7 +2,16 @@
   "name": "reactish-state",
   "version": "0.2.0",
   "description": "",
-  "main": "index.js",
+  "author": "Zheng Song",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "types/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/",
+    "types/"
+  ],
   "scripts": {
     "start": "run-p watch \"types -- --watch\"",
     "bundle": "rollup -c",
@@ -16,8 +25,6 @@
     "pret:fix": "prettier -w .",
     "build": "run-s pret clean lint types bundle post-build"
   },
-  "author": "Zheng Song",
-  "license": "MIT",
   "dependencies": {
     "use-sync-external-store": "^1.2.0"
   },
