@@ -2,7 +2,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
 
 const sharedConfig = {
-  external: ['react', 'react-dom', 'use-sync-external-store'],
+  external: ['react', 'react-dom', 'use-sync-external-store/shim'],
   plugins: [
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
     babel({

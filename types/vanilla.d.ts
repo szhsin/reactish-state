@@ -4,4 +4,5 @@ declare const state: <T>(initialValue: T) => {
     set: (newValue: T) => void;
     subscribe: (listener: Listener) => () => void;
 };
-export { state };
+declare type State<T> = ReturnType<typeof state<T>>;
+export { state, State };
