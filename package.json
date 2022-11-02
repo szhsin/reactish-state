@@ -40,6 +40,7 @@
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@types/jest": "^29.1.2",
     "@types/react": "^18.0.24",
+    "@types/use-sync-external-store": "^0.0.3",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "babel-plugin-pure-annotations": "^0.1.2",
