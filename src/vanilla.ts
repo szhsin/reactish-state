@@ -21,4 +21,6 @@ const state = <T>(initialValue: T) => {
   };
 };
 
-export { state };
+type State<T> = ReturnType<typeof state<T>>;
+
+export { state, State };
