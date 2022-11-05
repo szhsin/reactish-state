@@ -23,7 +23,8 @@
     "lint:fix": "eslint --fix .",
     "pret": "prettier -c .",
     "pret:fix": "prettier -w .",
-    "build": "run-s pret clean lint types bundle post-build"
+    "build": "run-s pret clean lint types bundle post-build",
+    "eg": "npm run dev --prefix examples"
   },
   "peerDependencies": {
     "react": "^16.8 || ^17.0 || ^18.0",
