@@ -3,7 +3,6 @@ static/
 coverage/
 dist/
 types/
-example/out/
+examples/out/
 .next/
 _next/
-.docusaurus/
