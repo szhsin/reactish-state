@@ -1,26 +1,43 @@
 type Listener = () => void;
 
-const state = <T>(initialValue: T) => {
+type ActionCreator<T, A> = (set: (value: T) => void, get: () => T) => A;
+
+interface State<T, A = undefined> {
+  get: () => T;
+  set: (value: T) => void;
+  subscribe: (listener: Listener) => () => void;
+  actions?: A;
+}
+
+const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => State<T, A> = (
+  initialValue,
+  actionCreator
+) => {
   let value = initialValue;
   const listeners = new Set<Listener>();
 
-  const set = (newValue: T) => {
+  function get() {
+    return value;
+  }
+
+  function set(newValue: typeof initialValue) {
     value = newValue;
-    listeners.forEach((listener) => listener());
-  };
+    listeners.forEach((listener) => {
+      listener();
+    });
+  }
 
   return {
-    get: () => value,
+    get,
     set,
-    subscribe: (listener: Listener) => {
+    subscribe: (listener) => {
       listeners.add(listener);
       return () => {
         listeners.delete(listener);
       };
-    }
+    },
+    actions: actionCreator && actionCreator(set, get)
   };
 };
-
-type State<T> = ReturnType<typeof state<T>>;
 
 export { state, State };
