@@ -1,10 +1,10 @@
 type Listener = () => void;
+type Setter<T> = (newValue: T | ((value: T) => T)) => void;
+type ActionCreator<T, A> = (set: Setter<T>, get: () => T) => A;
 
-type ActionCreator<T, A> = (set: (value: T) => void, get: () => T) => A;
-
-interface State<T, A = undefined> {
+interface State<T, A = unknown> {
   get: () => T;
-  set: (value: T) => void;
+  set: Setter<T>;
   subscribe: (listener: Listener) => () => void;
   actions?: A;
 }
@@ -13,6 +13,9 @@ const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => Sta
   initialValue,
   actionCreator
 ) => {
+  type Value = typeof initialValue;
+  type FValue = (value: Value) => Value;
+
   let value = initialValue;
   const listeners = new Set<Listener>();
 
@@ -20,11 +23,14 @@ const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => Sta
     return value;
   }
 
-  function set(newValue: typeof initialValue) {
-    value = newValue;
-    listeners.forEach((listener) => {
-      listener();
-    });
+  function set(newValue: Value | FValue) {
+    const nextValue = typeof newValue === 'function' ? (newValue as FValue)(value) : newValue;
+    if (!Object.is(value, nextValue)) {
+      value = nextValue;
+      listeners.forEach((listener) => {
+        listener();
+      });
+    }
   }
 
   return {

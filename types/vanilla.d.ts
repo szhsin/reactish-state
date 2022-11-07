@@ -1,8 +1,9 @@
 declare type Listener = () => void;
-declare type ActionCreator<T, A> = (set: (value: T) => void, get: () => T) => A;
-interface State<T, A = undefined> {
+declare type Setter<T> = (newValue: T | ((value: T) => T)) => void;
+declare type ActionCreator<T, A> = (set: Setter<T>, get: () => T) => A;
+interface State<T, A = unknown> {
     get: () => T;
-    set: (value: T) => void;
+    set: Setter<T>;
     subscribe: (listener: Listener) => () => void;
     actions?: A;
 }

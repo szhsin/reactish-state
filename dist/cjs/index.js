@@ -9,10 +9,13 @@ var state = function state(initialValue, actionCreator) {
     return value;
   }
   function set(newValue) {
-    value = newValue;
-    listeners.forEach(function (listener) {
-      listener();
-    });
+    var nextValue = typeof newValue === 'function' ? newValue(value) : newValue;
+    if (!Object.is(value, nextValue)) {
+      value = nextValue;
+      listeners.forEach(function (listener) {
+        listener();
+      });
+    }
   }
   return {
     get: get,
