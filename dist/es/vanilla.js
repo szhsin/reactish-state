@@ -1,23 +1,25 @@
-var state = function state(initialValue) {
+var state = function state(initialValue, actionCreator) {
   var value = initialValue;
   var listeners = new Set();
-  var set = function set(newValue) {
+  function get() {
+    return value;
+  }
+  function set(newValue) {
     value = newValue;
     listeners.forEach(function (listener) {
-      return listener();
+      listener();
     });
-  };
+  }
   return {
-    get: function get() {
-      return value;
-    },
+    get: get,
     set: set,
     subscribe: function subscribe(listener) {
       listeners.add(listener);
       return function () {
         listeners["delete"](listener);
       };
-    }
+    },
+    actions: actionCreator && actionCreator(set, get)
   };
 };
 

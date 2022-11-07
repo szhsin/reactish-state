@@ -1,7 +1,3 @@
 import { State } from './vanilla';
-declare const useSnapshot: <T>(state: {
-    get: () => T;
-    set: (newValue: T) => void;
-    subscribe: (listener: () => void) => () => void;
-}) => T;
+declare const useSnapshot: <T>(state: State<T, undefined>) => T;
 export { useSnapshot };

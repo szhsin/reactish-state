@@ -1,8 +1,10 @@
 declare type Listener = () => void;
-declare const state: <T>(initialValue: T) => {
+declare type ActionCreator<T, A> = (set: (value: T) => void, get: () => T) => A;
+interface State<T, A = undefined> {
     get: () => T;
-    set: (newValue: T) => void;
+    set: (value: T) => void;
     subscribe: (listener: Listener) => () => void;
-};
-declare type State<T> = ReturnType<typeof state<T>>;
+    actions?: A;
+}
+declare const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => State<T, A>;
 export { state, State };
