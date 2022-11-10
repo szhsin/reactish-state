@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
-import { State } from './vanilla';
+import { Reactish } from './vanilla';
 
-const useSnapshot = <T>(state: State<T>) => {
+const useSnapshot = <T>(state: Reactish<T>) => {
   const value = useSyncExternalStore<T>(state.subscribe, state.get, state.get);
   return value;
 };
