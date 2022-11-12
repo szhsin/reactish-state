@@ -21,7 +21,7 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
   const [step, setStep] = useState(1);
   const count = useSnapshot(counterState);
   const summary = useSnapshot(countSummary);
-  const { increase, increaseBy, reset } = counterState.actions!;
+  const { increase, increaseBy, reset } = counterState.actions;
 
   console.log(`#${id} count: ${count} summary: ${summary}`);
 
