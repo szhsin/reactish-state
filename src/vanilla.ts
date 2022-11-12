@@ -1,24 +1,19 @@
 type Listener = () => void;
 type Setter<T> = (newValue: T | ((value: T) => T)) => void;
-type ActionCreator<T, A> = (set: Setter<T>, get: () => T) => A;
+type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | undefined;
 
 interface Reactish<T> {
   get: () => T;
   subscribe: (listener: Listener) => () => void;
 }
 
-interface State<T, A = unknown> extends Reactish<T> {
+interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> extends Reactish<T> {
   set: Setter<T>;
-  actions?: A;
+  actions: C extends undefined ? never : A;
 }
 
-const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => State<T, A> = (
-  initialValue,
-  actionCreator
-) => {
-  type Value = typeof initialValue;
-  type FValue = (value: Value) => Value;
-
+const state = <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => {
+  type F = (value: T) => T;
   let value = initialValue;
   const listeners = new Set<Listener>();
 
@@ -26,8 +21,8 @@ const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => Sta
     return value;
   }
 
-  function set(newValue: Value | FValue) {
-    const nextValue = typeof newValue === 'function' ? (newValue as FValue)(value) : newValue;
+  function set(newValue: T | F) {
+    const nextValue = typeof newValue === 'function' ? (newValue as F)(value) : newValue;
     if (!Object.is(value, nextValue)) {
       value = nextValue;
       listeners.forEach((listener) => {
@@ -46,18 +41,18 @@ const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => Sta
       };
     },
     actions: actionCreator && actionCreator(set, get)
-  };
+  } as State<T, A, ActionCreator<T, A>>;
 };
 
 type ReactishArray = Reactish<unknown>[];
 type ReactishValueArray<R extends ReactishArray> = {
   [index in keyof R]: ReturnType<R[index]['get']>;
 };
-type SelectorFunc<R extends ReactishArray, V> = (...args: ReactishValueArray<R>) => V;
+type SelectorFunc<R extends ReactishArray, T> = (...args: ReactishValueArray<R>) => T;
 
-const selector = <R extends ReactishArray, V>(...items: [...R, SelectorFunc<R, V>]) => {
+const selector = <R extends ReactishArray, T>(...items: [...R, SelectorFunc<R, T>]) => {
   const lastIndex = items.length - 1;
-  const selectorFunc = items[lastIndex] as SelectorFunc<R, V>;
+  const selectorFunc = items[lastIndex] as SelectorFunc<R, T>;
   items.length = lastIndex;
   return {
     get: () =>
