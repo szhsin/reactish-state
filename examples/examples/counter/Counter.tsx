@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { state, useSnapshot } from 'reactish-state';
+import { state, selector, useSnapshot } from 'reactish-state';
 import styles from './styles.module.css';
 
 const counterState = state(0, (set, get) => ({
@@ -8,17 +8,27 @@ const counterState = state(0, (set, get) => ({
   reset: () => set(0)
 }));
 
+const doubleCount = selector(counterState, (count) => count * 2);
+const quadrupleCount = selector(doubleCount, (count) => count * 2);
+const countSummary = selector(
+  counterState,
+  doubleCount,
+  quadrupleCount,
+  (count, doubleCount, quadrupleCount) => count + doubleCount + quadrupleCount
+);
+
 const Counter = ({ id = 1 }: { id: number | string }) => {
   const [step, setStep] = useState(1);
   const count = useSnapshot(counterState);
+  const summary = useSnapshot(countSummary);
   const { increase, increaseBy, reset } = counterState.actions!;
 
-  console.log(`#${id} count: ${count}`);
+  console.log(`#${id} count: ${count} summary: ${summary}`);
 
   return (
     <div className={styles.wrapper}>
       <div>
-        #{id} count: {count}
+        #{id} count: {count} summary: {summary}
       </div>
       <div className={styles.step}>
         Step:{' '}

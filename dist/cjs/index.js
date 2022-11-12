@@ -29,11 +29,37 @@ var state = function state(initialValue, actionCreator) {
     actions: actionCreator && actionCreator(set, get)
   };
 };
+var selector = function selector() {
+  for (var _len = arguments.length, items = new Array(_len), _key = 0; _key < _len; _key++) {
+    items[_key] = arguments[_key];
+  }
+  var lastIndex = items.length - 1;
+  var selectorFunc = items[lastIndex];
+  items.length = lastIndex;
+  return {
+    get: function get() {
+      return selectorFunc.apply(void 0, items.map(function (item) {
+        return item.get();
+      }));
+    },
+    subscribe: function subscribe(listener) {
+      var unsubscribers = items.map(function (item) {
+        return item.subscribe(listener);
+      });
+      return function () {
+        return unsubscribers.forEach(function (unsubscribe) {
+          return unsubscribe();
+        });
+      };
+    }
+  };
+};
 
 var useSnapshot = function useSnapshot(state) {
   var value = shim.useSyncExternalStore(state.subscribe, state.get, state.get);
   return value;
 };
 
+exports.selector = selector;
 exports.state = state;
 exports.useSnapshot = useSnapshot;

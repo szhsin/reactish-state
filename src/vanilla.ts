@@ -2,10 +2,13 @@ type Listener = () => void;
 type Setter<T> = (newValue: T | ((value: T) => T)) => void;
 type ActionCreator<T, A> = (set: Setter<T>, get: () => T) => A;
 
-interface State<T, A = unknown> {
+interface Reactish<T> {
   get: () => T;
-  set: Setter<T>;
   subscribe: (listener: Listener) => () => void;
+}
+
+interface State<T, A = unknown> extends Reactish<T> {
+  set: Setter<T>;
   actions?: A;
 }
 
@@ -46,4 +49,26 @@ const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => Sta
   };
 };
 
-export { state, State };
+type ReactishArray = Reactish<unknown>[];
+type ReactishValueArray<R extends ReactishArray> = {
+  [index in keyof R]: ReturnType<R[index]['get']>;
+};
+type SelectorFunc<R extends ReactishArray, V> = (...args: ReactishValueArray<R>) => V;
+
+const selector = <R extends ReactishArray, V>(...items: [...R, SelectorFunc<R, V>]) => {
+  const lastIndex = items.length - 1;
+  const selectorFunc = items[lastIndex] as SelectorFunc<R, V>;
+  items.length = lastIndex;
+  return {
+    get: () =>
+      selectorFunc(
+        ...((items as ReactishArray).map((item) => item.get()) as ReactishValueArray<R>)
+      ),
+    subscribe: (listener: Listener) => {
+      const unsubscribers = (items as ReactishArray).map((item) => item.subscribe(listener));
+      return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
+    }
+  };
+};
+
+export { Reactish, state, selector };

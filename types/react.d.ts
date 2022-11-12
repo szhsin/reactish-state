@@ -1,3 +1,3 @@
-import { State } from './vanilla';
-declare const useSnapshot: <T>(state: State<T, unknown>) => T;
+import { Reactish } from './vanilla';
+declare const useSnapshot: <T>(state: Reactish<T>) => T;
 export { useSnapshot };

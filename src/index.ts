@@ -1,2 +1,2 @@
-export { state } from './vanilla';
+export { state, selector } from './vanilla';
 export { useSnapshot } from './react';
