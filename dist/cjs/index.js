@@ -29,6 +29,7 @@ var state = function state(initialValue, actionCreator) {
     actions: actionCreator && actionCreator(set, get)
   };
 };
+
 var isEqual = function isEqual(args1, args2) {
   for (var i = 0; i < args1.length; i++) {
     if (!Object.is(args1[i], args2[i])) return false;
@@ -70,8 +71,7 @@ var selector = function selector() {
 };
 
 var useSnapshot = function useSnapshot(state) {
-  var value = shim.useSyncExternalStore(state.subscribe, state.get, state.get);
-  return value;
+  return shim.useSyncExternalStore(state.subscribe, state.get, state.get);
 };
 
 exports.selector = selector;
