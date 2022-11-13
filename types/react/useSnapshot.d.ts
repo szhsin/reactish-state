@@ -1,3 +1,3 @@
-import { Reactish } from './vanilla';
+import type { Reactish } from '../vanilla/common';
 declare const useSnapshot: <T>(state: Reactish<T>) => T;
 export { useSnapshot };

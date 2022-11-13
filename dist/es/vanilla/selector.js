@@ -1,35 +1,3 @@
-'use strict';
-
-var shim = require('use-sync-external-store/shim');
-
-var state = function state(initialValue, actionCreator) {
-  var value = initialValue;
-  var listeners = new Set();
-  function get() {
-    return value;
-  }
-  function set(newValue) {
-    var nextValue = typeof newValue === 'function' ? newValue(value) : newValue;
-    if (!Object.is(value, nextValue)) {
-      value = nextValue;
-      listeners.forEach(function (listener) {
-        listener();
-      });
-    }
-  }
-  return {
-    get: get,
-    set: set,
-    subscribe: function subscribe(listener) {
-      listeners.add(listener);
-      return function () {
-        listeners["delete"](listener);
-      };
-    },
-    actions: actionCreator && actionCreator(set, get)
-  };
-};
-
 var isEqual = function isEqual(args1, args2) {
   for (var i = 0; i < args1.length; i++) {
     if (!Object.is(args1[i], args2[i])) return false;
@@ -70,10 +38,4 @@ var selector = function selector() {
   };
 };
 
-var useSnapshot = function useSnapshot(state) {
-  return shim.useSyncExternalStore(state.subscribe, state.get, state.get);
-};
-
-exports.selector = selector;
-exports.state = state;
-exports.useSnapshot = useSnapshot;
+export { selector };
