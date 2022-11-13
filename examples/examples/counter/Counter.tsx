@@ -14,7 +14,11 @@ const countSummary = selector(
   counterState,
   doubleCount,
   quadrupleCount,
-  (count, doubleCount, quadrupleCount) => count + doubleCount + quadrupleCount
+  (count, doubleCount, quadrupleCount) => ({
+    doubleCount,
+    quadrupleCount,
+    sum: count + doubleCount + quadrupleCount
+  })
 );
 
 const Counter = ({ id = 1 }: { id: number | string }) => {
@@ -23,13 +27,14 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
   const summary = useSnapshot(countSummary);
   const { increase, increaseBy, reset } = counterState.actions;
 
-  console.log(`#${id} count: ${count} summary: ${summary}`);
+  console.log(`#${id} count: ${count}`, 'summary:', summary);
 
   return (
     <div className={styles.wrapper}>
       <div>
-        #{id} count: {count} summary: {summary}
+        #{id} count: {count}
       </div>
+      <div>summary: {JSON.stringify(summary)}</div>
       <div className={styles.step}>
         Step:{' '}
         <input
