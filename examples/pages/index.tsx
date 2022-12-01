@@ -16,6 +16,9 @@ export default function Home() {
           <Link href="/counter" className={styles.card}>
             <h2>Counter</h2>
           </Link>
+          <Link href="/todo" className={styles.card}>
+            <h2>Todo</h2>
+          </Link>
         </div>
       </main>
     </div>
