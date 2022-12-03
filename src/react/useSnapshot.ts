@@ -1,4 +1,4 @@
-import type { Reactish } from '../vanilla/common';
+import type { Reactish } from '../common';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 const useSnapshot = <T>(state: Reactish<T>) =>
