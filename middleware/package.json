@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "sideEffects": false,
+  "main": "../dist/middleware/cjs/index.js",
+  "module": "../dist/middleware/es/index.js",
+  "types": "../types/middleware/index.d.ts"
+}
