@@ -1,0 +1,1 @@
+export { applyMiddleware } from './applyMiddleware';

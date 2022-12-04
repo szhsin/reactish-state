@@ -1,6 +1,6 @@
 {
   "name": "reactish-state",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "",
   "author": "Zheng Song",
   "license": "MIT",
@@ -10,7 +10,8 @@
   "sideEffects": false,
   "files": [
     "dist/",
-    "types/"
+    "types/",
+    "middleware"
   ],
   "scripts": {
     "start": "run-p watch \"types -- --watch\"",

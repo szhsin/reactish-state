@@ -1,4 +1,4 @@
-import type { Reactish, Listener } from './common';
+import type { Reactish, Listener } from '../common';
 
 type ReactishArray = Reactish<unknown>[];
 type ReactishValueArray<R extends ReactishArray> = {

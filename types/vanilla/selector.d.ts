@@ -1,4 +1,4 @@
-import type { Reactish, Listener } from './common';
+import type { Reactish, Listener } from '../common';
 declare type ReactishArray = Reactish<unknown>[];
 declare type ReactishValueArray<R extends ReactishArray> = {
     [index in keyof R]: ReturnType<R[index]['get']>;

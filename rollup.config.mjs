@@ -1,7 +1,7 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
 
-const sharedConfig = {
+const createBuild = (path = '') => ({
   external: ['react', 'react-dom', 'use-sync-external-store/shim'],
   plugins: [
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
@@ -13,25 +13,20 @@ const sharedConfig = {
   treeshake: {
     moduleSideEffects: false,
     propertyReadSideEffects: false
-  }
-};
-
-/**
- * @type {import('rollup').RollupOptions}
- */
-export default {
-  ...sharedConfig,
-  input: 'src/index.ts',
+  },
+  input: `src/${path}index.ts`,
   output: [
     {
-      file: 'dist/cjs/index.js',
+      file: `dist/${path}cjs/index.js`,
       format: 'cjs',
       interop: 'default'
     },
     {
-      preserveModules: true,
-      dir: 'dist/es',
-      format: 'es'
+      dir: `dist/${path}es`,
+      format: 'es',
+      preserveModules: true
     }
   ]
-};
+});
+
+export default [createBuild(), createBuild('middleware/')];
