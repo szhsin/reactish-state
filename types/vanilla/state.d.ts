@@ -1,5 +1,5 @@
 import type { Setter, Reactish, Enhancer } from '../common';
-declare type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | undefined;
+declare type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
 interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> extends Reactish<T> {
     set: Setter<T>;
     actions: C extends undefined ? never : A;
