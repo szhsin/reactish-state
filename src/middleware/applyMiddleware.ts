@@ -1,8 +1,8 @@
 import type { Enhancer } from '../common';
-const applyMiddleware: <T>(...middlewares: Enhancer<T>[]) => Enhancer<T> =
+const applyMiddleware: <T, X>(...middlewares: Enhancer<T, X>[]) => Enhancer<T, X> =
   (...middlewares) =>
-  (set, get) => {
-    middlewares.forEach((middleware) => (set = middleware(set, get)));
+  (set, get, context) => {
+    middlewares.forEach((middleware) => (set = middleware(set, get, context)));
     return set;
   };
 

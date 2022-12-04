@@ -5,7 +5,7 @@ var shim = require('use-sync-external-store/shim');
 var createState = function createState(_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
     enhancer = _ref.enhancer;
-  return function (initialValue, actionCreator) {
+  return function (initialValue, actionCreator, context) {
     var value = initialValue;
     var listeners = new Set();
     var get = function get() {
@@ -20,7 +20,7 @@ var createState = function createState(_temp) {
         });
       }
     };
-    if (enhancer) set = enhancer(set, get);
+    if (enhancer) set = enhancer(set, get, context);
     return {
       get: get,
       set: set,

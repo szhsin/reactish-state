@@ -7,14 +7,15 @@ interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> exten
   actions: C extends undefined ? never : A;
 }
 
-type StateCreator = <T, A>(
+type StateCreator = <T, A, X>(
   initialValue: T,
-  actionCreator?: ActionCreator<T, A>
+  actionCreator?: ActionCreator<T, A>,
+  context?: X
 ) => State<T, A, ActionCreator<T, A>>;
 
 const createState =
-  <T, A>({ enhancer }: { enhancer?: Enhancer<T> } = {}) =>
-  (initialValue: T, actionCreator?: ActionCreator<T, A>) => {
+  <T, X>({ enhancer }: { enhancer?: Enhancer<T, X> } = {}) =>
+  <A>(initialValue: T, actionCreator?: ActionCreator<T, A>, context?: X) => {
     type F = (value: T) => T;
     let value = initialValue;
     const listeners = new Set<Listener>();
@@ -29,7 +30,7 @@ const createState =
         });
       }
     };
-    if (enhancer) set = enhancer(set, get);
+    if (enhancer) set = enhancer(set, get, context);
 
     return {
       get,

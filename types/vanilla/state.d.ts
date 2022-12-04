@@ -4,10 +4,10 @@ interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> exten
     set: Setter<T>;
     actions: C extends undefined ? never : A;
 }
-declare type StateCreator = <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>) => State<T, A, ActionCreator<T, A>>;
-declare const createState: <T, A>({ enhancer }?: {
-    enhancer?: Enhancer<T> | undefined;
-}) => (initialValue: T, actionCreator?: ActionCreator<T, A>) => State<T, A, ActionCreator<T, A>>;
+declare type StateCreator = <T, A, X>(initialValue: T, actionCreator?: ActionCreator<T, A>, context?: X) => State<T, A, ActionCreator<T, A>>;
+declare const createState: <T, X>({ enhancer }?: {
+    enhancer?: Enhancer<T, X> | undefined;
+}) => <A>(initialValue: T, actionCreator?: ActionCreator<T, A>, context?: X | undefined) => State<T, A, ActionCreator<T, A>>;
 declare const state: StateCreator;
 export type { StateCreator };
 export { state, createState };
