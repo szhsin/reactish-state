@@ -1,4 +1,4 @@
-import type { Setter, Reactish, Listener, Enhancer } from '../common';
+import type { Setter, Reactish, Listener, Middleware } from '../common';
 
 type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
 
@@ -14,7 +14,7 @@ type StateCreator = <T, A, X>(
 ) => State<T, A, ActionCreator<T, A>>;
 
 const createState =
-  <T, X>({ enhancer }: { enhancer?: Enhancer<T, X> } = {}) =>
+  <T, X>({ middleware }: { middleware?: Middleware } = {}) =>
   <A>(initialValue: T, actionCreator?: ActionCreator<T, A>, context?: X) => {
     type F = (value: T) => T;
     let value = initialValue;
@@ -30,7 +30,7 @@ const createState =
         });
       }
     };
-    if (enhancer) set = enhancer(set, get, context);
+    if (middleware) set = middleware(set, get, context);
 
     return {
       get,
