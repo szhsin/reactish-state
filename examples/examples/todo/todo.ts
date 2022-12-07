@@ -1,6 +1,8 @@
-import { state, selector } from 'reactish-state';
+import { createState, selector, StateCreator } from 'reactish-state';
+import { persist } from 'reactish-state/middleware';
 
-let todoId = 0;
+const persistMiddleware = persist({ prefix: 'todoApp-' });
+const state: StateCreator = createState({ middleware: persistMiddleware });
 
 interface Todo {
   id: number;
@@ -8,14 +10,21 @@ interface Todo {
   isCompleted: boolean;
 }
 
-const todoListState = state([] as Todo[], (set, get) => ({
-  addItem: (text: string) => set((todos) => [...todos, { id: todoId++, text, isCompleted: false }]),
-  toggleItem: (id: number) =>
-    set(get().map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item)))
-}));
+const todoListState = state(
+  [] as Todo[],
+  (set, get) => ({
+    addItem: (text: string) =>
+      set((todos) => [...todos, { id: Date.now(), text, isCompleted: false }]),
+    toggleItem: (id: number) =>
+      set(
+        get().map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item))
+      )
+  }),
+  { key: 'todo-list' }
+);
 
 type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
-const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter);
+const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter, null, { key: 'filter' });
 
 const visibleTodoList = selector(
   todoListState,
@@ -47,4 +56,5 @@ const statsSelector = selector(todoListState, (todoList) => {
 });
 
 export type { VisibilityFilter };
+export const { hydrate: hydrateStore } = persistMiddleware;
 export { todoListState, visibilityFilterState, visibleTodoList, statsSelector };
