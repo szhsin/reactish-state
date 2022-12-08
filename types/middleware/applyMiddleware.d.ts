@@ -1,3 +1,3 @@
-import type { Enhancer } from '../common';
-declare const applyMiddleware: <T, X>(...middlewares: Enhancer<T, X>[]) => Enhancer<T, X>;
+import type { Middleware } from '../common';
+declare const applyMiddleware: (...middlewares: Middleware[]) => Middleware;
 export { applyMiddleware };

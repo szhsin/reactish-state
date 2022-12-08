@@ -1,6 +1,6 @@
 var createState = function createState(_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
-    enhancer = _ref.enhancer;
+    middleware = _ref.middleware;
   return function (initialValue, actionCreator, context) {
     var value = initialValue;
     var listeners = new Set();
@@ -16,7 +16,7 @@ var createState = function createState(_temp) {
         });
       }
     };
-    if (enhancer) set = enhancer(set, get, context);
+    if (middleware) set = middleware(set, get, context);
     return {
       get: get,
       set: set,
