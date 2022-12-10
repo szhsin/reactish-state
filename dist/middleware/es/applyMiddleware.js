@@ -3,10 +3,9 @@ var applyMiddleware = function applyMiddleware() {
     middlewares[_key] = arguments[_key];
   }
   return function (set, get, context) {
-    middlewares.forEach(function (middleware) {
-      return set = middleware(set, get, context);
-    });
-    return set;
+    return middlewares.reduceRight(function (prev, curr) {
+      return curr(prev, get, context);
+    }, set);
   };
 };
 
