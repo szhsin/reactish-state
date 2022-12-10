@@ -1,12 +1,19 @@
 import { useState } from 'react';
-import { state, selector, useSnapshot } from 'reactish-state';
+import { createState, selector, useSnapshot, StateCreator } from 'reactish-state';
+import { applyMiddleware, persist } from 'reactish-state/middleware';
 import styles from './styles.module.css';
 
-const counterState = state(0, (set, get) => ({
-  increase: () => set((i) => i + 1),
-  increaseBy: (by: number) => set(get() + by),
-  reset: () => set(0)
-}));
+const persistMiddleware = persist({ prefix: 'counter-', getStorage: () => sessionStorage });
+const state: StateCreator = createState({ middleware: applyMiddleware(persistMiddleware) });
+const counterState = state(
+  0,
+  (set, get) => ({
+    increase: () => set((i) => i + 1),
+    increaseBy: (by: number) => set(get() + by),
+    reset: () => set(0)
+  }),
+  { key: 'count' }
+);
 
 const doubleCount = selector(counterState, (count) => count * 2);
 const quadrupleCount = selector(doubleCount, (count) => count * 2);
@@ -54,4 +61,4 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
   );
 };
 
-export { Counter };
+export { Counter, persistMiddleware };

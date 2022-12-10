@@ -1,17 +1,3 @@
-'use strict';
-
-var applyMiddleware = function applyMiddleware() {
-  for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
-    middlewares[_key] = arguments[_key];
-  }
-  return function (set, get, context) {
-    middlewares.forEach(function (middleware) {
-      return set = middleware(set, get, context);
-    });
-    return set;
-  };
-};
-
 var persist = function persist(_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
     prefix = _ref.prefix,
@@ -42,5 +28,4 @@ var persist = function persist(_temp) {
   return middleware;
 };
 
-exports.applyMiddleware = applyMiddleware;
-exports.persist = persist;
+export { persist };

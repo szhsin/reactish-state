@@ -7,4 +7,6 @@ export interface Reactish<T> {
   subscribe: (listener: Listener) => () => void;
 }
 
-export type Enhancer<T> = (set: Setter<T>, get: Getter<T>) => Setter<T>;
+export interface Middleware {
+  <T, X>(set: Setter<T>, get: Getter<T>, context?: X): Setter<T>;
+}
