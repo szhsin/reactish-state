@@ -4,10 +4,24 @@ var applyMiddleware = function applyMiddleware() {
   for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
     middlewares[_key] = arguments[_key];
   }
-  return function (set, get, context) {
+  return function (set, get, config) {
     return middlewares.reduceRight(function (prev, curr) {
-      return curr(prev, get, context);
+      return curr(prev, get, config);
     }, set);
+  };
+};
+
+var reduxDevtools = function reduxDevtools(set, get, config) {
+  if (typeof window === 'undefined' || !window.__REDUX_DEVTOOLS_EXTENSION__) return set;
+  var devtools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
+    name: config == null ? void 0 : config.key
+  });
+  devtools.init(get());
+  return function (vaule) {
+    set(vaule);
+    devtools.send({
+      type: 'SET_STATE'
+    }, get());
   };
 };
 
@@ -19,9 +33,9 @@ var persist = function persist(_temp) {
       return localStorage;
     } : _ref$getStorage;
   var states = [];
-  var middleware = function middleware(set, get, context) {
-    var key = context ? context.key : '';
-    if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the context object when the `persist` middleware is used.');
+  var middleware = function middleware(set, get, config) {
+    var key = config ? config.key : '';
+    if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.');
     if (prefix) key = prefix + key;
     states.push([key, set]);
     return function (value) {
@@ -43,3 +57,4 @@ var persist = function persist(_temp) {
 
 exports.applyMiddleware = applyMiddleware;
 exports.persist = persist;
+exports.reduxDevtools = reduxDevtools;

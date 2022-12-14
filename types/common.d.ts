@@ -6,5 +6,5 @@ export interface Reactish<T> {
     subscribe: (listener: Listener) => () => void;
 }
 export interface Middleware {
-    <T, X>(set: Setter<T>, get: Getter<T>, context?: X): Setter<T>;
+    <T, X>(set: Setter<T>, get: Getter<T>, config?: X): Setter<T>;
 }

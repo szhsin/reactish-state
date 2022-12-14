@@ -8,5 +8,5 @@ export interface Reactish<T> {
 }
 
 export interface Middleware {
-  <T, X>(set: Setter<T>, get: Getter<T>, context?: X): Setter<T>;
+  <T, X>(set: Setter<T>, get: Getter<T>, config?: X): Setter<T>;
 }

@@ -10,12 +10,12 @@ interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> exten
 type StateCreator = <T, A, X>(
   initialValue: T,
   actionCreator?: ActionCreator<T, A>,
-  context?: X
+  config?: X
 ) => State<T, A, ActionCreator<T, A>>;
 
 const createState =
   <T, X>({ middleware }: { middleware?: Middleware } = {}) =>
-  <A>(initialValue: T, actionCreator?: ActionCreator<T, A>, context?: X) => {
+  <A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: X) => {
     type F = (value: T) => T;
     let value = initialValue;
     const listeners = new Set<Listener>();
@@ -30,7 +30,7 @@ const createState =
         });
       }
     };
-    if (middleware) set = middleware(set, get, context);
+    if (middleware) set = middleware(set, get, config);
 
     return {
       get,
