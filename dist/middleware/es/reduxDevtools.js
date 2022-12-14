@@ -1,7 +1,7 @@
-var reduxDevtools = function reduxDevtools(set, get, context) {
+var reduxDevtools = function reduxDevtools(set, get, config) {
   if (typeof window === 'undefined' || !window.__REDUX_DEVTOOLS_EXTENSION__) return set;
   var devtools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
-    name: context == null ? void 0 : context.key
+    name: config == null ? void 0 : config.key
   });
   devtools.init(get());
   return function (vaule) {

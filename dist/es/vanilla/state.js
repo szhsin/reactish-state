@@ -1,7 +1,7 @@
 var createState = function createState(_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
     middleware = _ref.middleware;
-  return function (initialValue, actionCreator, context) {
+  return function (initialValue, actionCreator, config) {
     var value = initialValue;
     var listeners = new Set();
     var get = function get() {
@@ -16,7 +16,7 @@ var createState = function createState(_temp) {
         });
       }
     };
-    if (middleware) set = middleware(set, get, context);
+    if (middleware) set = middleware(set, get, config);
     return {
       get: get,
       set: set,

@@ -6,9 +6,9 @@ var persist = function persist(_temp) {
       return localStorage;
     } : _ref$getStorage;
   var states = [];
-  var middleware = function middleware(set, get, context) {
-    var key = context ? context.key : '';
-    if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the context object when the `persist` middleware is used.');
+  var middleware = function middleware(set, get, config) {
+    var key = config ? config.key : '';
+    if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.');
     if (prefix) key = prefix + key;
     states.push([key, set]);
     return function (value) {

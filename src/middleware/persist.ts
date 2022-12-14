@@ -12,11 +12,11 @@ type Persist = (options?: {
 const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
   const states: [string, Setter<unknown>][] = [];
 
-  const middleware: PersistMiddleware = (set, get, context) => {
-    let key = context ? (context as unknown as { key: string }).key : '';
+  const middleware: PersistMiddleware = (set, get, config) => {
+    let key = config ? (config as unknown as { key: string }).key : '';
     if (!key)
       throw new Error(
-        '[reactish-state] state should be provided with a string `key` in the context object when the `persist` middleware is used.'
+        '[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.'
       );
     if (prefix) key = prefix + key;
     states.push([key, set as Setter<unknown>]);

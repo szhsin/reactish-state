@@ -1,11 +1,11 @@
 import type {} from '@redux-devtools/extension';
 import type { Middleware } from '../common';
 
-const reduxDevtools: Middleware = (set, get, context) => {
+const reduxDevtools: Middleware = (set, get, config) => {
   if (typeof window === 'undefined' || !window.__REDUX_DEVTOOLS_EXTENSION__) return set;
 
   const devtools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
-    name: (context as unknown as { key?: string } | undefined)?.key
+    name: (config as unknown as { key?: string } | undefined)?.key
   });
   devtools.init(get());
 
