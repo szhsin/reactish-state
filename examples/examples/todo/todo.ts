@@ -1,8 +1,10 @@
 import { createState, selector, StateCreator } from 'reactish-state';
-import { persist } from 'reactish-state/middleware';
+import { persist, reduxDevtools, applyMiddleware } from 'reactish-state/middleware';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
-const state: StateCreator = createState({ middleware: persistMiddleware });
+const state: StateCreator = createState({
+  middleware: applyMiddleware(persistMiddleware, reduxDevtools)
+});
 
 interface Todo {
   id: number;
@@ -25,6 +27,8 @@ const todoListState = state(
 
 type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
 const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter, null, { key: 'filter' });
+
+const adhocState = state({ a: 1, b: 'ss' }, null, { key: 'adhoc' });
 
 const visibleTodoList = selector(
   todoListState,
