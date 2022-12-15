@@ -2,7 +2,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
 
 const createBuild = (path = '') => ({
-  external: ['react', 'react-dom', 'use-sync-external-store/shim'],
+  external: ['react', 'react-dom', 'use-sync-external-store/shim', 'immer'],
   plugins: [
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
     babel({
