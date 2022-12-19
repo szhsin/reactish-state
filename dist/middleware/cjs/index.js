@@ -1,5 +1,7 @@
 'use strict';
 
+var immer$1 = require('immer');
+
 var applyMiddleware = function applyMiddleware() {
   for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
     middlewares[_key] = arguments[_key];
@@ -11,17 +13,9 @@ var applyMiddleware = function applyMiddleware() {
   };
 };
 
-var reduxDevtools = function reduxDevtools(set, get, config) {
-  if (typeof window === 'undefined' || !window.__REDUX_DEVTOOLS_EXTENSION__) return set;
-  var devtools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
-    name: config == null ? void 0 : config.key
-  });
-  devtools.init(get());
-  return function (vaule) {
-    set(vaule);
-    devtools.send({
-      type: 'SET_STATE'
-    }, get());
+var immer = function immer(set) {
+  return function (value) {
+    return set(typeof value === 'function' ? immer$1.produce(value) : value);
   };
 };
 
@@ -55,6 +49,21 @@ var persist = function persist(_temp) {
   return middleware;
 };
 
+var reduxDevtools = function reduxDevtools(set, get, config) {
+  if (typeof window === 'undefined' || !window.__REDUX_DEVTOOLS_EXTENSION__) return set;
+  var devtools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
+    name: config == null ? void 0 : config.key
+  });
+  devtools.init(get());
+  return function (vaule) {
+    set(vaule);
+    devtools.send({
+      type: 'SET_STATE'
+    }, get());
+  };
+};
+
 exports.applyMiddleware = applyMiddleware;
+exports.immer = immer;
 exports.persist = persist;
 exports.reduxDevtools = reduxDevtools;
