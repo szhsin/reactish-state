@@ -7,12 +7,12 @@ var persist = function persist(_temp) {
     } : _ref$getStorage;
   var states = [];
   var middleware = function middleware(set, get, config) {
-    var key = config ? config.key : '';
+    var key = (config == null ? void 0 : config.key) || '';
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.');
     if (prefix) key = prefix + key;
     states.push([key, set]);
-    return function (value) {
-      set(value);
+    return function () {
+      set.apply(void 0, arguments);
       getStorage().setItem(key, JSON.stringify(get()));
     };
   };
@@ -21,7 +21,7 @@ var persist = function persist(_temp) {
       var key = _ref2[0],
         set = _ref2[1];
       var value = getStorage().getItem(key);
-      value && set(JSON.parse(value));
+      value && set(JSON.parse(value), 'HYDRATE');
     });
     states.length = 0;
   };

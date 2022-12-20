@@ -15,7 +15,10 @@ var applyMiddleware = function applyMiddleware() {
 
 var immer = function immer(set) {
   return function (value) {
-    return set(typeof value === 'function' ? immer$1.produce(value) : value);
+    for (var _len = arguments.length, rest = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      rest[_key - 1] = arguments[_key];
+    }
+    return set.apply(void 0, [typeof value === 'function' ? immer$1.produce(value) : value].concat(rest));
   };
 };
 
@@ -28,12 +31,12 @@ var persist = function persist(_temp) {
     } : _ref$getStorage;
   var states = [];
   var middleware = function middleware(set, get, config) {
-    var key = config ? config.key : '';
+    var key = (config == null ? void 0 : config.key) || '';
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.');
     if (prefix) key = prefix + key;
     states.push([key, set]);
-    return function (value) {
-      set(value);
+    return function () {
+      set.apply(void 0, arguments);
       getStorage().setItem(key, JSON.stringify(get()));
     };
   };
@@ -42,7 +45,7 @@ var persist = function persist(_temp) {
       var key = _ref2[0],
         set = _ref2[1];
       var value = getStorage().getItem(key);
-      value && set(JSON.parse(value));
+      value && set(JSON.parse(value), 'HYDRATE');
     });
     states.length = 0;
   };
@@ -55,10 +58,13 @@ var reduxDevtools = function reduxDevtools(set, get, config) {
     name: config == null ? void 0 : config.key
   });
   devtools.init(get());
-  return function (vaule) {
-    set(vaule);
-    devtools.send({
-      type: 'SET_STATE'
+  return function (value, action) {
+    set.apply(null, arguments);
+    devtools.send(typeof action === 'string' ? {
+      type: action
+    } : action || {
+      type: 'SET',
+      value: value
     }, get());
   };
 };

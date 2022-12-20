@@ -4,10 +4,13 @@ var reduxDevtools = function reduxDevtools(set, get, config) {
     name: config == null ? void 0 : config.key
   });
   devtools.init(get());
-  return function (vaule) {
-    set(vaule);
-    devtools.send({
-      type: 'SET_STATE'
+  return function (value, action) {
+    set.apply(null, arguments);
+    devtools.send(typeof action === 'string' ? {
+      type: action
+    } : action || {
+      type: 'SET',
+      value: value
     }, get());
   };
 };
