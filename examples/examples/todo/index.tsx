@@ -4,13 +4,15 @@ import { AddTodo } from './AddTodo';
 import { TodoList } from './TodoList';
 import { Filters } from './Filters';
 import { Stats } from './Stats';
+import styles from './styles.module.css';
 
 export default function Todo() {
   useEffect(() => {
     hydrateStore();
   }, []);
+
   return (
-    <div>
+    <div className={styles.app}>
       <AddTodo />
       <TodoList />
       <Filters />
