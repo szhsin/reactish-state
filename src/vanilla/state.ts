@@ -1,4 +1,4 @@
-import type { Setter, Reactish, Listener, Middleware } from '../common';
+import type { Setter, Reactish, Listener, Config, Middleware } from '../common';
 
 type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
 
@@ -7,15 +7,9 @@ interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> exten
   actions: C extends undefined ? never : A;
 }
 
-type StateCreator = <T, A, X>(
-  initialValue: T,
-  actionCreator?: ActionCreator<T, A>,
-  config?: X
-) => State<T, A, ActionCreator<T, A>>;
-
 const createState =
-  <T, X>({ middleware }: { middleware?: Middleware } = {}) =>
-  <A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: X) => {
+  ({ middleware }: { middleware?: Middleware } = {}) =>
+  <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => {
     type F = (value: T) => T;
     let value = initialValue;
     const listeners = new Set<Listener>();
@@ -45,6 +39,6 @@ const createState =
     } as State<T, A, ActionCreator<T, A>>;
   };
 
-const state: StateCreator = createState();
-export type { StateCreator };
+const state = createState();
+
 export { state, createState };
