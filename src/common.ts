@@ -1,5 +1,8 @@
 export type Getter<T> = () => T;
-export type Setter<T> = (newValue: T | ((value: T) => T)) => void;
+export type Setter<T> = (
+  newValue: T | ((value: T) => T),
+  action?: string | { type: string; [key: string]: unknown }
+) => void;
 export type Listener = () => void;
 
 export interface Reactish<T> {

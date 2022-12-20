@@ -9,9 +9,12 @@ const reduxDevtools: Middleware = (set, get, config) => {
   });
   devtools.init(get());
 
-  return (vaule) => {
-    set(vaule);
-    devtools.send({ type: 'SET_STATE' }, get());
+  return function (_, action) {
+    set.apply(null, arguments as unknown as Parameters<typeof set>);
+    devtools.send(
+      typeof action === 'string' ? { type: action } : action || { type: 'SET_STATE' },
+      get()
+    );
   };
 };
 

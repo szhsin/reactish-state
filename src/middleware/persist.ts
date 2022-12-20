@@ -21,8 +21,8 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
     if (prefix) key = prefix + key;
     states.push([key, set as Setter<unknown>]);
 
-    return (value) => {
-      set(value);
+    return (...args) => {
+      set(...args);
       getStorage().setItem(key, JSON.stringify(get()));
     };
   };
@@ -30,7 +30,7 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
   middleware.hydrate = () => {
     states.forEach(([key, set]) => {
       const value = getStorage().getItem(key);
-      value && set(JSON.parse(value));
+      value && set(JSON.parse(value), 'HYDRATE_STATE');
     });
     states.length = 0;
   };
