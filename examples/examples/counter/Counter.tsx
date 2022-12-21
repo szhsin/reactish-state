@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { createState, selector, useSnapshot, StateCreator } from 'reactish-state';
+import { createState, selector, useSnapshot } from 'reactish-state';
 import { applyMiddleware, persist, reduxDevtools } from 'reactish-state/middleware';
 import styles from './styles.module.css';
 
 const persistMiddleware = persist({ prefix: 'counter-', getStorage: () => sessionStorage });
-const state: StateCreator = createState({
+
+const counterState = createState({
   middleware: applyMiddleware(persistMiddleware, reduxDevtools)
-});
-const counterState = state(
+})(
   0,
   (set, get) => ({
     increase: () => set((i) => i + 1),

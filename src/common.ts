@@ -1,5 +1,8 @@
 export type Getter<T> = () => T;
-export type Setter<T> = (newValue: T | ((value: T) => T)) => void;
+export type Setter<T> = (
+  newValue: T | ((value: T) => T),
+  action?: string | { type: string; [key: string]: unknown }
+) => void;
 export type Listener = () => void;
 
 export interface Reactish<T> {
@@ -7,6 +10,10 @@ export interface Reactish<T> {
   subscribe: (listener: Listener) => () => void;
 }
 
+export interface Config {
+  key?: string;
+}
+
 export interface Middleware {
-  <T, X>(set: Setter<T>, get: Getter<T>, config?: X): Setter<T>;
+  <T>(set: Setter<T>, get: Getter<T>, config?: Config): Setter<T>;
 }

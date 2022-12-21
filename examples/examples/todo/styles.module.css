@@ -1,0 +1,10 @@
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.todo {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}

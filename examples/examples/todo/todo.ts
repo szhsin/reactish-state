@@ -1,9 +1,9 @@
-import { createState, selector, StateCreator } from 'reactish-state';
-import { persist, reduxDevtools, applyMiddleware } from 'reactish-state/middleware';
+import { createState, selector } from 'reactish-state';
+import { persist, reduxDevtools, applyMiddleware, immer } from 'reactish-state/middleware';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
-const state: StateCreator = createState({
-  middleware: applyMiddleware(persistMiddleware, reduxDevtools)
+const state = createState({
+  middleware: applyMiddleware(immer, persistMiddleware, reduxDevtools)
 });
 
 interface Todo {
@@ -16,10 +16,20 @@ const todoListState = state(
   [] as Todo[],
   (set, get) => ({
     addItem: (text: string) =>
-      set((todos) => [...todos, { id: Date.now(), text, isCompleted: false }]),
+      set((todos) => [...todos, { id: Date.now(), text, isCompleted: false }], 'todos/addItem'),
     toggleItem: (id: number) =>
       set(
-        get().map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item))
+        get().map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item)),
+        { type: 'todos/toggleItem', id }
+      ),
+    deleteItem: (id: number) =>
+      set(
+        (todos) => {
+          const index = todos.findIndex((item) => item.id === id);
+          if (index >= 0) todos.splice(index, 1);
+          return todos;
+        },
+        { type: 'todos/deleteItem', id }
       )
   }),
   { key: 'todo-list' }
@@ -27,8 +37,6 @@ const todoListState = state(
 
 type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
 const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter, null, { key: 'filter' });
-
-const adhocState = state({ a: 1, b: 'ss' }, null, { key: 'adhoc' });
 
 const visibleTodoList = selector(
   todoListState,

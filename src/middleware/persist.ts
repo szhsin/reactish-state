@@ -13,7 +13,7 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
   const states: [string, Setter<unknown>][] = [];
 
   const middleware: PersistMiddleware = (set, get, config) => {
-    let key = config ? (config as unknown as { key: string }).key : '';
+    let key = config?.key || '';
     if (!key)
       throw new Error(
         '[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.'
@@ -21,8 +21,8 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
     if (prefix) key = prefix + key;
     states.push([key, set as Setter<unknown>]);
 
-    return (value) => {
-      set(value);
+    return (...args) => {
+      set(...args);
       getStorage().setItem(key, JSON.stringify(get()));
     };
   };
@@ -30,7 +30,7 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
   middleware.hydrate = () => {
     states.forEach(([key, set]) => {
       const value = getStorage().getItem(key);
-      value && set(JSON.parse(value));
+      value && set(JSON.parse(value), 'HYDRATE');
     });
     states.length = 0;
   };
