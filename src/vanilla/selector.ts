@@ -18,10 +18,12 @@ const isEqual = (args1: unknown[], args2: unknown[]) => {
 };
 
 const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
-  (<R extends ReactishArray, T>(...items: [...R, SelectorFunc<R, T>, Config?]) => {
-    const lastIndex = items.length - 1;
-    const selectorFunc = items[lastIndex] as SelectorFunc<R, T>;
-    items.length = lastIndex;
+  (<R extends ReactishArray, T>(...items: unknown[]) => {
+    const { length } = items;
+    const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
+    const selectorFunc = items[cutoff] as SelectorFunc<R, T>;
+    const config = items[cutoff + 1] as Config | undefined;
+    items.length = cutoff;
     let cache: { args: unknown[]; ret: T } | undefined;
 
     const selector = {
@@ -38,7 +40,7 @@ const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
       }
     };
 
-    plugin?.(selector);
+    plugin?.(selector, config);
     return selector;
   }) as Selector;
 

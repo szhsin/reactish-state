@@ -19,5 +19,5 @@ export interface Middleware {
 }
 
 export interface Plugin {
-  <T>(reactish: Reactish<T>): void;
+  <T>(reactish: Reactish<T>, config?: Config): void;
 }
