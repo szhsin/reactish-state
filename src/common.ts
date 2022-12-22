@@ -17,3 +17,7 @@ export interface Config {
 export interface Middleware {
   <T>(set: Setter<T>, get: Getter<T>, config?: Config): Setter<T>;
 }
+
+export interface Plugin {
+  <T>(reactish: Reactish<T>): void;
+}
