@@ -12,7 +12,7 @@ type Persist = (options?: {
 const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
   const states: [string, Setter<unknown>][] = [];
 
-  const middleware: PersistMiddleware = (set, get, config) => {
+  const middleware: PersistMiddleware = ({ set, get }, config) => {
     let key = config?.key || '';
     if (!key)
       throw new Error(

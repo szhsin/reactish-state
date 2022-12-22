@@ -1,4 +1,4 @@
-import type { Setter, Reactish, Listener, Config, Middleware } from '../common';
+import type { Reactish, Setter, Listener, Subscriber, Config, Middleware } from '../common';
 
 type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
 
@@ -24,17 +24,18 @@ const createState =
         });
       }
     };
-    if (middleware) set = middleware(set, get, config);
+    const subscribe: Subscriber = (listener) => {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    };
+    if (middleware) set = middleware({ set, get, subscribe }, config);
 
     return {
       get,
       set,
-      subscribe: (listener) => {
-        listeners.add(listener);
-        return () => {
-          listeners.delete(listener);
-        };
-      },
+      subscribe,
       actions: actionCreator && actionCreator(set, get)
     } as State<T, A, ActionCreator<T, A>>;
   };
