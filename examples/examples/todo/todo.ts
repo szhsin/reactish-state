@@ -1,5 +1,6 @@
-import { createState, selector } from 'reactish-state';
+import { createState, createSelector } from 'reactish-state';
 import { persist, reduxDevtools, applyMiddleware, immer } from 'reactish-state/middleware';
+import { reduxDevtools as devtoolsPlugin } from 'reactish-state/plugin';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
 const state = createState({
@@ -38,6 +39,7 @@ const todoListState = state(
 type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
 const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter, null, { key: 'filter' });
 
+const selector = createSelector({ plugin: devtoolsPlugin });
 const visibleTodoList = selector(
   todoListState,
   visibilityFilterState,
@@ -50,22 +52,27 @@ const visibleTodoList = selector(
       case 'IN_PROGRESS':
         return todoList.filter(({ isCompleted }) => !isCompleted);
     }
-  }
+  },
+  { key: 'visible-todos' }
 );
 
-const statsSelector = selector(todoListState, (todoList) => {
-  const totalNum = todoList.length;
-  const completedNum = todoList.filter((item) => item.isCompleted).length;
-  const uncompletedNum = totalNum - completedNum;
-  const percentCompleted = totalNum === 0 ? 0 : (completedNum / totalNum) * 100;
+const statsSelector = selector(
+  todoListState,
+  (todoList) => {
+    const totalNum = todoList.length;
+    const completedNum = todoList.filter((item) => item.isCompleted).length;
+    const uncompletedNum = totalNum - completedNum;
+    const percentCompleted = totalNum === 0 ? 0 : (completedNum / totalNum) * 100;
 
-  return {
-    totalNum,
-    completedNum,
-    uncompletedNum,
-    percentCompleted
-  };
-});
+    return {
+      totalNum,
+      completedNum,
+      uncompletedNum,
+      percentCompleted
+    };
+  },
+  { key: 'stats' }
+);
 
 export type { VisibilityFilter };
 export const { hydrate: hydrateStore } = persistMiddleware;

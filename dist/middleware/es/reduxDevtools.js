@@ -1,4 +1,6 @@
-var reduxDevtools = function reduxDevtools(set, get, config) {
+var reduxDevtools = function reduxDevtools(_ref, config) {
+  var set = _ref.set,
+    get = _ref.get;
   if (typeof window === 'undefined' || !window.__REDUX_DEVTOOLS_EXTENSION__) return set;
   var devtools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
     name: config == null ? void 0 : config.key

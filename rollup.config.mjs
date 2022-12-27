@@ -29,4 +29,4 @@ const createBuild = (path = '') => ({
   ]
 });
 
-export default [createBuild(), createBuild('middleware/')];
+export default [createBuild(), createBuild('middleware/'), createBuild('plugin/')];

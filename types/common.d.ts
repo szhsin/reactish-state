@@ -4,13 +4,19 @@ export declare type Setter<T> = (newValue: T | ((value: T) => T), action?: strin
     [key: string]: unknown;
 }) => void;
 export declare type Listener = () => void;
+export declare type Subscriber = (listener: Listener) => () => void;
 export interface Reactish<T> {
     get: Getter<T>;
-    subscribe: (listener: Listener) => () => void;
+    subscribe: Subscriber;
 }
 export interface Config {
     key?: string;
 }
 export interface Middleware {
-    <T>(set: Setter<T>, get: Getter<T>, config?: Config): Setter<T>;
+    <T>(api: Reactish<T> & {
+        set: Setter<T>;
+    }, config?: Config): Setter<T>;
+}
+export interface Plugin {
+    <T>(reactish: Reactish<T>, config?: Config): void;
 }

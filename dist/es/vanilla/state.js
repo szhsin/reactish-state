@@ -16,16 +16,21 @@ var createState = function createState(_temp) {
         });
       }
     };
-    if (middleware) set = middleware(set, get, config);
+    var subscribe = function subscribe(listener) {
+      listeners.add(listener);
+      return function () {
+        listeners["delete"](listener);
+      };
+    };
+    if (middleware) set = middleware({
+      set: set,
+      get: get,
+      subscribe: subscribe
+    }, config);
     return {
       get: get,
       set: set,
-      subscribe: function subscribe(listener) {
-        listeners.add(listener);
-        return function () {
-          listeners["delete"](listener);
-        };
-      },
+      subscribe: subscribe,
       actions: actionCreator && actionCreator(set, get)
     };
   };
