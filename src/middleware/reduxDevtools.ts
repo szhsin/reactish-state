@@ -29,7 +29,9 @@ const reduxDevtools: ReduxDevtools = ({ name, merging } = {}) => {
     return function (value, action) {
       set.apply(null, arguments as unknown as Parameters<typeof set>);
       devtools.send(
-        typeof action === 'string' ? { type: action } : action || { type: 'SET', value },
+        typeof action === 'string'
+          ? { type: action }
+          : action || { type: merging ? `SET_${key}` : 'SET', value },
         merging ? ((mergedState[key!] = get()), mergedState) : get()
       );
     };
