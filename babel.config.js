@@ -16,6 +16,7 @@ module.exports = {
   plugins: ['pure-annotations'],
   presets: [
     ['@babel/preset-env', { bugfixes: true, exclude: ['@babel/plugin-transform-typeof-symbol'] }],
+    ['@babel/preset-react', { runtime: 'classic' }],
     ['@babel/preset-typescript', { isTSX: true, allExtensions: true }]
   ]
 };
