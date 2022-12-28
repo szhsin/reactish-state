@@ -1,3 +1,6 @@
 import type { Plugin } from '../common';
-declare const reduxDevtools: Plugin;
+declare type ReduxDevtools = (options?: {
+    name?: string;
+}) => Plugin;
+declare const reduxDevtools: ReduxDevtools;
 export { reduxDevtools };
