@@ -23,7 +23,7 @@ var persist = function persist(_temp) {
       var key = _ref3[0],
         set = _ref3[1];
       var value = getStorage().getItem(key);
-      value && set(JSON.parse(value), 'HYDRATE');
+      value && set(JSON.parse(value), "HYDRATE_" + key);
     });
     states.length = 0;
   };

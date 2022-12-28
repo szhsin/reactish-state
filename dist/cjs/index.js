@@ -90,8 +90,10 @@ var createSelector = function createSelector(_temp) {
 };
 var selector = /*#__PURE__*/createSelector();
 
-var useSnapshot = function useSnapshot(state) {
-  return shim.useSyncExternalStore(state.subscribe, state.get, state.get);
+var useSnapshot = function useSnapshot(_ref) {
+  var subscribe = _ref.subscribe,
+    get = _ref.get;
+  return shim.useSyncExternalStore(subscribe, get, get);
 };
 
 exports.createSelector = createSelector;

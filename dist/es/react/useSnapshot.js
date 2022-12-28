@@ -1,7 +1,9 @@
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
-var useSnapshot = function useSnapshot(state) {
-  return useSyncExternalStore(state.subscribe, state.get, state.get);
+var useSnapshot = function useSnapshot(_ref) {
+  var subscribe = _ref.subscribe,
+    get = _ref.get;
+  return useSyncExternalStore(subscribe, get, get);
 };
 
 export { useSnapshot };

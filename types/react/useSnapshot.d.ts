@@ -1,3 +1,3 @@
 import type { Reactish } from '../common';
-declare const useSnapshot: <T>(state: Reactish<T>) => T;
+declare const useSnapshot: <T>({ subscribe, get }: Reactish<T>) => T;
 export { useSnapshot };

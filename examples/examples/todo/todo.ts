@@ -4,7 +4,7 @@ import { reduxDevtools as devtoolsPlugin } from 'reactish-state/plugin';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
 const state = createState({
-  middleware: applyMiddleware(immer, persistMiddleware, reduxDevtools)
+  middleware: applyMiddleware(immer, persistMiddleware, reduxDevtools({ name: 'todoApp-state' }))
 });
 
 interface Todo {
@@ -33,13 +33,13 @@ const todoListState = state(
         { type: 'todos/deleteItem', id }
       )
   }),
-  { key: 'todo-list' }
+  { key: 'todoList' }
 );
 
 type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
 const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter, null, { key: 'filter' });
 
-const selector = createSelector({ plugin: devtoolsPlugin });
+const selector = createSelector({ plugin: devtoolsPlugin({ name: 'todoApp-selector' }) });
 const visibleTodoList = selector(
   todoListState,
   visibilityFilterState,
@@ -53,7 +53,7 @@ const visibleTodoList = selector(
         return todoList.filter(({ isCompleted }) => !isCompleted);
     }
   },
-  { key: 'visible-todos' }
+  { key: 'visibleTodos' }
 );
 
 const statsSelector = selector(
