@@ -25,12 +25,13 @@
     "pret": "prettier -c .",
     "pret:fix": "prettier -w .",
     "build": "run-s pret clean lint types bundle post-build",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "eg": "npm run dev --prefix examples"
   },
   "peerDependencies": {
-    "react": "^16.8 || ^17.0 || ^18.0",
-    "react-dom": "^16.8 || ^17.0 || ^18.0",
-    "immer": ">=6.0"
+    "immer": ">=6.0",
+    "react": "^16.8 || ^17.0 || ^18.0"
   },
   "peerDependenciesMeta": {
     "immer": {
@@ -43,10 +44,13 @@
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/preset-env": "^7.19.4",
+    "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@redux-devtools/extension": "^3.2.3",
     "@rollup/plugin-babel": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.1.2",
     "@types/react": "^18.0.24",
     "@types/use-sync-external-store": "^0.0.3",
