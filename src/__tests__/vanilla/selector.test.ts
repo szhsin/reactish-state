@@ -1,5 +1,5 @@
 import { state } from '../../vanilla/state';
-import { selector, createSelector } from '../../vanilla/selector';
+import { selector, createSelector } from '../../';
 
 test('selector should update when the base state has changed', () => {
   const price = state(7);

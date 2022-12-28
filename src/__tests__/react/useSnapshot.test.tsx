@@ -3,9 +3,7 @@
  */
 import * as React from 'react';
 import { render, renderHook, screen, act, fireEvent, waitFor } from '@testing-library/react';
-import { state } from '../../vanilla/state';
-import { selector } from '../../vanilla/selector';
-import { useSnapshot } from '../../react/useSnapshot';
+import { state, selector, useSnapshot } from '../../';
 
 test('useSnapshot', () => {
   const testState = state(1);
