@@ -1,8 +1,6 @@
 import type { Plugin } from '../common';
 
-const applyPlugin: (...plugins: Plugin[]) => Plugin =
-  (...plugins) =>
-  (...args) =>
-    plugins.forEach((plugin) => plugin(...args));
+const applyPlugin: (plugins: Plugin[]) => Plugin = (plugins) => (reactish, config) =>
+  plugins.forEach((plugin) => plugin(reactish, config));
 
 export { applyPlugin };
