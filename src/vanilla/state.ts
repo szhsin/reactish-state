@@ -19,16 +19,12 @@ const createState =
       const nextValue = typeof newValue === 'function' ? (newValue as F)(value) : newValue;
       if (!Object.is(value, nextValue)) {
         value = nextValue;
-        listeners.forEach((listener) => {
-          listener();
-        });
+        listeners.forEach((listener) => listener());
       }
     };
     const subscribe: Subscriber = (listener) => {
       listeners.add(listener);
-      return () => {
-        listeners.delete(listener);
-      };
+      return () => listeners.delete(listener);
     };
     if (middleware) set = middleware({ set, get, subscribe }, config);
 

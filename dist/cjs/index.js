@@ -16,14 +16,14 @@ var createState = function createState(_temp) {
       if (!Object.is(value, nextValue)) {
         value = nextValue;
         listeners.forEach(function (listener) {
-          listener();
+          return listener();
         });
       }
     };
     var subscribe = function subscribe(listener) {
       listeners.add(listener);
       return function () {
-        listeners["delete"](listener);
+        return listeners["delete"](listener);
       };
     };
     if (middleware) set = middleware({

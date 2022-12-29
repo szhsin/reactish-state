@@ -1,4 +1,4 @@
-import { state, createState } from '../../vanilla/state';
+import { state, createState } from '../../';
 
 test('state should notify listeners when updated', () => {
   const listener = jest.fn();
