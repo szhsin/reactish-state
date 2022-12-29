@@ -17,12 +17,11 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
-var applyMiddleware = function applyMiddleware() {
-  for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
-    middlewares[_key] = arguments[_key];
-  }
+var applyMiddleware = function applyMiddleware(middlewares, _temp) {
+  var _ref = _temp === void 0 ? {} : _temp,
+    fromRight = _ref.fromRight;
   return function (api, config) {
-    return middlewares.reduceRight(function (set, middleware) {
+    return middlewares[fromRight ? 'reduceRight' : 'reduce'](function (set, middleware) {
       return middleware(_extends({}, api, {
         set: set
       }), config);
