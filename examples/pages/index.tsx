@@ -12,12 +12,16 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <h1>Reactish-State examples</h1>
         <div className={styles.grid}>
           <Link href="/counter" className={styles.card}>
             <h2>Counter</h2>
           </Link>
           <Link href="/todo" className={styles.card}>
             <h2>Todo</h2>
+          </Link>
+          <Link href="/async" className={styles.card}>
+            <h2>Async</h2>
           </Link>
         </div>
       </main>
