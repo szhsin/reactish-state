@@ -7,14 +7,16 @@ const TodoList = () => {
   const { toggleItem, deleteItem } = todoListState.actions;
 
   return (
-    <ul>
-      {todos.map(({ id, text, isCompleted: isDone }) => (
+    <ul className={styles.todos}>
+      {todos.map(({ id, text, isCompleted }) => (
         <li key={id} className={styles.todo}>
-          <label>
-            <input type="checkbox" checked={isDone} onChange={() => toggleItem(id)} />
-            {text}
+          <label className={styles.todoLabel}>
+            <input type="checkbox" checked={isCompleted} onChange={() => toggleItem(id)} />
+            <span className={isCompleted ? styles.completed : ''}>{text}</span>
           </label>
-          <button onClick={() => deleteItem(id)}>Delete</button>
+          <button className={styles.delete} onClick={() => deleteItem(id)}>
+            Delete
+          </button>
         </li>
       ))}
     </ul>

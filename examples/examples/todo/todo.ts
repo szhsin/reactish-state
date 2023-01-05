@@ -17,13 +17,16 @@ const todoListState = state(
   [] as Todo[],
   (set, get) => ({
     addItem: (text: string) =>
+      // The function updater of `set` receives the current state and should return a new state immutably
       set((todos) => [...todos, { id: Date.now(), text, isCompleted: false }], 'todos/addItem'),
     toggleItem: (id: number) =>
+      // The current state can be also retrieved with the `get`
       set(
         get().map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item)),
         { type: 'todos/toggleItem', id }
       ),
     deleteItem: (id: number) =>
+      // You can also mutate the state because we have set up the `immer` middleware
       set(
         (todos) => {
           const index = todos.findIndex((item) => item.id === id);
@@ -37,7 +40,7 @@ const todoListState = state(
 );
 
 type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
-const visibilityFilterState = state('IN_PROGRESS' as VisibilityFilter, null, { key: 'filter' });
+const visibilityFilterState = state('ALL' as VisibilityFilter, null, { key: 'filter' });
 
 const selector = createSelector({ plugin: devtoolsPlugin({ name: 'todoApp-selector' }) });
 const visibleTodoList = selector(

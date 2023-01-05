@@ -1,10 +1,44 @@
 .app {
-  max-width: 480px;
+  max-width: 360px;
   margin: 0 auto;
+  padding: 1rem;
+}
+
+.todos {
+  padding: 0;
 }
 
 .todo {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 0.5rem 0.25rem;
+}
+
+.todo:hover {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
+.todo:hover .delete {
+  opacity: 1;
+}
+
+.todoLabel {
+  flex-grow: 1;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.add {
+  margin-left: 0.5rem;
+}
+
+.delete {
+  opacity: 0;
+}
+
+.filters {
   margin: 1rem 0;
 }
