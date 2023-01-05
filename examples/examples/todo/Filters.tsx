@@ -1,5 +1,6 @@
 import { useSnapshot } from 'reactish-state';
 import { visibilityFilterState, VisibilityFilter } from './todo';
+import styles from './styles.module.css';
 
 const filterList: VisibilityFilter[] = ['ALL', 'IN_PROGRESS', 'COMPLETED'];
 
@@ -7,7 +8,7 @@ const Filters = () => {
   const visibilityFilter = useSnapshot(visibilityFilterState);
 
   return (
-    <div>
+    <div className={styles.filters}>
       {filterList.map((filter) => (
         <label key={filter}>
           <input

@@ -16,38 +16,40 @@ const reducer = (state: number, { type, by = 1 }: { type: ActionTypes; by?: numb
 
 const persistMiddleware = persist({ prefix: 'counter-', getStorage: () => sessionStorage });
 
-const counterState = createState({
+const counter = createState({
   middleware: applyMiddleware([reduxDevtools({ name: 'counterApp-state' }), persistMiddleware])
 })(
   0,
   (set, get) => ({
+    // The function updater of `set` receives the current state and should return a new state
     increase: () => set((i) => i + 1),
+    // The current state can be also retrieved with the `get`
     increaseBy: (by: number) => set(get() + by),
     reset: () => set(0),
+    // The redux style dispatch function
     dispatch: (action: { type: ActionTypes; by?: number }) =>
       set((state) => reducer(state, action), action)
   }),
   { key: 'count' }
 );
 
-const doubleCount = selector(counterState, (count) => count * 2);
-const quadrupleCount = selector(doubleCount, (count) => count * 2);
-const countSummary = selector(
-  counterState,
-  doubleCount,
-  quadrupleCount,
-  (count, doubleCount, quadrupleCount) => ({
-    doubleCount,
-    quadrupleCount,
-    sum: count + doubleCount + quadrupleCount
-  })
-);
+// selector is a piece of derived state from one or more states
+const double = selector(counter, (state) => state * 2);
+
+// selector can be derived from other selectors
+const quadruple = selector(double, (state) => state * 2);
+const summarySelector = selector(counter, double, quadruple, (count, double, quadruple) => ({
+  count,
+  double,
+  quadruple,
+  sum: count + double + quadruple
+}));
 
 const Counter = ({ id = 1 }: { id: number | string }) => {
   const [step, setStep] = useState(1);
-  const count = useSnapshot(counterState);
-  const summary = useSnapshot(countSummary);
-  const { increase, increaseBy, reset, dispatch } = counterState.actions;
+  const count = useSnapshot(counter);
+  const summary = useSnapshot(summarySelector);
+  const { increase, increaseBy, reset, dispatch } = counter.actions;
 
   console.log(`#${id} count: ${count}`, 'summary:', summary);
 
@@ -67,7 +69,7 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
       </div>
 
       <div>
-        <button onClick={() => counterState.set(count - step)}>- {step}</button>
+        <button onClick={() => counter.set(count - step)}>- {step}</button>
         <button onClick={() => increaseBy(step)}>+ {step}</button>
         <button onClick={() => increase()}>+ 1</button>
         <button onClick={() => dispatch({ type: 'INCREASE', by: 7 })}>+ 7</button>
