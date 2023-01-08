@@ -5,7 +5,11 @@ type ReduxDevtools = (options?: { name?: string }) => Plugin;
 
 const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];
-  if (typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__))
+  if (
+    process.env.NODE_ENV === 'production' ||
+    typeof window === 'undefined' ||
+    !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)
+  )
     return () => {
       /*do nothing*/
     };
