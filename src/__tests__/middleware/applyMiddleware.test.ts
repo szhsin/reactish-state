@@ -11,7 +11,7 @@ const createMiddleware: (arg: unknown) => Middleware =
     middleware(arg, ...args);
   };
 
-const middlewares = [createMiddleware(1), createMiddleware(2), createMiddleware(3)];
+const middlewares = [createMiddleware(1), createMiddleware(2), createMiddleware(3), undefined];
 
 test('applyMiddleware from left', () => {
   const state = createState({

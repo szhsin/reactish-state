@@ -39,7 +39,7 @@ const todoListState = state(
   { key: 'todoList' }
 );
 
-type VisibilityFilter = 'ALL' | 'COMPLETED' | 'IN_PROGRESS';
+type VisibilityFilter = 'ALL' | 'ACTIVE' | 'COMPLETED';
 const visibilityFilterState = state('ALL' as VisibilityFilter, null, { key: 'filter' });
 
 const selector = createSelector({ plugin: devtoolsPlugin({ name: 'todoApp-selector' }) });
@@ -52,7 +52,7 @@ const visibleTodoList = selector(
         return todoList;
       case 'COMPLETED':
         return todoList.filter(({ isCompleted }) => isCompleted);
-      case 'IN_PROGRESS':
+      case 'ACTIVE':
         return todoList.filter(({ isCompleted }) => !isCompleted);
     }
   },

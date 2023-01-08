@@ -52,8 +52,7 @@ describe('reduxDevtools', () => {
   });
 });
 
-test('reduxDevtools should return original set when there is no redux devtools extension', () => {
-  const set = jest.fn();
+test('reduxDevtools should do nothing when there is no redux devtools extension', () => {
   // eslint-disable-next-line
-  expect(reduxDevtools()({ set } as any)).toBe(set);
+  expect(reduxDevtools()).toBeUndefined();
 });

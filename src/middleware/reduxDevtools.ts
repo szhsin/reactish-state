@@ -1,12 +1,16 @@
 import type {} from '@redux-devtools/extension';
 import type { Middleware } from '../common';
 
-type ReduxDevtools = (options?: { name?: string }) => Middleware;
+type ReduxDevtools = (options?: { name?: string }) => Middleware | undefined;
 
 const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];
-  if (typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__))
-    return ({ set }) => set;
+  if (
+    process.env.NODE_ENV === 'production' ||
+    typeof window === 'undefined' ||
+    !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)
+  )
+    return;
 
   const devtools = devtoolsExt.connect({ name });
   const mergedState: { [index: string]: unknown } = {};

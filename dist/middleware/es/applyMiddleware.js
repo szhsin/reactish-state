@@ -5,9 +5,9 @@ var applyMiddleware = function applyMiddleware(middlewares, _temp) {
     fromRight = _ref.fromRight;
   return function (api, config) {
     return middlewares[fromRight ? 'reduceRight' : 'reduce'](function (set, middleware) {
-      return middleware(_extends({}, api, {
+      return middleware ? middleware(_extends({}, api, {
         set: set
-      }), config);
+      }), config) : set;
     }, api.set);
   };
 };

@@ -2,9 +2,7 @@ var reduxDevtools = function reduxDevtools(_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
     name = _ref.name;
   var devtoolsExt;
-  if (typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return function () {
-    /*do nothing*/
-  };
+  if (process.env.NODE_ENV === 'production' || typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return;
   var devtools = devtoolsExt.connect({
     name: name
   });
