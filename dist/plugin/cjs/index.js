@@ -3,7 +3,7 @@
 var applyPlugin = function applyPlugin(plugins) {
   return function (reactish, config) {
     return plugins.forEach(function (plugin) {
-      return plugin(reactish, config);
+      return plugin == null ? void 0 : plugin(reactish, config);
     });
   };
 };
@@ -12,9 +12,7 @@ var reduxDevtools = function reduxDevtools(_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
     name = _ref.name;
   var devtoolsExt;
-  if (typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return function () {
-    /*do nothing*/
-  };
+  if (process.env.NODE_ENV === 'production' || typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return;
   var devtools = devtoolsExt.connect({
     name: name
   });
