@@ -27,7 +27,7 @@ const createBuild = ({
       interop: 'default'
     },
     {
-      dir: `dist/${outPath}es`,
+      dir: `dist/${outPath}esm`,
       format: 'es',
       preserveModules: true
     }
