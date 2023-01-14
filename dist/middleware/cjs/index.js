@@ -1,7 +1,5 @@
 'use strict';
 
-var immer$1 = require('immer');
-
 function _extends() {
   _extends = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -26,16 +24,6 @@ var applyMiddleware = function applyMiddleware(middlewares, _temp) {
         set: set
       }), config) : set;
     }, api.set);
-  };
-};
-
-var immer = function immer(_ref) {
-  var set = _ref.set;
-  return function (value) {
-    for (var _len = arguments.length, rest = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      rest[_key - 1] = arguments[_key];
-    }
-    return set.apply(void 0, [typeof value === 'function' ? immer$1.produce(value) : value].concat(rest));
   };
 };
 
@@ -101,6 +89,5 @@ var reduxDevtools = function reduxDevtools(_temp) {
 };
 
 exports.applyMiddleware = applyMiddleware;
-exports.immer = immer;
 exports.persist = persist;
 exports.reduxDevtools = reduxDevtools;
