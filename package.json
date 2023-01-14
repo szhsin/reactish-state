@@ -4,9 +4,9 @@
   "description": "",
   "author": "Zheng Song",
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.js",
-  "types": "types/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./types/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist/",
@@ -29,6 +29,28 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "eg": "npm run dev --prefix examples"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./middleware": {
+      "types": "./types/middleware/index.d.ts",
+      "require": "./dist/middleware/cjs/index.js",
+      "default": "./dist/middleware/esm/index.js"
+    },
+    "./middleware/immer": {
+      "types": "./types/middleware/immer.d.ts",
+      "require": "./dist/middleware/cjs/immer.js",
+      "default": "./dist/middleware/esm/immer.js"
+    },
+    "./plugin": {
+      "types": "./types/plugin/index.d.ts",
+      "require": "./dist/plugin/cjs/index.js",
+      "default": "./dist/plugin/esm/index.js"
+    }
   },
   "peerDependencies": {
     "immer": ">=6.0",
