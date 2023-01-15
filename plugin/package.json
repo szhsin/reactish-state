@@ -2,6 +2,6 @@
   "private": true,
   "sideEffects": false,
   "main": "../dist/plugin/cjs/index.js",
-  "module": "../dist/plugin/es/index.js",
+  "module": "../dist/plugin/esm/index.js",
   "types": "../types/plugin/index.d.ts"
 }

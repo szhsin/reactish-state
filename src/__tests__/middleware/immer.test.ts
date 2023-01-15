@@ -1,5 +1,5 @@
 import { createState } from '../../';
-import { immer } from '../../middleware';
+import { immer } from '../../middleware/immer';
 
 test('immer', () => {
   const state = createState({ middleware: immer });

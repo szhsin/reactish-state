@@ -1,5 +1,6 @@
 import { createState, createSelector } from 'reactish-state';
-import { persist, reduxDevtools, applyMiddleware, immer } from 'reactish-state/middleware';
+import { persist, reduxDevtools, applyMiddleware } from 'reactish-state/middleware';
+import { immer } from 'reactish-state/middleware/immer';
 import { reduxDevtools as devtoolsPlugin } from 'reactish-state/plugin';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
