@@ -52,7 +52,7 @@ var persist = function persist(_temp) {
       var key = _ref3[0],
         set = _ref3[1];
       var value = getStorage().getItem(key);
-      value && set(JSON.parse(value), "HYDRATE_" + key);
+      value != null && set(value !== 'undefined' ? JSON.parse(value) : undefined, "HYDRATE_" + key);
     });
     states.length = 0;
   };
