@@ -4,4 +4,6 @@ printWidth: 100
 overrides:
   - files: '*.md'
     options:
-      printWidth: 70
+      singleQuote: false
+      proseWrap: never
+      printWidth: 80

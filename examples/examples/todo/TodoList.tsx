@@ -1,5 +1,5 @@
 import { useSnapshot } from 'reactish-state';
-import { todoListState, visibleTodoList } from './todo';
+import { todoListState, visibleTodoList } from './store';
 import styles from './styles.module.css';
 
 const TodoList = () => {

@@ -18,8 +18,11 @@ const todoListState = state(
   [] as Todo[],
   (set, get) => ({
     addItem: (text: string) =>
-      // The function updater of `set` receives the current state and should return a new state immutably
-      set((todos) => [...todos, { id: Date.now(), text, isCompleted: false }], 'todos/addItem'),
+      // The functional update of `set` receives the current state and should return a new state immutably
+      set((todos) => [...todos, { id: Date.now(), text, isCompleted: false }], {
+        type: 'todos/addItem',
+        text
+      }),
     toggleItem: (id: number) =>
       // The current state can be also retrieved with the `get`
       set(
