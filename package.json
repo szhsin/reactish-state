@@ -1,9 +1,11 @@
 {
   "name": "reactish-state",
-  "version": "0.10.2",
-  "description": "",
+  "version": "0.10.3",
+  "description": "Simple, decentralized state management for React.",
   "author": "Zheng Song",
   "license": "MIT",
+  "repository": "szhsin/reactish-state",
+  "homepage": "https://github.com/szhsin/reactish-state#readme",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./types/index.d.ts",
@@ -13,6 +15,12 @@
     "types/",
     "middleware/",
     "plugin/"
+  ],
+  "keywords": [
+    "react",
+    "state",
+    "management",
+    "redux"
   ],
   "scripts": {
     "start": "run-p watch \"types -- --watch\"",

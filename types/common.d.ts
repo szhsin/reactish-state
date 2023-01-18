@@ -1,10 +1,10 @@
-export declare type Getter<T> = () => T;
-export declare type Setter<T> = (newValue: T | ((value: T) => T), action?: string | {
+export type Getter<T> = () => T;
+export type Setter<T> = (newValue: T | ((value: T) => T), action?: string | {
     type: string;
     [key: string]: unknown;
 }) => void;
-export declare type Listener = () => void;
-export declare type Subscriber = (listener: Listener) => () => void;
+export type Listener = () => void;
+export type Subscriber = (listener: Listener) => () => void;
 export interface Reactish<T> {
     get: Getter<T>;
     subscribe: Subscriber;
