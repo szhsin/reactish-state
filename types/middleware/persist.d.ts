@@ -7,4 +7,5 @@ declare type Persist = (options?: {
     getStorage?: () => Pick<Storage, 'getItem' | 'setItem'>;
 }) => PersistMiddleware;
 declare const persist: Persist;
+export type { Persist, PersistMiddleware };
 export { persist };

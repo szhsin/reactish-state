@@ -8,4 +8,5 @@ declare const createState: ({ middleware }?: {
     middleware?: Middleware | undefined;
 }) => <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => State<T, A, ActionCreator<T, A>>;
 declare const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => State<T, A, ActionCreator<T, A>>;
+export type { State, ActionCreator };
 export { state, createState };

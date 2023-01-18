@@ -38,4 +38,5 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
   return middleware;
 };
 
+export type { Persist, PersistMiddleware };
 export { persist };

@@ -1,3 +1,3 @@
-export { applyMiddleware } from './applyMiddleware';
-export { persist } from './persist';
-export { reduxDevtools } from './reduxDevtools';
+export * from './applyMiddleware';
+export * from './persist';
+export * from './reduxDevtools';
