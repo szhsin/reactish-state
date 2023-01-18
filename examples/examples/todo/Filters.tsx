@@ -1,5 +1,5 @@
 import { useSnapshot } from 'reactish-state';
-import { visibilityFilterState, VisibilityFilter } from './todo';
+import { visibilityFilterState, VisibilityFilter } from './store';
 import styles from './styles.module.css';
 
 const filterList: VisibilityFilter[] = ['ALL', 'ACTIVE', 'COMPLETED'];

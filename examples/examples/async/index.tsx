@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSnapshot } from 'reactish-state';
-import { user, topRepositories } from './github';
+import { user, topRepositories } from './store';
 import styles from './styles.module.css';
 
 const { fetch } = user.actions;

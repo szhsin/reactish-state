@@ -1,5 +1,5 @@
 import { useSnapshot } from 'reactish-state';
-import { statsSelector } from './todo';
+import { statsSelector } from './store';
 
 const Stats = () => {
   const { totalNum, completedNum, percentCompleted } = useSnapshot(statsSelector);

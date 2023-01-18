@@ -21,11 +21,12 @@ const counter = createState({
 })(
   0,
   (set, get) => ({
-    // The function updater of `set` receives the current state and should return a new state
+    // Calling `set` to set a new state
+    reset: () => set(0),
+    // The functional update of `set` receives the current state and should return a new state
     increase: () => set((i) => i + 1),
     // The current state can be also retrieved with the `get`
     increaseBy: (by: number) => set(get() + by),
-    reset: () => set(0),
     // The redux style dispatch function
     dispatch: (action: { type: ActionTypes; by?: number }) =>
       set((state) => reducer(state, action), action)
@@ -61,11 +62,7 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
       <div>summary: {JSON.stringify(summary)}</div>
       <div className={styles.step}>
         Step:{' '}
-        <input
-          type="text"
-          value={step}
-          onChange={(e) => setStep(parseInt(e.currentTarget.value) || 1)}
-        />
+        <input type="text" value={step} onChange={(e) => setStep(parseInt(e.target.value) || 0)} />
       </div>
 
       <div>
