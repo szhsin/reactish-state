@@ -38,4 +38,5 @@ const createState =
 
 const state = createState();
 
+export type { State, ActionCreator };
 export { state, createState };

@@ -32,4 +32,5 @@ const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   };
 };
 
+export type { ReduxDevtools };
 export { reduxDevtools };

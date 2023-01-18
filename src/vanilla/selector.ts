@@ -46,4 +46,5 @@ const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
 
 const selector = createSelector();
 
+export type { Selector };
 export { selector, createSelector };

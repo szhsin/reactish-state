@@ -1,28 +1,23 @@
 'use strict';
 
-var applyPlugin = function applyPlugin(plugins) {
-  return function (reactish, config) {
-    return plugins.forEach(function (plugin) {
-      return plugin == null ? void 0 : plugin(reactish, config);
-    });
-  };
-};
+const applyPlugin = plugins => (reactish, config) => plugins.forEach(plugin => plugin == null ? void 0 : plugin(reactish, config));
 
-var reduxDevtools = function reduxDevtools(_temp) {
-  var _ref = _temp === void 0 ? {} : _temp,
-    name = _ref.name;
-  var devtoolsExt;
+const reduxDevtools = ({
+  name
+} = {}) => {
+  let devtoolsExt;
   if (process.env.NODE_ENV === 'production' || typeof window === 'undefined' || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return;
-  var devtools = devtoolsExt.connect({
-    name: name
+  const devtools = devtoolsExt.connect({
+    name
   });
-  var mergedState = {};
-  return function (_ref2, config) {
-    var get = _ref2.get,
-      subscribe = _ref2.subscribe;
-    var key = config == null ? void 0 : config.key;
+  const mergedState = {};
+  return ({
+    get,
+    subscribe
+  }, config) => {
+    const key = config == null ? void 0 : config.key;
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` plugin is used.');
-    var updateState = function updateState() {
+    const updateState = () => {
       mergedState[key] = get();
       devtools.init(mergedState);
     };

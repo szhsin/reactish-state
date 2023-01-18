@@ -1,2 +1,2 @@
-export { applyPlugin } from './applyPlugin';
-export { reduxDevtools } from './reduxDevtools';
+export * from './applyPlugin';
+export * from './reduxDevtools';
