@@ -14,7 +14,10 @@ module.exports = {
     setSpreadProperties: true,
     skipForOfIteratorClosing: true
   },
-  plugins: ['pure-annotations'],
+  plugins: [
+    'pure-annotations',
+    ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
+  ],
   presets: [
     [
       '@babel/preset-env',
@@ -22,7 +25,8 @@ module.exports = {
         bugfixes: true,
         include: [
           '@babel/plugin-proposal-optional-chaining',
-          '@babel/plugin-proposal-nullish-coalescing-operator'
+          '@babel/plugin-proposal-nullish-coalescing-operator',
+          '@babel/plugin-proposal-optional-catch-binding'
         ],
         exclude: ['@babel/plugin-transform-typeof-symbol']
       }
