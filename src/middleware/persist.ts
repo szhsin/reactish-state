@@ -23,14 +23,23 @@ const persist: Persist = ({ prefix, getStorage = () => localStorage } = {}) => {
 
     return (...args) => {
       set(...args);
-      getStorage().setItem(key, JSON.stringify(get()));
+      try {
+        getStorage().setItem(key, JSON.stringify(get()));
+      } catch {
+        /* continue regardless of error */
+      }
     };
   };
 
   middleware.hydrate = () => {
     states.forEach(([key, set]) => {
-      const value = getStorage().getItem(key);
-      value != null && set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+      try {
+        const value = getStorage().getItem(key);
+        value != null &&
+          set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+      } catch {
+        /* continue regardless of error */
+      }
     });
     states.length = 0;
   };
