@@ -13,13 +13,21 @@ const persist = ({
     states.push([key, set]);
     return (...args) => {
       set(...args);
-      getStorage().setItem(key, JSON.stringify(get()));
+      try {
+        getStorage().setItem(key, JSON.stringify(get()));
+      } catch (_unused) {
+        /* continue regardless of error */
+      }
     };
   };
   middleware.hydrate = () => {
     states.forEach(([key, set]) => {
-      const value = getStorage().getItem(key);
-      value != null && set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+      try {
+        const value = getStorage().getItem(key);
+        value != null && set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+      } catch (_unused2) {
+        /* continue regardless of error */
+      }
     });
     states.length = 0;
   };

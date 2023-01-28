@@ -2,10 +2,9 @@
 
 const applyMiddleware = (middlewares, {
   fromRight
-} = {}) => (api, config) => middlewares[fromRight ? 'reduceRight' : 'reduce']((set, middleware) => middleware ? middleware({
-  ...api,
+} = {}) => (api, config) => middlewares[fromRight ? 'reduceRight' : 'reduce']((set, middleware) => middleware ? middleware(Object.assign({}, api, {
   set
-}, config) : set, api.set);
+}), config) : set, api.set);
 
 const persist = ({
   prefix,
@@ -22,13 +21,21 @@ const persist = ({
     states.push([key, set]);
     return (...args) => {
       set(...args);
-      getStorage().setItem(key, JSON.stringify(get()));
+      try {
+        getStorage().setItem(key, JSON.stringify(get()));
+      } catch (_unused) {
+        /* continue regardless of error */
+      }
     };
   };
   middleware.hydrate = () => {
     states.forEach(([key, set]) => {
-      const value = getStorage().getItem(key);
-      value != null && set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+      try {
+        const value = getStorage().getItem(key);
+        value != null && set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+      } catch (_unused2) {
+        /* continue regardless of error */
+      }
     });
     states.length = 0;
   };
@@ -52,8 +59,9 @@ const reduxDevtools = ({
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` middleware is used.');
     mergedState[key] = get();
     devtools.init(mergedState);
-    return function (value, action) {
-      set.apply(null, arguments);
+    return (...args) => {
+      const [value, action] = args;
+      set(...args);
       mergedState[key] = get();
       devtools.send(typeof action === 'string' ? {
         type: action
