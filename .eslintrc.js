@@ -42,8 +42,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended-requiring-type-checking'
       ],
       rules: {
-        'prefer-spread': 0,
-        'prefer-rest-params': 0,
         '@typescript-eslint/no-non-null-assertion': 0
       }
     }

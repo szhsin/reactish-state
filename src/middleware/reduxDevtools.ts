@@ -24,8 +24,9 @@ const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
     mergedState[key] = get();
     devtools.init(mergedState);
 
-    return function (value, action) {
-      set.apply(null, arguments as unknown as Parameters<typeof set>);
+    return (...args) => {
+      const [value, action] = args;
+      set(...args);
       mergedState[key] = get();
       devtools.send(
         typeof action === 'string' ? { type: action } : action || { type: `SET_${key}`, value },
