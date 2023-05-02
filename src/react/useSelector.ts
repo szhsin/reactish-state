@@ -1,12 +1,6 @@
 import { useState } from 'react';
-import type {
-  Subscriber,
-  ReactishArray,
-  ReactishValueArray,
-  SelectorFunc,
-  SelectorParams
-} from '../common';
-import { isEqual } from '../utils';
+import type { Subscriber, ReactishArray, SelectorFunc, SelectorParams } from '../common';
+import { isEqual, createSubscriber, getReactishValues } from '../utils';
 import { useSnapshot } from './useSnapshot';
 
 const useSelector = <RA extends ReactishArray, T>(
@@ -18,30 +12,21 @@ const useSelector = <RA extends ReactishArray, T>(
   const selectorFunc = items[cutoff] as SelectorFunc<RA, T>;
   items.length = cutoff;
 
-  const [context] = useState<{ cache?: { args: unknown[]; ret: T }; sub: Subscriber }>(() => ({
-    sub: (listener) => {
-      const unsubscribers = (items as ReactishArray).map((item) => item.subscribe(listener));
-      return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
-    }
+  const [context] = useState<{ cache?: { args: unknown[]; val: T }; sub: Subscriber }>(() => ({
+    sub: createSubscriber(items as ReactishArray)
   }));
 
-  const selector = {
-    get: () => {
-      const { cache } = context;
-      const reactishValues = (items as ReactishArray).map((item) =>
-        item.get()
-      ) as ReactishValueArray<RA>;
-
-      const args = reactishValues.concat(deps || selectorFunc);
-      if (cache && isEqual(args, cache.args)) return cache.ret;
-      const ret = selectorFunc(...reactishValues);
-      context.cache = { args, ret };
-      return ret;
-    },
-    subscribe: context.sub
+  const get = () => {
+    const { cache } = context;
+    const reactishValues = getReactishValues<RA>(items as ReactishArray);
+    const args = reactishValues.concat(deps || selectorFunc);
+    if (cache && isEqual(args, cache.args)) return cache.val;
+    const val = selectorFunc(...reactishValues);
+    context.cache = { args, val };
+    return val;
   };
 
-  return useSnapshot(selector);
+  return useSnapshot({ get, subscribe: context.sub });
 };
 
 export { useSelector };

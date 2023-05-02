@@ -1,13 +1,5 @@
-import type {
-  Listener,
-  Plugin,
-  Config,
-  ReactishArray,
-  ReactishValueArray,
-  SelectorFunc,
-  Selector
-} from '../common';
-import { isEqual } from '../utils';
+import type { Plugin, Config, ReactishArray, SelectorFunc, Selector } from '../common';
+import { isEqual, createSubscriber, getReactishValues } from '../utils';
 
 const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
   (<RA extends ReactishArray, T>(...items: unknown[]) => {
@@ -16,20 +8,17 @@ const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
     const selectorFunc = items[cutoff] as SelectorFunc<RA, T>;
     const config = items[cutoff + 1] as Config | undefined;
     items.length = cutoff;
-    let cache: { args: unknown[]; ret: T } | undefined;
+    let cache: { args: unknown[]; val: T } | undefined;
 
     const selector = {
       get: () => {
-        const args = (items as ReactishArray).map((item) => item.get()) as ReactishValueArray<RA>;
-        if (cache && isEqual(args, cache.args)) return cache.ret;
-        const ret = selectorFunc(...args);
-        cache = { args, ret };
-        return ret;
+        const args = getReactishValues<RA>(items as ReactishArray);
+        if (cache && isEqual(args, cache.args)) return cache.val;
+        const val = selectorFunc(...args);
+        cache = { args, val };
+        return val;
       },
-      subscribe: (listener: Listener) => {
-        const unsubscribers = (items as ReactishArray).map((item) => item.subscribe(listener));
-        return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
-      }
+      subscribe: createSubscriber(items as ReactishArray)
     };
 
     plugin?.(selector, config);
