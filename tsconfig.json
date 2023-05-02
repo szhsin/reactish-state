@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "isolatedModules": true
   },
-  "exclude": ["examples/", "types/"]
+  "include": ["./src/"]
 }
