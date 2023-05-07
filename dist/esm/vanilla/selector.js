@@ -1,9 +1,5 @@
-const isEqual = (args1, args2) => {
-  for (let i = 0; i < args1.length; i++) {
-    if (!Object.is(args1[i], args2[i])) return false;
-  }
-  return true;
-};
+import { getReactishValues, createSubscriber, isEqual } from '../utils.js';
+
 const createSelector = ({
   plugin
 } = {}) => (...items) => {
@@ -17,19 +13,16 @@ const createSelector = ({
   let cache;
   const selector = {
     get: () => {
-      const args = items.map(item => item.get());
-      if (cache && isEqual(args, cache.args)) return cache.ret;
-      const ret = selectorFunc(...args);
+      const args = getReactishValues(items);
+      if (cache && isEqual(args, cache.args)) return cache.val;
+      const val = selectorFunc(...args);
       cache = {
         args,
-        ret
+        val
       };
-      return ret;
+      return val;
     },
-    subscribe: listener => {
-      const unsubscribers = items.map(item => item.subscribe(listener));
-      return () => unsubscribers.forEach(unsubscribe => unsubscribe());
-    }
+    subscribe: createSubscriber(items)
   };
   plugin == null ? void 0 : plugin(selector, config);
   return selector;
