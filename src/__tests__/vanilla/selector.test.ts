@@ -54,6 +54,7 @@ test('selector should return cached result when base state has not changed', () 
 
   expect(selectorFunc).toHaveBeenCalledTimes(0);
   expect(geometry.get()).toEqual({ perimeter: 14, area: 12 });
+  expect(selectorFunc).toHaveBeenCalledTimes(1);
   expect(geometry.get()).toBe(geometry.get());
   expect(selectorFunc).toHaveBeenCalledTimes(1);
 });
