@@ -4,3 +4,5 @@ examples/
 types/
 build/
 static/
+/middleware
+/plugin

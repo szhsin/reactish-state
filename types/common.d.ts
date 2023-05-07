@@ -20,3 +20,13 @@ export interface Middleware {
 export interface Plugin {
     <T>(reactish: Reactish<T>, config?: Config): void;
 }
+export type ReactishArray = Reactish<unknown>[];
+export type ReactishValueArray<RA extends ReactishArray> = {
+    [index in keyof RA]: ReturnType<RA[index]['get']>;
+};
+export type SelectorFunc<RA extends ReactishArray, T> = (...args: ReactishValueArray<RA>) => T;
+export type SelectorParams<RA extends ReactishArray, T> = [...RA, SelectorFunc<RA, T>];
+export interface Selector {
+    <RA extends ReactishArray, T>(...items: SelectorParams<RA, T>): Reactish<T>;
+    <RA extends ReactishArray, T>(...items: [...SelectorParams<RA, T>, Config]): Reactish<T>;
+}

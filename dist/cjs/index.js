@@ -1,6 +1,7 @@
 'use strict';
 
 var shim = require('use-sync-external-store/shim');
+var react = require('react');
 
 const createState = ({
   middleware
@@ -39,6 +40,12 @@ const isEqual = (args1, args2) => {
   }
   return true;
 };
+const createSubscriber = items => listener => {
+  const unsubscribers = items.map(item => item.subscribe(listener));
+  return () => unsubscribers.forEach(unsubscribe => unsubscribe());
+};
+const getReactishValues = items => items.map(item => item.get());
+
 const createSelector = ({
   plugin
 } = {}) => (...items) => {
@@ -52,19 +59,16 @@ const createSelector = ({
   let cache;
   const selector = {
     get: () => {
-      const args = items.map(item => item.get());
-      if (cache && isEqual(args, cache.args)) return cache.ret;
-      const ret = selectorFunc(...args);
+      const args = getReactishValues(items);
+      if (cache && isEqual(args, cache.args)) return cache.val;
+      const val = selectorFunc(...args);
       cache = {
         args,
-        ret
+        val
       };
-      return ret;
+      return val;
     },
-    subscribe: listener => {
-      const unsubscribers = items.map(item => item.subscribe(listener));
-      return () => unsubscribers.forEach(unsubscribe => unsubscribe());
-    }
+    subscribe: createSubscriber(items)
   };
   plugin == null ? void 0 : plugin(selector, config);
   return selector;
@@ -76,8 +80,37 @@ const useSnapshot = ({
   get
 }) => shim.useSyncExternalStore(subscribe, get, get);
 
+const useSelector = (selectorParamFactory, deps) => {
+  const items = selectorParamFactory();
+  const cutoff = items.length - 1;
+  const selectorFunc = items[cutoff];
+  items.length = cutoff;
+  const [context] = react.useState(() => ({
+    sub: createSubscriber(items)
+  }));
+  const get = () => {
+    const {
+      cache
+    } = context;
+    const reactishValues = getReactishValues(items);
+    const args = reactishValues.concat(deps || selectorFunc);
+    if (cache && isEqual(args, cache.args)) return cache.val;
+    const val = selectorFunc(...reactishValues);
+    context.cache = {
+      args,
+      val
+    };
+    return val;
+  };
+  return useSnapshot({
+    get,
+    subscribe: context.sub
+  });
+};
+
 exports.createSelector = createSelector;
 exports.createState = createState;
 exports.selector = selector;
 exports.state = state;
+exports.useSelector = useSelector;
 exports.useSnapshot = useSnapshot;

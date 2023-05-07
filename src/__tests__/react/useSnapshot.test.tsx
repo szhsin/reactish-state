@@ -109,7 +109,7 @@ describe('Render behaviour', () => {
     expect(renderRemainder).toHaveBeenCalledTimes(3);
   });
 
-  test('Miltiple subscriber on the same base state', async () => {
+  test('Miltiple subscribers on the same base state', async () => {
     const renderer = jest.fn();
     const Miltiple = () => {
       renderer();
