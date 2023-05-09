@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { hydrateStore } from './store';
 import { AddTodo } from './AddTodo';
-import { TodoList } from './TodoList';
+import { VisibleTodoList } from './VisibleTodoList';
 import { Filters } from './Filters';
 import { Stats } from './Stats';
+import { TodoList } from './TodoList';
 import styles from './styles.module.css';
 
-export default function Todo() {
+export default function App() {
   useEffect(() => {
     hydrateStore();
   }, []);
@@ -14,9 +15,11 @@ export default function Todo() {
   return (
     <div className={styles.app}>
       <AddTodo />
-      <TodoList />
+      <VisibleTodoList />
       <Filters />
       <Stats />
+      <TodoList filter="ACTIVE" />
+      <TodoList filter="COMPLETED" />
     </div>
   );
 }

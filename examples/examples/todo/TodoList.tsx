@@ -1,25 +1,30 @@
-import { useSnapshot } from 'reactish-state';
-import { todoListState, visibleTodoList } from './store';
+import { useSelector } from 'reactish-state';
+import { todoListState, getTodoListByFilter, VisibilityFilter } from './store';
 import styles from './styles.module.css';
 
-const TodoList = () => {
-  const todos = useSnapshot(visibleTodoList);
-  const { toggleItem, deleteItem } = todoListState.actions;
+// Component-scoped derived states which depend on props or local states can be created by the `useSelector` hook
+const TodoList = ({ filter = 'ALL' }: { filter?: VisibilityFilter }) => {
+  const todos = useSelector(
+    () => [todoListState, (todos) => getTodoListByFilter(todos, filter)],
+    [filter]
+  );
 
   return (
-    <ul className={styles.todos}>
-      {todos.map(({ id, text, isCompleted }) => (
-        <li key={id} className={styles.todo}>
-          <label className={styles.todoLabel}>
-            <input type="checkbox" checked={isCompleted} onChange={() => toggleItem(id)} />
-            <span className={isCompleted ? styles.completed : ''}>{text}</span>
-          </label>
-          <button className={styles.delete} onClick={() => deleteItem(id)}>
-            Delete
-          </button>
-        </li>
-      ))}
-    </ul>
+    <>
+      <hr />
+      <h2>{filter} todos</h2>
+      {todos.length ? (
+        <ul className={styles.todos}>
+          {todos.map(({ id, text, isCompleted }) => (
+            <li key={id} className={`${styles.todoItem} ${isCompleted && styles.completed}`}>
+              {text}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>There are no {filter} todos to display.</p>
+      )}
+    </>
   );
 };
 
