@@ -27,6 +27,11 @@
   flex-grow: 1;
 }
 
+.todoItem {
+  margin: 0.5rem 0.25rem;
+  list-style-position: inside;
+}
+
 .completed {
   text-decoration: line-through;
 }

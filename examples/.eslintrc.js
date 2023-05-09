@@ -16,7 +16,13 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       extends: ['plugin:@typescript-eslint/recommended'],
       rules: {
-        '@typescript-eslint/no-non-null-assertion': 0
+        '@typescript-eslint/no-non-null-assertion': 0,
+        'react-hooks/exhaustive-deps': [
+          'warn',
+          {
+            additionalHooks: 'useSelector'
+          }
+        ]
       }
     }
   ]

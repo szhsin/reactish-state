@@ -46,22 +46,21 @@ const todoListState = state(
 type VisibilityFilter = 'ALL' | 'ACTIVE' | 'COMPLETED';
 const visibilityFilterState = state('ALL' as VisibilityFilter, null, { key: 'filter' });
 
+const getTodoListByFilter = (todoList: Todo[], filter: VisibilityFilter) => {
+  switch (filter) {
+    case 'ALL':
+      return todoList;
+    case 'COMPLETED':
+      return todoList.filter(({ isCompleted }) => isCompleted);
+    case 'ACTIVE':
+      return todoList.filter(({ isCompleted }) => !isCompleted);
+  }
+};
+
 const selector = createSelector({ plugin: devtoolsPlugin({ name: 'todoApp-selector' }) });
-const visibleTodoList = selector(
-  todoListState,
-  visibilityFilterState,
-  (todoList, visibilityFilter) => {
-    switch (visibilityFilter) {
-      case 'ALL':
-        return todoList;
-      case 'COMPLETED':
-        return todoList.filter(({ isCompleted }) => isCompleted);
-      case 'ACTIVE':
-        return todoList.filter(({ isCompleted }) => !isCompleted);
-    }
-  },
-  { key: 'visibleTodos' }
-);
+const visibleTodoList = selector(todoListState, visibilityFilterState, getTodoListByFilter, {
+  key: 'visibleTodos'
+});
 
 const statsSelector = selector(
   todoListState,
@@ -83,4 +82,10 @@ const statsSelector = selector(
 
 export type { VisibilityFilter };
 export const { hydrate: hydrateStore } = persistMiddleware;
-export { todoListState, visibilityFilterState, visibleTodoList, statsSelector };
+export {
+  todoListState,
+  visibilityFilterState,
+  visibleTodoList,
+  statsSelector,
+  getTodoListByFilter
+};
