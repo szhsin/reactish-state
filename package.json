@@ -1,6 +1,6 @@
 {
   "name": "reactish-state",
-  "version": "0.11.0-alpha.0",
+  "version": "0.11.0",
   "description": "Simple, decentralized state management for React.",
   "author": "Zheng Song",
   "license": "MIT",
