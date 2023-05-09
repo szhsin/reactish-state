@@ -1,6 +1,6 @@
 # Reactish-State
 
-> Simple, decentralized state management for React.
+> Simple, decentralized(atomic) state management for React.
 
 ## Install
 
@@ -94,9 +94,9 @@ The state management solutions in the React ecosystem have popularized two state
 
 - **Centralized**: a single store that combines entire app states together and slices of the store are connected to React components through selectors. Examples: react-redux, Zustand.
 
-- **Decentralized**: consisting of many small states which can build up state dependency trees using a bottom-up approach. React components only need to connect with the states that they use. Examples: Recoil, Jotai.
+- **Decentralized**: consisting of many small(atomic) states which can build up state dependency trees using a bottom-up approach. React components only need to connect with the states that they use. Examples: Recoil, Jotai.
 
-This library adopts the decentralized state model, offering a _Recoil-like_ API, but with a much simpler and smaller implementation(similar to Zustand), which makes it the one of the smallest state management solutions with gzipped bundle size less than 1KB.
+This library adopts the decentralized state model, offering a _Recoil-like_ API, but with a much simpler and smaller implementation(similar to Zustand), which makes it the one of the smallest state management solutions with gzipped bundle size around 1KB.
 
 |  | State model | Bundle size |
 | --- | --- | --- |
@@ -153,7 +153,7 @@ The difference might sound insignificant, but imaging every single state update 
 - Feature extensible with middleware or plugins
 - States persistable to browser storage
 - Support Redux dev tools via middleware
-- Less than 1KB: simple and small
+- [~1KB](https://bundlephobia.com/package/reactish-state): simple and small
 
 # Recipes
 
@@ -301,6 +301,55 @@ const Example = () => {
     </h1>
   );
 };
+```
+
+## Selector that depends on props or local states
+
+The `selector` function allows us to create reusable derived states outside React components. In contrast, component-scoped derived states which depend on props or local states can be created by the `useSelector` hook.
+
+```jsx
+import { state, useSelector } from "reactish-state";
+
+const todosState = state([{ task: "Shop groceries", completed: false }]);
+
+const FilteredTodoList = ({ filter = "ALL" }) => {
+  const filteredTodos = useSelector(
+    () => [
+      todosState,
+      (todos) => {
+        switch (filter) {
+          case "ALL":
+            return todos;
+          case "COMPLETED":
+            return todos.filter((todo) => todo.completed);
+          case "ACTIVE":
+            return todos.filter((todo) => !todo.completed);
+        }
+      }
+    ],
+    [filter]
+  );
+  // Render filtered todos...
+};
+```
+
+The second parameter of `useSelector` is a dependency array (similar to React's `useMemo` hook), in which you can specify what props or local states the selector depends on. In the above example, `FilteredTodoList` component will re-render only if the global `todosState` state or local `filter` prop have been updated.
+
+### Linting the dependency array of useSelector
+
+You can take advantage of the [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) package to lint the dependency array of `useSelector`. Add the following configuration into your ESLint config file:
+
+```json
+{
+  "rules": {
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        "additionalHooks": "useSelector"
+      }
+    ]
+  }
+}
 ```
 
 ## Still perfer Redux-like reducers?
