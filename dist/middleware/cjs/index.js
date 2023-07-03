@@ -2,9 +2,10 @@
 
 const applyMiddleware = (middlewares, {
   fromRight
-} = {}) => (api, config) => middlewares[fromRight ? 'reduceRight' : 'reduce']((set, middleware) => middleware ? middleware(Object.assign({}, api, {
+} = {}) => (api, config) => middlewares[fromRight ? 'reduceRight' : 'reduce']((set, middleware) => middleware ? middleware({
+  ...api,
   set
-}), config) : set, api.set);
+}, config) : set, api.set);
 
 const persist = ({
   prefix,
