@@ -14,10 +14,7 @@ module.exports = {
     setSpreadProperties: true,
     skipForOfIteratorClosing: true
   },
-  plugins: [
-    'pure-annotations',
-    ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]
-  ],
+  plugins: ['pure-annotations'],
   presets: [
     [
       '@babel/preset-env',
