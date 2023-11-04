@@ -9,17 +9,17 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@types/node": "^18.16.19",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "@typescript-eslint/parser": "^5.60.1",
-    "eslint": "^8.44.0",
-    "eslint-config-next": "^13.4.7",
-    "next": "^13.4.7",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.34",
+    "@types/react-dom": "^18.2.14",
+    "@typescript-eslint/eslint-plugin": "file:../node_modules/@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser": "file:../node_modules/@typescript-eslint/parser",
+    "eslint": "file:../node_modules/eslint",
+    "eslint-config-next": "^14.0.1",
+    "next": "^14.0.1",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
     "reactish-state": "file:..",
-    "typescript": "^5.1.6"
+    "typescript": "file:../node_modules/typescript"
   }
 }

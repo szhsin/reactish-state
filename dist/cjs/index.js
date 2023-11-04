@@ -70,7 +70,7 @@ const createSelector = ({
     },
     subscribe: createSubscriber(items)
   };
-  plugin == null ? void 0 : plugin(selector, config);
+  plugin == null || plugin(selector, config);
   return selector;
 };
 const selector = /*#__PURE__*/createSelector();
