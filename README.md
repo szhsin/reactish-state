@@ -2,6 +2,19 @@
 
 > Simple, decentralized(atomic) state management for React.
 
+## ✨Highlights✨
+
+- Decentralized state management
+- Un-opinionated and easy-to-use API
+- No need of wrapping app in Context or prop drilling
+- React components re-render only on changes
+- Compatible with React 18 concurrent rendering
+- Selectors are memoized by default
+- Feature extensible with middleware or plugins
+- States persistable to browser storage
+- Support Redux dev tools via middleware
+- [~1KB](https://bundlephobia.com/package/reactish-state): simple and small
+
 ## Install
 
 `npm install reactish-state` or `yarn add reactish-state`
@@ -141,19 +154,6 @@ The difference might sound insignificant, but imaging every single state update 
 - No potential naming conflicts among states/actions within the big store.
 - No need to use a React Hook to extract actions from the store.
 - Actions come from outside React and no need to add them into the `useCallback/useEffect` dep array.
-
-## ✨Highlights✨
-
-- Decentralized state management
-- Un-opinionated and easy-to-use API
-- No need of wrapping app in Context or prop drilling
-- React components re-render only on changes
-- Compatible with React 18 concurrent rendering
-- Selectors are memoized by default
-- Feature extensible with middleware or plugins
-- States persistable to browser storage
-- Support Redux dev tools via middleware
-- [~1KB](https://bundlephobia.com/package/reactish-state): simple and small
 
 # Recipes
 
