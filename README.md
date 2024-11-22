@@ -99,7 +99,7 @@ const Example = () => {
 
 The component will re-render when states or selectors have changed. No provider or context are needed!
 
-**[Try a sandbox demo!](https://codesandbox.io/s/reactish-counter-3let0o)**
+**[Try a sandbox demo!](https://codesandbox.io/p/sandbox/reactish-counter-z42qt7)**
 
 ## Why another state management library?
 
@@ -586,6 +586,6 @@ const selector = createSelector({ plugin: reduxDevtools() });
 
 # Examples
 
-- Counter – [sandbox](https://codesandbox.io/s/reactish-counter-3let0o) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/counter)
+- Counter – [sandbox](https://codesandbox.io/p/sandbox/reactish-counter-z42qt7) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/counter)
 - Todo app – [sandbox](https://codesandbox.io/s/reactish-todo-thyhbl) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/todo)
 - Async – [sandbox](https://codesandbox.io/s/reactish-async-2cghkg) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/async)
