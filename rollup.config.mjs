@@ -36,13 +36,16 @@ const createBuild = ({
   input: `src/${inPath}${inFile}`,
   output: [
     {
-      file: `dist/${outPath}cjs/${outFile}`,
+      dir: `dist/${outPath}cjs`,
       format: 'cjs',
-      interop: 'default'
+      interop: 'default',
+      entryFileNames: '[name].cjs',
+      preserveModules: true
     },
     {
       dir: `dist/${outPath}esm`,
       format: 'es',
+      entryFileNames: '[name].mjs',
       preserveModules: true
     }
   ]
