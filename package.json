@@ -4,10 +4,13 @@
   "description": "Simple, decentralized state management for React.",
   "author": "Zheng Song",
   "license": "MIT",
-  "repository": "szhsin/reactish-state",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szhsin/reactish-state.git"
+  },
   "homepage": "https://github.com/szhsin/reactish-state#readme",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
   "types": "./types/index.d.ts",
   "sideEffects": false,
   "files": [
@@ -41,24 +44,25 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/cjs/index.js",
-      "default": "./dist/esm/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
     },
     "./middleware": {
       "types": "./types/middleware/index.d.ts",
-      "require": "./dist/middleware/cjs/index.js",
-      "default": "./dist/middleware/esm/index.js"
+      "require": "./dist/middleware/cjs/index.cjs",
+      "default": "./dist/middleware/esm/index.mjs"
     },
     "./middleware/immer": {
       "types": "./types/middleware/immer.d.ts",
-      "require": "./dist/middleware/cjs/immer.js",
-      "default": "./dist/middleware/esm/immer.js"
+      "require": "./dist/middleware/cjs/immer.cjs",
+      "default": "./dist/middleware/esm/immer.mjs"
     },
     "./plugin": {
       "types": "./types/plugin/index.d.ts",
-      "require": "./dist/plugin/cjs/index.js",
-      "default": "./dist/plugin/esm/index.js"
-    }
+      "require": "./dist/plugin/cjs/index.cjs",
+      "default": "./dist/plugin/esm/index.mjs"
+    },
+    "./package.json": "./package.json"
   },
   "peerDependencies": {
     "immer": ">=6.0",

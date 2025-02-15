@@ -1,22 +1,24 @@
-import { useState } from 'react';
-import { createSubscriber, getReactishValues, isEqual } from '../utils.js';
-import { useSnapshot } from './useSnapshot.js';
+'use strict';
+
+var react = require('react');
+var utils = require('../utils.cjs');
+var useSnapshot = require('./useSnapshot.cjs');
 
 const useSelector = (selectorParamFactory, deps) => {
   const items = selectorParamFactory();
   const cutoff = items.length - 1;
   const selectorFunc = items[cutoff];
   items.length = cutoff;
-  const [context] = useState(() => ({
-    sub: createSubscriber(items)
+  const [context] = react.useState(() => ({
+    sub: utils.createSubscriber(items)
   }));
   const get = () => {
     const {
       cache
     } = context;
-    const reactishValues = getReactishValues(items);
+    const reactishValues = utils.getReactishValues(items);
     const args = reactishValues.concat(deps || selectorFunc);
-    if (cache && isEqual(args, cache.args)) return cache.val;
+    if (cache && utils.isEqual(args, cache.args)) return cache.val;
     const val = selectorFunc(...reactishValues);
     context.cache = {
       args,
@@ -24,10 +26,10 @@ const useSelector = (selectorParamFactory, deps) => {
     };
     return val;
   };
-  return useSnapshot({
+  return useSnapshot.useSnapshot({
     get,
     subscribe: context.sub
   });
 };
 
-export { useSelector };
+exports.useSelector = useSelector;

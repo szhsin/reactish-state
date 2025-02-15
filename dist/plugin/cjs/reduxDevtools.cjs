@@ -1,7 +1,5 @@
 'use strict';
 
-const applyPlugin = plugins => (reactish, config) => plugins.forEach(plugin => plugin == null ? undefined : plugin(reactish, config));
-
 const reduxDevtools = ({
   name
 } = {}) => {
@@ -26,5 +24,4 @@ const reduxDevtools = ({
   };
 };
 
-exports.applyPlugin = applyPlugin;
 exports.reduxDevtools = reduxDevtools;
