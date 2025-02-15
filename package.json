@@ -62,7 +62,7 @@
   },
   "peerDependencies": {
     "immer": ">=6.0",
-    "react": "^16.8 || ^17.0 || ^18.0"
+    "react": "^16.8 || ^17 || ^18 || ^19"
   },
   "peerDependenciesMeta": {
     "immer": {
@@ -70,21 +70,22 @@
     }
   },
   "dependencies": {
-    "use-sync-external-store": "^1.2.0"
+    "use-sync-external-store": "^1.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
-    "@babel/preset-react": "^7.22.15",
-    "@babel/preset-typescript": "^7.23.2",
-    "@redux-devtools/extension": "^3.2.5",
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
+    "@babel/preset-react": "^7.26.3",
+    "@babel/preset-typescript": "^7.26.0",
+    "@redux-devtools/extension": "^3.3.0",
     "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.0.0",
-    "@types/jest": "^29.5.7",
-    "@types/react": "^18.2.34",
-    "@types/use-sync-external-store": "^0.0.5",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^19.0.8",
+    "@types/use-sync-external-store": "^0.0.6",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
     "babel-plugin-pure-annotations": "^0.1.2",
@@ -94,14 +95,14 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-hooks-addons": "^0.3.1",
-    "immer": "^10.0.3",
+    "immer": "^10.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.0.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rollup": "^4.3.0",
-    "typescript": "^5.2.2"
+    "prettier": "^3.4.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "rollup": "^4.34.2",
+    "typescript": "^5.7.3"
   }
 }
