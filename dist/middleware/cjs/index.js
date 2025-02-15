@@ -16,7 +16,7 @@ const persist = ({
     set,
     get
   }, config) => {
-    let key = (config == null ? void 0 : config.key) || '';
+    let key = (config == null ? undefined : config.key) || '';
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.');
     if (prefix) key = prefix + key;
     states.push([key, set]);
@@ -56,7 +56,7 @@ const reduxDevtools = ({
     set,
     get
   }, config) => {
-    const key = config == null ? void 0 : config.key;
+    const key = config == null ? undefined : config.key;
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` middleware is used.');
     mergedState[key] = get();
     devtools.init(mergedState);

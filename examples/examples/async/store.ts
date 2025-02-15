@@ -38,13 +38,11 @@ const user = state(
   { key: 'user' }
 );
 
-const topRepositories = selector(
-  user,
-  (user) =>
-    user.data?.repos
-      .slice()
-      .sort((repo1, repo2) => repo2.stargazers_count - repo1.stargazers_count)
-      .slice(0, 5)
+const topRepositories = selector(user, (user) =>
+  user.data?.repos
+    .slice()
+    .sort((repo1, repo2) => repo2.stargazers_count - repo1.stargazers_count)
+    .slice(0, 5)
 );
 
 export { user, topRepositories };

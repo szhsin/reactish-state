@@ -5,7 +5,7 @@ interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> exten
     actions: C extends undefined ? never : A;
 }
 declare const createState: ({ middleware }?: {
-    middleware?: Middleware | undefined;
+    middleware?: Middleware;
 }) => <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => State<T, A, ActionCreator<T, A>>;
 declare const state: <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => State<T, A, ActionCreator<T, A>>;
 export type { State, ActionCreator };
