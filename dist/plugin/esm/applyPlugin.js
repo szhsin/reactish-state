@@ -1,3 +1,3 @@
-const applyPlugin = plugins => (reactish, config) => plugins.forEach(plugin => plugin == null ? void 0 : plugin(reactish, config));
+const applyPlugin = plugins => (reactish, config) => plugins.forEach(plugin => plugin == null ? undefined : plugin(reactish, config));
 
 export { applyPlugin };

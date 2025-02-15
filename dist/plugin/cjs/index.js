@@ -1,6 +1,6 @@
 'use strict';
 
-const applyPlugin = plugins => (reactish, config) => plugins.forEach(plugin => plugin == null ? void 0 : plugin(reactish, config));
+const applyPlugin = plugins => (reactish, config) => plugins.forEach(plugin => plugin == null ? undefined : plugin(reactish, config));
 
 const reduxDevtools = ({
   name
@@ -15,7 +15,7 @@ const reduxDevtools = ({
     get,
     subscribe
   }, config) => {
-    const key = config == null ? void 0 : config.key;
+    const key = config == null ? undefined : config.key;
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` plugin is used.');
     const updateState = () => {
       mergedState[key] = get();

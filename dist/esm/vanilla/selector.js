@@ -1,4 +1,4 @@
-import { getReactishValues, createSubscriber, isEqual } from '../utils.js';
+import { createSubscriber, getReactishValues, isEqual } from '../utils.js';
 
 const createSelector = ({
   plugin
