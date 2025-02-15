@@ -9,7 +9,7 @@ const persist = ({
     set,
     get
   }, config) => {
-    let key = (config == null ? undefined : config.key) || '';
+    let key = config?.key || '';
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `persist` middleware is used.');
     if (prefix) key = prefix + key;
     states.push([key, set]);

@@ -11,7 +11,7 @@ const reduxDevtools = ({
     set,
     get
   }, config) => {
-    const key = config == null ? undefined : config.key;
+    const key = config?.key;
     if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` middleware is used.');
     mergedState[key] = get();
     devtools.init(mergedState);

@@ -24,7 +24,7 @@ const createState = ({
     get,
     set,
     subscribe,
-    actions: actionCreator && actionCreator(set, get)
+    actions: actionCreator?.(set, get)
   };
 };
 const state = /*#__PURE__*/createState();

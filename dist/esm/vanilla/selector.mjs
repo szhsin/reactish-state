@@ -24,7 +24,7 @@ const createSelector = ({
     },
     subscribe: createSubscriber(items)
   };
-  plugin == null || plugin(selector, config);
+  plugin?.(selector, config);
   return selector;
 };
 const selector = /*#__PURE__*/createSelector();

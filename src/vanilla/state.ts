@@ -32,7 +32,7 @@ const createState =
       get,
       set,
       subscribe,
-      actions: actionCreator && actionCreator(set, get)
+      actions: actionCreator?.(set, get)
     } as State<T, A, ActionCreator<T, A>>;
   };
 

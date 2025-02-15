@@ -21,14 +21,11 @@ module.exports = {
       {
         bugfixes: true,
         include: [
-          '@babel/plugin-proposal-optional-chaining',
-          '@babel/plugin-proposal-nullish-coalescing-operator',
-          '@babel/plugin-proposal-optional-catch-binding'
-        ],
-        exclude: ['@babel/plugin-transform-typeof-symbol']
+          '@babel/plugin-transform-nullish-coalescing-operator',
+          '@babel/plugin-transform-optional-catch-binding'
+        ]
       }
     ],
-    ['@babel/preset-react', { runtime: 'classic' }],
     ['@babel/preset-typescript', { isTSX: true, allExtensions: true }]
   ]
 };
