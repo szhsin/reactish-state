@@ -1,6 +1,6 @@
 'use strict';
 
-var shim = require('use-sync-external-store/shim/index.js');
+var shim = require('./shim.cjs');
 
 const useSnapshot = ({
   subscribe,

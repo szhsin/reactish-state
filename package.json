@@ -31,7 +31,7 @@
     "watch": "rollup -c -w",
     "clean": "rm -Rf dist types",
     "types": "tsc",
-    "posttypes": "rm -Rf types/__tests__",
+    "prepare": "rm -Rf types/__tests__",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "pret": "prettier -c .",
@@ -61,6 +61,11 @@
       "types": "./types/plugin/index.d.ts",
       "require": "./dist/plugin/cjs/index.cjs",
       "default": "./dist/plugin/esm/index.mjs"
+    },
+    "./shim": {
+      "types": "./types/shim/index.d.ts",
+      "require": "./dist/shim/cjs/index.cjs",
+      "default": "./dist/shim/esm/index.mjs"
     },
     "./package.json": "./package.json"
   },

@@ -9,6 +9,7 @@ examples/out/
 
 # tests
 coverage/
+**/__tests__/**/*.d.ts
 
 # logs
 logs
