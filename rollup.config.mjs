@@ -4,12 +4,7 @@ import { babel } from '@rollup/plugin-babel';
 /**
  * @returns {import('rollup').RollupOptions}
  */
-const createBuild = ({
-  inPath = '',
-  outPath = inPath,
-  inFile = 'index.ts',
-  outFile = 'index.js'
-} = {}) => ({
+const createBuild = ({ inPath = '', outPath = inPath, inFile = 'index.ts' } = {}) => ({
   external: ['react', 'react-dom', 'use-sync-external-store/shim', 'immer'],
   plugins: [
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
@@ -54,6 +49,6 @@ const createBuild = ({
 export default [
   createBuild(),
   createBuild({ inPath: 'middleware/' }),
-  createBuild({ inPath: 'middleware/', inFile: 'immer.ts', outFile: 'immer.js' }),
+  createBuild({ inPath: 'middleware/', inFile: 'immer.ts' }),
   createBuild({ inPath: 'plugin/' })
 ];

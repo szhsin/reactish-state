@@ -1,7 +1,7 @@
 import type { Middleware, Setter } from '../common';
 
 interface PersistMiddleware extends Middleware {
-  hydrate(): void;
+  hydrate(this: void): void;
 }
 
 type Persist = (options?: {

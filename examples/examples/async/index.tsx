@@ -11,7 +11,7 @@ export default function AsyncExample() {
   const topRepos = useSnapshot(topRepositories);
 
   useEffect(() => {
-    fetch('szhsin');
+    void fetch('szhsin');
   }, []);
 
   const renderUser = () => {
@@ -45,7 +45,7 @@ export default function AsyncExample() {
           onChange={(e) => setUserName(e.target.value)}
         />
       </label>
-      <button onClick={() => fetch(userName)} disabled={loading || !userName.length}>
+      <button onClick={() => void fetch(userName)} disabled={loading || !userName.length}>
         Fetch
       </button>
       {renderUser()}
