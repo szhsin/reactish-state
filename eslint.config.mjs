@@ -23,7 +23,15 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked
   },
   {
-    ignores: ['**/coverage/', '**/dist/', '**/types/', '**/build/', '**/static/', '**/*.d.ts']
+    ignores: [
+      '**/coverage/',
+      '**/dist/',
+      '**/types/',
+      '**/build/',
+      '**/static/',
+      '**/.next/',
+      '**/*.d.ts'
+    ]
   },
   {
     languageOptions: {

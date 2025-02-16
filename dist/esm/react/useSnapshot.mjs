@@ -1,8 +1,13 @@
-import { useSyncExternalStore } from 'use-sync-external-store/shim/index.js';
+import { useSyncExternalStore } from './shim.mjs';
 
 const useSnapshot = ({
   subscribe,
   get
-}) => useSyncExternalStore(subscribe, get, get);
+}) => {
+  if (process.env.NODE_ENV !== 'production' && !useSyncExternalStore) {
+    throw new Error('[reactish-state] Shim setup is required for React 16/17.');
+  }
+  return useSyncExternalStore(subscribe, get, get);
+};
 
 export { useSnapshot };

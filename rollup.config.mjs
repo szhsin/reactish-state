@@ -15,7 +15,7 @@ const createBuild = ({ inPath = '', outPath = inPath, inFile = 'index.ts' } = {}
     {
       name: 'rollup-plugin-replace-code',
       renderChunk: (code, chunk) => {
-        if (!chunk.name.endsWith('useSnapshot')) return null;
+        if (!chunk.name.endsWith('reactShim')) return null;
 
         return code.replace(
           'use-sync-external-store/shim',
@@ -50,5 +50,6 @@ export default [
   createBuild(),
   createBuild({ inPath: 'middleware/' }),
   createBuild({ inPath: 'middleware/', inFile: 'immer.ts' }),
-  createBuild({ inPath: 'plugin/' })
+  createBuild({ inPath: 'plugin/' }),
+  createBuild({ inPath: 'shim/' })
 ];

@@ -1,6 +1,6 @@
 'use strict';
 
-var react = require('react');
+var React = require('react');
 var utils = require('../utils.cjs');
 var useSnapshot = require('./useSnapshot.cjs');
 
@@ -9,7 +9,7 @@ const useSelector = (selectorParamFactory, deps) => {
   const cutoff = items.length - 1;
   const selectorFunc = items[cutoff];
   items.length = cutoff;
-  const [context] = react.useState(() => ({
+  const [context] = React.useState(() => ({
     sub: utils.createSubscriber(items)
   }));
   const get = () => {
