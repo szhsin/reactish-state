@@ -53,6 +53,5 @@ describe('reduxDevtools', () => {
 });
 
 test('reduxDevtools should do nothing when there is no redux devtools extension', () => {
-  // eslint-disable-next-line
   expect(reduxDevtools()).toBeUndefined();
 });

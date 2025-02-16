@@ -1,7 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-import * as React from 'react';
 import { render, renderHook, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import { state, selector, useSnapshot } from '../../';
 

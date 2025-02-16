@@ -3,14 +3,19 @@ import { reduxDevtools } from 'reactish-state/middleware';
 
 const state = createState({ middleware: reduxDevtools({ name: 'github' }) });
 
+type GitHubRepoRes = { id: number; name: string; description: string; stargazers_count: number }[];
+type GitHubUserRes = { name: string; repos_url: string };
+
 interface UserState {
   loading?: boolean;
   error?: unknown;
   data?: {
     name: string;
-    repos: { id: number; name: string; description: string; stargazers_count: number }[];
+    repos: GitHubRepoRes;
   };
 }
+
+const fetchHelper = <T>(url: string) => fetch(url).then((res) => res.json()) as Promise<T>;
 
 const user = state(
   {} as UserState,
@@ -19,8 +24,10 @@ const user = state(
       set({ loading: true }, 'user/fetch/pending');
 
       try {
-        const userRes = await (await fetch(`https://api.github.com/users/${userName}`)).json();
-        const repoRes = await (await fetch(userRes.repos_url)).json();
+        const userRes = await fetchHelper<GitHubUserRes>(
+          `https://api.github.com/users/${userName}`
+        );
+        const repoRes = await fetchHelper<GitHubRepoRes>(userRes.repos_url);
         set(
           {
             data: {
