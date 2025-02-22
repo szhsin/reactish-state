@@ -4,8 +4,6 @@
 
 [![NPM](https://img.shields.io/npm/v/reactish-state.svg)](https://www.npmjs.com/package/reactish-state) [![NPM](https://img.shields.io/bundlephobia/minzip/reactish-state)](https://bundlephobia.com/package/reactish-state)
 
-`npm install reactish-state`
-
 ## ✨Highlights✨
 
 - Decentralized state management
@@ -20,6 +18,10 @@
 - [Less than 1KB](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D): simple and small
 
 ## Install
+
+```bash
+npm install reactish-state
+```
 
 ## Quick start
 
@@ -585,6 +587,18 @@ import { reduxDevtools } from "reactish-state/plugin";
 const selector = createSelector({ plugin: reduxDevtools() });
 // Then use the `selector` as usual...
 ```
+
+# React 16/17 setup
+
+When using this library with React 16/17, you must set up a shim since it doesn't include a native [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore). We don't set up the shim by default to minimize the bundle size for React 18/19 users.
+
+```js
+import { setReactShim } from "reactish-state";
+import { reactShim } from "reactish-state/shim";
+setReactShim(reactShim);
+```
+
+You only need to set it up once after your app launches, outside of React code. DO NOT call `setReactShim` within any React components.
 
 # Examples
 
