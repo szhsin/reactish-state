@@ -1,41 +1,43 @@
 # Reactish-State
 
-> Simple, decentralized(atomic) state management for React.
+> Simple, decentralized (atomic) state management for React.
+
+[![NPM](https://img.shields.io/npm/v/reactish-state.svg)](https://www.npmjs.com/package/reactish-state) [![NPM](https://img.shields.io/bundlephobia/minzip/reactish-state)](https://bundlephobia.com/package/reactish-state)
+
+`npm install reactish-state`
 
 ## ✨Highlights✨
 
 - Decentralized state management
-- Un-opinionated and easy-to-use API
-- No need of wrapping app in Context or prop drilling
+- Unopinionated and easy-to-use API
+- No need to wrap app in Context or prop drilling
 - React components re-render only on changes
-- Compatible with React 18 concurrent rendering
+- Compatible with React 18/19 concurrent rendering
 - Selectors are memoized by default
 - Feature extensible with middleware or plugins
-- States persistable to browser storage
-- Support Redux dev tools via middleware
-- [~1KB](https://bundlephobia.com/package/reactish-state): simple and small
+- State persistable to browser storage
+- Support for Redux dev tools via middleware
+- [Less than 1KB](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D): simple and small
 
 ## Install
 
-`npm install reactish-state` or `yarn add reactish-state`
-
 ## Quick start
 
-### We begin by creating some states
+### We begin by creating some state
 
 ```js
 import { state } from "reactish-state";
 
-// `state` can hold anything: primitives, arrays, objects...
+// `state` can hold anything: primitives, arrays, objects, etc.
 const countState = state(0);
 const todos = state([
   { task: "Shop groceries", completed: false },
   { task: "Clean the house", completed: true }
 ]);
 
-// Update state
+// Update the state
 countState.set(10);
-// Read from state
+// Read from the state
 console.log(countState.get()); // Print 10
 ```
 
@@ -43,19 +45,19 @@ console.log(countState.get()); // Print 10
 
 ```js
 const countState = state(0, (set, get) => ({
-  // Set a new state
+  // Set a new state value
   reset: () => set(0),
-  // or using the functional update of `set`
+  // Or use the functional update of `set`
   increase: () => set((count) => count + 1),
   // State can still be read using `get`
   decrease: () => set(get() - 1)
 }));
 
-// Using the actions
+// Use the actions
 countState.actions.increase();
 ```
 
-### `selector` can create derived states
+### `selector` can create derived state
 
 ```js
 import { selector } from "reactish-state";
@@ -71,11 +73,11 @@ const tripleSelector = selector(
 );
 ```
 
-A selector will re-compute only when any of the states it depends on have changed.
+A selector will re-compute only when one of the states it depends on has changed.
 
-### Use the state and selector in your React components
+### Use the state and selectors in your React components
 
-You can read state and selector for rendering with the `useSnapshot` hook, and write to state with `set` or actions. _Rule of thumb_: always read from `useSnapshot` in render function, otherwise use the `get` method of state or selector.
+You can read state and selectors for rendering with the `useSnapshot` hook, and write to state with `set` or actions. _Rule of thumb_: always read from `useSnapshot` in the render function; otherwise, use the `get` method of state or selector (in event handlers or even outside of React components).
 
 ```jsx
 import { useSnapshot } from "reactish-state";
@@ -87,9 +89,9 @@ const Example = () => {
   return (
     <h1>
       {count} {triple}
-      {/* Update state using the actions bound to it */}
+      {/* Update the state using the actions bound to it */}
       <button onClick={() => countState.actions.increase()}>Increase</button>
-      {/* Or update state using the `set` method directly */}
+      {/* Or update the state using the `set` method directly */}
       <button onClick={() => countState.set((i) => i - 1)}>Decrease</button>
       <button onClick={() => countState.set(0)}>Reset</button>
     </h1>
@@ -97,19 +99,19 @@ const Example = () => {
 };
 ```
 
-The component will re-render when states or selectors have changed. No provider or context are needed!
+The component will re-render when states or selectors change. No provider or context is needed!
 
 **[Try a sandbox demo!](https://codesandbox.io/p/sandbox/reactish-counter-z42qt7)**
 
 ## Why another state management library?
 
-The state management solutions in the React ecosystem have popularized two state models:
+State management solutions in the React ecosystem have popularized two state models:
 
-- **Centralized**: a single store that combines entire app states together and slices of the store are connected to React components through selectors. Examples: react-redux, Zustand.
+- **Centralized**: a single store that combines the entire app's state, with slices of the store connected to React components via selectors. Examples: React-Redux, Zustand.
 
-- **Decentralized**: consisting of many small(atomic) states which can build up state dependency trees using a bottom-up approach. React components only need to connect with the states that they use. Examples: Recoil, Jotai.
+- **Decentralized**: composed of many small (atomic) states that build state dependency trees using a bottom-up approach. React components only connect to the states they need. Examples: Recoil, Jotai.
 
-This library adopts the decentralized state model, offering a _Recoil-like_ API, but with a much simpler and smaller implementation(similar to Zustand), which makes it the one of the smallest state management solutions with gzipped bundle size around 1KB.
+This library adopts the decentralized state model, offering a _Recoil-like_ API with a much smaller implementation (similar to Zustand). This makes it one of the smallest state management solutions, with a gzipped bundle size of less than 1KB.
 
 |  | State model | Bundle size |
 | --- | --- | --- |
@@ -121,18 +123,18 @@ This library adopts the decentralized state model, offering a _Recoil-like_ API,
 
 ## Why decentralized state management?
 
-Centralized state management usually combines the entire app states into a single store. To achieve render optimization, selectors are used to subscribe React components to slices of the store. Taking the classic [Redux todo example](https://redux.js.org/introduction/examples#todos), the store has the following shape:
+Centralized state management typically combines the entire app's state into a single store. To optimize rendering, selectors are used to subscribe React components to slices of the store. Taking the classic [Redux todo example](https://redux.js.org/introduction/examples#todos), the store has the following shape:
 
 ```js
 {
   visibilityFilter: "ALL", // ALL, ACTIVE, COMPLETED
-  todos: [{ task: "Shop groceries", completed: false } /* ...more items */]
+  todos: [{ task: "Shop groceries", completed: false } /* ...and more items */]
 }
 ```
 
 We have a `<Filter/>` component that connects to the store with a selector `(state) => state.visibilityFilter`.
 
-When any action updates the `todos` slice, the selector in the `<Filter/>` component needs to re-run to determine if a re-rendering of the component is required. This is not optimal as `<Filter/>` component should not even be bothered when the todos are added/removed/updated.
+When any action updates the `todos` slice, the selector in the `<Filter/>` component needs to re-run to determine if a re-render is required. This is not optimal, as the `<Filter/>` component should not be affected when todos are added, removed, or updated.
 
 In contrast, decentralized state management may approach the same problem with two separate states:
 
@@ -140,24 +142,24 @@ In contrast, decentralized state management may approach the same problem with t
 const visibilityFilter = state("ALL"); // ALL, ACTIVE, COMPLETED
 const todos = state([
   { task: "Shop groceries", completed: false }
-  /* ...more items */
+  /* ...and more items */
 ]);
 ```
 
-An update of `todos`, which is localized and isolated from other states, does not affect the components connected to `visibilityFilter` and vice versa.
+An update to `todos`, which is localized and isolated from other states, does not affect components connected to `visibilityFilter` and vice versa.
 
-The difference might sound insignificant, but imaging every single state update could cause every selector in every component in the entire app to run again, it suggests that decentralized state model scales better for large apps. In addition, some other benefits such as code-splitting are made easier by this state model.
+While the difference might seem insignificant, imagine that every small state update could cause every selector in every component across the entire app to re-run. This suggests that the decentralized state model scales better for large apps. Additionally, benefits like code-splitting are easier to implement with this state model.
 
-## Why this over Zustand?
+## Why choose this over Zustand?
 
-- State updates localized and isolated from other irrelevant states.
-- No potential naming conflicts among states/actions within the big store.
+- State updates are localized and isolated from other irrelevant states.
+- No potential naming conflicts among states/actions within a large store.
 - No need to use a React Hook to extract actions from the store.
-- Actions come from outside React and no need to add them into the `useCallback/useEffect` dep array.
+- Actions are external to React, eliminating the need to add them to the `useCallback/useEffect` dep array.
 
 # Recipes
 
-## States should be updated immutably
+## State should be updated immutably
 
 ```js
 import { state } from "reactish-state";
@@ -185,7 +187,7 @@ Or, simply use the [immer middleware](#immer-middleware).
 
 ## Selectors are memoized
 
-Selector has an API that is similar to the [reselect](https://github.com/reduxjs/reselect#readme) package. You pass in one or more "input" states or selectors, and an "output" selector function that receives the extracted values and should return a derived value. The return value is memoized so that it won't cause React components to re-render even if non-primitive value is returned.
+Selector has an API similar to the [reselect](https://github.com/reduxjs/reselect#readme) package. You pass in one or more 'input' states or selectors, along with an 'output' selector function that receives the extracted values and returns a derived value. The return value is memoized, ensuring that React components won’t re-render even if a non-primitive value is returned.
 
 ```js
 import { selector } from "reactish-state";
@@ -209,9 +211,11 @@ const todoStats = selector(
 );
 ```
 
+The only difference between state and selector is that selectors are read-only and don’t have a `set` method.
+
 ## Async state updates
 
-Just call `set` when you're ready:
+Just call `set` when your data is ready:
 
 ```js
 const todosState = state([]);
@@ -233,9 +237,9 @@ const todosState = state([], (set) => ({
 }));
 ```
 
-## Accessing other state or selector inside actions
+## Accessing other state or selectors inside actions
 
-You might not need it, but nothing stops you from reading or writing to other state inside an action.
+You might not need it, but nothing prevents you from reading or writing to other state inside an action.
 
 ```js
 const inputState = state("New item");
@@ -250,7 +254,7 @@ const todosState = state(
 );
 ```
 
-## Interacting with state or selector outside React
+## Interacting with state or selectors outside React
 
 ```js
 const countState = state(0);
@@ -260,27 +264,25 @@ const tripleSelector = selector(countState, (count) => count * 3);
 const count = countState.get();
 const triple = tripleSelector.get();
 
-// Listen to updates
+// Listen for updates
 const unsub1 = countState.subscribe(() => console.log(countState.get()));
 const unsub2 = tripleSelector.subscribe(() =>
   console.log(tripleSelector.get())
 );
 
-// Update `countState`, will trigger both listeners
+// Updating `countState` will trigger both listeners
 countState.set(10);
 
-// Unsubscribe listeners
+// Unsubscribe from listeners
 unsub1();
 unsub2();
 ```
 
-The only difference between state and selector is that selectors are read-only which don't have a `set` method.
+## Destructuring actions for easier access
 
-## Destructuring actions for easier reference
+The `set` or actions of a state don't rely on `this` to work, so you can destructure them for easier reference.
 
-The `set` or actions of a state don't rely on `this` to work, thus you are free to destructure them for easier reference.
-
-_TIP_: destructure the actions outside React components so that you don't need to add them into the `useCallback/useEffect` dependency array.
+_TIP_: Destructure the actions outside of React components to avoid adding them to the `useCallback/useEffect` dependency array.
 
 ```jsx
 import { state, useSnapshot } from "reactish-state";
@@ -303,9 +305,9 @@ const Example = () => {
 };
 ```
 
-## Selector that depends on props or local states
+## Selector that depends on props or local state
 
-The `selector` function allows us to create reusable derived states outside React components. In contrast, component-scoped derived states which depend on props or local states can be created by the `useSelector` hook.
+The `selector` function allows us to create reusable derived states outside of React components. In contrast, component-scoped derived states that depend on props or local state can be created using the `useSelector` hook.
 
 ```jsx
 import { state, useSelector } from "reactish-state";
@@ -329,21 +331,21 @@ const FilteredTodoList = ({ filter = "ALL" }) => {
     ],
     [filter]
   );
-  // Render filtered todos...
+  // Render the filtered todos...
 };
 ```
 
-The second parameter of `useSelector` is a dependency array (similar to React's `useMemo` hook), in which you can specify what props or local states the selector depends on. In the above example, `FilteredTodoList` component will re-render only if the global `todosState` state or local `filter` prop have been updated.
+The second parameter of `useSelector` is a dependency array (similar to React's `useMemo` hook), where you can specify which props or local state the selector depends on. In the example above, the `FilteredTodoList` component will re-render only if the global `todosState` or the local `filter` prop is updated.
 
 ### Linting the dependency array of useSelector
 
-You can take advantage of the [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) package to lint the dependency array of `useSelector`. Add the following configuration into your ESLint config file:
+You can take advantage of the [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) package to lint the dependency array of `useSelector`. Simply add the following configuration to your ESLint config file:
 
 ```json
 {
   "rules": {
     "react-hooks/exhaustive-deps": [
-      "warn",
+      "error",
       {
         "additionalHooks": "useSelector"
       }
@@ -376,7 +378,7 @@ console.log(countState.get()); // Print 3
 
 ## Middleware
 
-You can enhance the functionalities of state with middleware. Instead of using the `state` export, you use the `createState` export from the library. Middleware is a function which receives `set`, `get` and `subscribe` and should return a new set function.
+You can enhance the functionality of state with middleware. Instead of using the `state` export, use the `createState` export from the library. Middleware is a function that receives `set`, `get`, and `subscribe`, and should return a new set function.
 
 ```js
 import { createState } from "reactish-state";
@@ -386,12 +388,12 @@ const state = createState({
     ({ set, get }) =>
     (...args) => {
       set(...args);
-      // Log state every time after calling `set`
+      // Log the state every time after calling `set`
       console.log("New state", get());
     }
 });
 
-// Now the `state` function has wired up a middleware
+// Now the `state` function has middleware wired up
 const countState = state(0, (set) => ({
   increase: () => set((count) => count + 1)
 }));
@@ -400,21 +402,21 @@ countState.set(99); // Print "New state 99"
 countState.actions.increase(); // Print "New state 100"
 
 // The same `state` function can be reused,
-// thus you don't need to set up the middleware again
+// so you don't need to set up the middleware again
 const filterState = state("ALL");
 filterState.set("COMPLETED"); // Print "New state 'COMPLETED'"
 ```
 
 ## Persist middleware
 
-You can save state in browser storage with the `persist` middleware.
+You can save the state to browser storage using the `persist` middleware.
 
 ```js
 import { createState } from "reactish-state";
 import { persist } from "reactish-state/middleware";
 
 // Create the persist middleware,
-// you can optionally provide a `prefix` prepended to the keys in storage
+// optionally provide a `prefix` to prepend to the keys in storage
 const persistMiddleware = persist({ prefix: "myApp-" });
 const state = createState({ middleware: persistMiddleware });
 
@@ -423,20 +425,20 @@ const countState = state(
   (set) => ({
     increase: () => set((count) => count + 1)
   }),
-  { key: "count" } // In the third parameter, give each state a unique key
+  { key: "count" } // In the third parameter, assign each state a unique key
 );
 const filterState = state("ALL", null, { key: "filter" });
 
 // Hydrate all the states created with this middleware from storage
 useEffect(() => {
-  // Call `hydrate` in an useEffect to avoid client-side mismatch
+  // Call `hydrate` in a `useEffect` to avoid client-side mismatch,
   // if React components are also server-rendered
   persistMiddleware.hydrate();
 }, []);
-// You can add the `useEffect` once into your root component
+// You can add the `useEffect` once in your root component
 ```
 
-By default `localStorage` is used to persist states. You can change it to `sessionStorage` or other implementations using the `getStorage` option.
+By default, `localStorage` is used to persist states. You can switch to `sessionStorage` or other implementations by using the `getStorage` option.
 
 ```js
 const persistMiddleware = persist({ getStorage: () => sessionStorage });
@@ -444,7 +446,7 @@ const persistMiddleware = persist({ getStorage: () => sessionStorage });
 
 ## Immer middleware
 
-You can mutably update state with the `immer` middleware.
+You can update state mutably using the `immer` middleware.
 
 ```js
 import { createState } from "reactish-state";
@@ -457,8 +459,8 @@ const todos = state([], (set) => ({
   add: (task) =>
     set((todos) => {
       todos.push({ id: todoId++, task, completed: false });
-      // Need to return the draft state for correct typing in TypeScript code
-      // return todos;
+      // Return the draft state for correct typing in TypeScript
+      return todos;
     }),
 
   toggle: (id) =>
@@ -468,14 +470,14 @@ const todos = state([], (set) => ({
     })
 }));
 
-// Using the actions
+// Use the actions
 todos.actions.add("Shop groceries");
 todos.actions.toggle(1);
 ```
 
 ## Redux devtools middleware
 
-Individual state will be combined into one big object in the Redux devtools for easy inspection.
+This middleware provides integration with the Redux DevTools browser extension. Individual states are combined into a single object in Redux DevTools for easy inspection.
 
 ```js
 import { createState } from "reactish-state";
@@ -491,7 +493,7 @@ const todos = state(
         (todos) => {
           /* Add todo */
         },
-        // Log action type in the second parameter of `set`
+        // Log the action type in the second parameter of `set`
         "todo/add"
       ),
     toggle: (id) =>
@@ -499,21 +501,21 @@ const todos = state(
         (todos) => {
           /* Toggle todo */
         },
-        // You can also log action type along with its payload
+        // You can also log the action type along with its payload
         { type: "todo/toggle", id }
       )
   }),
-  // Similar to the persist middleware, give each state a unique key
+  // Similar to the persist middleware, assign each state a unique key
   { key: "todos" }
 );
 
-// `todos` and `filter` will be combined into one state in the Redux devtools
+// `todos` and `filter` will be combined into a single object in Redux DevTools
 const filter = state("ALL", null, { key: "filter" });
 ```
 
 ## Using multiple middleware
 
-Middleware is chain-able. You can use the `applyMiddleware` utility to chain multiple middleware and supply the result to `createState`.
+Middleware is chainable. You can use the `applyMiddleware` utility to chain multiple middleware and pass the result to `createState`.
 
 ```js
 import { applyMiddleware } from "reactish-state/middleware";
@@ -535,11 +537,11 @@ const visibilityFilter = persistState("ALL"); // Will be persisted
 const todos = immerState([]); // Can be mutated
 ```
 
-It also helps eliminate the need for implementing whitelist/blacklist in a persist middleware.
+This also eliminates the need to implement a whitelist or blacklist in the persist middleware.
 
 ## Plugins
 
-While the middleware is used to enhance state, you can hook into selectors using the plugins. The main difference is that plugins don't return a `set` function because selectors are read-only. Similarly, you use the `createSelector` export from the library rather than `selector`.
+While middleware enhances state, plugins allow you to hook into selectors. The key difference is that plugins don’t return a `set` function, as selectors are read-only. Similarly, you use the `createSelector` export from the library instead of `selector`.
 
 ```js
 import { state, createSelector } from "reactish-state";
@@ -547,8 +549,8 @@ import { state, createSelector } from "reactish-state";
 const selector = createSelector({
   plugin: ({ get, subscribe }, config) => {
     subscribe(() => {
-      // Log selector value every time after it has changed
-      // `config` can hold contextual data from a selector
+      // Log the selector value every time it changes
+      // `config` can hold contextual data from the selector
       console.log(`${config?.key} selector:`, get());
     });
   }
@@ -558,7 +560,7 @@ const countState = state(0);
 const doubleSelector = selector(
   countState,
   (count) => count * 2,
-  // Provide contextual data in the last parameter to identity selector
+  // Provide contextual data in the last parameter to identify the selector
   {
     key: "double"
   }
@@ -567,21 +569,21 @@ const squareSelector = selector(countState, (count) => count * count, {
   key: "square"
 });
 
-countState.set(5); // Will log - double selector: 10, square selector: 25
+countState.set(5); // Logs - double selector: 10, square selector: 25
 ```
 
 Likewise, there is an `applyPlugin` function for applying multiple plugins.
 
 ## Redux devtools plugin
 
-Individual selector will be combined into one big object in the Redux devtools for easy inspection.
+Individual selectors are combined into a single object in Redux DevTools for easy inspection.
 
 ```js
 import { createSelector } from "reactish-state";
 import { reduxDevtools } from "reactish-state/plugin";
 
 const selector = createSelector({ plugin: reduxDevtools() });
-// Then use the `selector` as always...
+// Then use the `selector` as usual...
 ```
 
 # Examples
