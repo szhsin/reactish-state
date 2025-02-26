@@ -21,10 +21,10 @@ const createState = ({
     subscribe
   }, config);
   return {
+    ...actionCreator?.(set, get),
     get,
     set,
-    subscribe,
-    actions: actionCreator?.(set, get)
+    subscribe
   };
 };
 const state = /*#__PURE__*/createState();

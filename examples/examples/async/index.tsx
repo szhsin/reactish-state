@@ -3,15 +3,13 @@ import { useSnapshot } from 'reactish-state';
 import { user, topRepositories } from './store';
 import styles from './styles.module.css';
 
-const { fetch } = user.actions;
-
 export default function AsyncExample() {
   const [userName, setUserName] = useState('szhsin');
   const { loading, data, error } = useSnapshot(user);
   const topRepos = useSnapshot(topRepositories);
 
   useEffect(() => {
-    void fetch('szhsin');
+    void user.fetch('szhsin');
   }, []);
 
   const renderUser = () => {
@@ -45,7 +43,7 @@ export default function AsyncExample() {
           onChange={(e) => setUserName(e.target.value)}
         />
       </label>
-      <button onClick={() => void fetch(userName)} disabled={loading || !userName.length}>
+      <button onClick={() => void user.fetch(userName)} disabled={loading || !userName.length}>
         Fetch
       </button>
       {renderUser()}

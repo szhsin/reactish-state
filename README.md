@@ -43,7 +43,7 @@ countState.set(10);
 console.log(countState.get()); // Print 10
 ```
 
-### A state can also have actions bound to it
+### A state can also have custom actions bound to it
 
 ```js
 const countState = state(0, (set, get) => ({
@@ -55,8 +55,8 @@ const countState = state(0, (set, get) => ({
   decrease: () => set(get() - 1)
 }));
 
-// Use the actions
-countState.actions.increase();
+// Use the custom actions
+countState.increase();
 ```
 
 ### `selector` can create derived state
@@ -90,9 +90,10 @@ const Example = () => {
 
   return (
     <h1>
+      {/* The return values of `useSnapshot` are used for rendering */}
       {count} {triple}
-      {/* Update the state using the actions bound to it */}
-      <button onClick={() => countState.actions.increase()}>Increase</button>
+      {/* Update the state using the custom actions bound to it */}
+      <button onClick={() => countState.increase()}>Increase</button>
       {/* Or update the state using the `set` method directly */}
       <button onClick={() => countState.set((i) => i - 1)}>Decrease</button>
       <button onClick={() => countState.set(0)}>Reset</button>
@@ -232,11 +233,14 @@ You can also create async actions bound to a state:
 
 ```js
 const todosState = state([], (set) => ({
-  fetch: async (url) => {
-    const response = await fetch(url);
+  fetchData: async () => {
+    const response = await fetch(/* some url */);
     set(await response.json());
   }
 }));
+
+// Use the async action
+await todosState.fetchData();
 ```
 
 ## Accessing other state or selectors inside actions
@@ -293,7 +297,7 @@ const countState = state(0, (set) => ({
   increase: () => set((count) => count + 1),
   reset: () => set(0)
 }));
-const { increase, reset } = countState.actions;
+const { increase, reset } = countState;
 
 const Example = () => {
   const count = useSnapshot(countState);
@@ -372,7 +376,7 @@ const countState = state(0, (set) => ({
   dispatch: (action) => set((state) => reducer(state, action), action)
 }));
 
-const { dispatch } = countState.actions;
+const { dispatch } = countState;
 dispatch({ type: "INCREASE", by: 10 });
 dispatch({ type: "DECREASE", by: 7 });
 console.log(countState.get()); // Print 3
@@ -401,7 +405,7 @@ const countState = state(0, (set) => ({
 }));
 
 countState.set(99); // Print "New state 99"
-countState.actions.increase(); // Print "New state 100"
+countState.increase(); // Print "New state 100"
 
 // The same `state` function can be reused,
 // so you don't need to set up the middleware again
@@ -473,8 +477,8 @@ const todos = state([], (set) => ({
 }));
 
 // Use the actions
-todos.actions.add("Shop groceries");
-todos.actions.toggle(1);
+todos.add("Shop groceries");
+todos.toggle(1);
 ```
 
 ## Redux devtools middleware

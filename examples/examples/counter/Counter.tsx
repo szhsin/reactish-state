@@ -50,7 +50,7 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
   const [step, setStep] = useState(1);
   const count = useSnapshot(counter);
   const summary = useSnapshot(summarySelector);
-  const { increase, increaseBy, reset, dispatch } = counter.actions;
+  const { increase, increaseBy, reset, dispatch } = counter;
 
   console.log(`#${id} count: ${count}`, 'summary:', summary);
 

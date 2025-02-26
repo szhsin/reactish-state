@@ -1,11 +1,8 @@
 import type { Reactish, Setter, Listener, Subscriber, Config, Middleware } from '../common';
 
 type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
-
-interface State<T, A = unknown, C extends ActionCreator<T, A> = undefined> extends Reactish<T> {
-  set: Setter<T>;
-  actions: C extends undefined ? never : A;
-}
+type VanillaState<T> = Reactish<T> & { set: Setter<T> };
+type State<T, A> = Omit<A, keyof VanillaState<T>> & VanillaState<T>;
 
 const createState =
   ({ middleware }: { middleware?: Middleware } = {}) =>
@@ -29,11 +26,11 @@ const createState =
     if (middleware) set = middleware({ set, get, subscribe }, config);
 
     return {
+      ...actionCreator?.(set, get),
       get,
       set,
-      subscribe,
-      actions: actionCreator?.(set, get)
-    } as State<T, A, ActionCreator<T, A>>;
+      subscribe
+    } as State<T, A>;
   };
 
 const state = createState();
