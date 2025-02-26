@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 const VisibleTodoList = () => {
   const todos = useSnapshot(visibleTodoList);
-  const { toggleItem, deleteItem } = todoListState.actions;
+  const { toggleItem, deleteItem } = todoListState;
 
   return (
     <ul className={styles.todos}>

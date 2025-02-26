@@ -26,7 +26,7 @@ describe('Render behaviour', () => {
   const remainder = selector(count, (count) => count % 2);
 
   beforeEach(() => {
-    count.actions.reset();
+    count.reset();
   });
 
   test('Single subscriber', () => {
@@ -36,7 +36,7 @@ describe('Render behaviour', () => {
       return (
         <div>
           <div data-testid="count">{useSnapshot(count)}</div>
-          <button onClick={() => count.actions.increase()}>Increase</button>
+          <button onClick={() => count.increase()}>Increase</button>
         </div>
       );
     };
@@ -76,7 +76,7 @@ describe('Render behaviour', () => {
     expect(renderRemainder).toHaveBeenCalledTimes(2);
 
     act(() => {
-      count.actions.increase(2);
+      count.increase(2);
     });
     expect(screen.getByTestId('count')).toHaveTextContent('4');
     expect(screen.getByTestId('double')).toHaveTextContent('8');
@@ -117,7 +117,7 @@ describe('Render behaviour', () => {
           <div data-testid="miltiple">
             {useSnapshot(count)} {useSnapshot(double).value} {useSnapshot(remainder)}
           </div>
-          <button onClick={() => count.actions.increase()}>Increase</button>
+          <button onClick={() => count.increase()}>Increase</button>
         </div>
       );
     };
@@ -131,7 +131,7 @@ describe('Render behaviour', () => {
     expect(renderer).toHaveBeenCalledTimes(2);
 
     // async update should cause a single re-render on React 16,17,18
-    setTimeout(() => count.actions.increase(), 100);
+    setTimeout(() => count.increase(), 100);
     await waitFor(() => expect(screen.getByTestId('miltiple')).toHaveTextContent('3 6 1'));
     expect(renderer).toHaveBeenCalledTimes(3);
   });

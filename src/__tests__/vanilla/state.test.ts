@@ -40,7 +40,7 @@ test('state can bind actions', () => {
   testState.subscribe(listener);
   expect(testState.get()).toBe(0);
 
-  const { increase, decrease, reset } = testState.actions;
+  const { increase, decrease, reset } = testState;
   increase();
   increase();
   expect(testState.get()).toBe(2);

@@ -17,7 +17,7 @@ const AddTodo = () => {
         className={styles.add}
         disabled={!text.trim().length}
         onClick={() => {
-          todoListState.actions.addItem(text.trim());
+          todoListState.addItem(text.trim());
           setText('');
         }}
       >
