@@ -592,6 +592,52 @@ const selector = createSelector({ plugin: reduxDevtools() });
 // Then use the `selector` as usual...
 ```
 
+# TypeScript usage
+
+The API relies on type inference to correctly infer the types for both the value and actions of the state. There are two scenarios:
+
+## I. The type of state can be inferred from its initial value
+
+In this case, the usage in TypeScript should be identical to JavaScript. You don't need to make any specific effort regarding typing. This is true when the state holds simple or primitive values.
+
+## II. The type of state cannot be inferred from its initial value
+
+In this case, you have three options:
+
+### 1. Use a type assertion to specify a more specific type for the initial value:
+
+```ts
+const myTodos = state([] as string[], (set) => ({
+  add: (newTodo: string) => set((todos) => [...todos, newTodo])
+}));
+```
+
+This is the simplest approach since the types for custom actions will be automatically inferred.
+
+### 2. Declare the initial value separately with a specific type:
+
+```ts
+const initialValue: string[] = [];
+const myTodos = state(initialValue, (set) => ({
+  add: (newTodo: string) => set((todos) => [...todos, newTodo])
+}));
+```
+
+This is basically very similar to the first method, except you need to write an additional line of code. The types for actions will be automatically inferred.
+
+### 3. Specify type parameters explicitly:
+
+```ts
+const myTodos = state<string[], { add: (newTodo: string) => void }>(
+  [],
+  (set) => ({
+    add: (newTodo) => set((todos) => [...todos, newTodo])
+  })
+);
+```
+
+However, if you choose this method, you need to specify the types for both the state value and actions.
+
 # React 16/17 setup
 
 When using this library with React 16/17, you must set up a shim since it doesn't include a native [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore). We don't set up the shim by default to minimize the bundle size for React 18/19 users.
