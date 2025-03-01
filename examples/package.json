@@ -5,21 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint ."
+    "start": "next start"
   },
   "dependencies": {
-    "@types/node": "^20.8.10",
-    "@types/react": "^18.2.34",
-    "@types/react-dom": "^18.2.14",
-    "@typescript-eslint/eslint-plugin": "file:../node_modules/@typescript-eslint/eslint-plugin",
-    "@typescript-eslint/parser": "file:../node_modules/@typescript-eslint/parser",
-    "eslint": "file:../node_modules/eslint",
-    "eslint-config-next": "^14.0.1",
-    "next": "^14.0.1",
+    "next": "^15.2.0",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
-    "reactish-state": "file:..",
+    "reactish-state": "file:.."
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.7",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
     "typescript": "file:../node_modules/typescript"
   }
 }
