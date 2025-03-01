@@ -18,6 +18,7 @@ const Cart = ({ useDeps }: { useDeps?: boolean }) => {
   const [quantity, setQuantity] = React.useState(1);
   const total = useSelector(
     () => [price, (price) => price * quantity],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useDeps ? [quantity] : undefined
   );
   return (
