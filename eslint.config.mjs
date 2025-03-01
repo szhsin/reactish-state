@@ -67,7 +67,12 @@ export default tseslint.config(
       'no-console': ['error', { allow: ['warn', 'error'] }],
       'react/prop-types': 0,
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/exhaustive-deps': [
+        'error',
+        {
+          additionalHooks: 'useSelector'
+        }
+      ],
       'react-hooks-addons/no-unused-deps': 'error',
       '@typescript-eslint/ban-ts-comment': 0,
       '@typescript-eslint/no-unused-expressions': [

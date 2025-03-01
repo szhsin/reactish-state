@@ -2,7 +2,9 @@
 
 > Simple, decentralized (atomic) state management for React.
 
-[![NPM](https://img.shields.io/npm/v/reactish-state.svg)](https://www.npmjs.com/package/reactish-state) [![NPM](https://img.shields.io/bundlephobia/minzip/reactish-state)](https://bundlephobia.com/package/reactish-state)
+[![NPM](https://img.shields.io/npm/v/reactish-state.svg)](https://www.npmjs.com/package/reactish-state) [![NPM](https://img.shields.io/bundlephobia/minzip/reactish-state)](https://bundlephobia.com/package/reactish-state) [![bundlejs](https://img.shields.io/badge/bundlejs-.com-blue.svg)](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D)
+
+💡 [Quick examples](#examples) &nbsp;&nbsp; 🔧 [TypeScript usage](#typescript-usage)
 
 ## ✨Highlights✨
 
@@ -600,6 +602,16 @@ The API relies on type inference to correctly infer the types for both the value
 
 In this case, the usage in TypeScript should be identical to JavaScript. You don't need to make any specific effort regarding typing. This is true when the state holds simple or primitive values.
 
+```ts
+const countState = state(0, (set) => ({
+  increase: (by: number) =>
+    set(
+      (count) => count + by
+      // The `count` is inferred as a number type from the initial value.
+    )
+}));
+```
+
 ## II. The type of state cannot be inferred from its initial value
 
 In this case, you have three options:
@@ -638,6 +650,12 @@ const myTodos = state<string[], { add: (newTodo: string) => void }>(
 
 However, if you choose this method, you need to specify the types for both the state value and actions.
 
+# Examples
+
+- Counter – [sandbox](https://codesandbox.io/p/sandbox/reactish-counter-z42qt7) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/counter)
+- Todo app – [sandbox](https://codesandbox.io/s/reactish-todo-thyhbl) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/todo)
+- Async – [sandbox](https://codesandbox.io/s/reactish-async-2cghkg) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/async)
+
 # React 16/17 setup
 
 When using this library with React 16/17, you must set up a shim since it doesn't include a native [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore). We don't set up the shim by default to minimize the bundle size for React 18/19 users.
@@ -649,9 +667,3 @@ setReactShim(reactShim);
 ```
 
 You only need to set it up once after your app launches, outside of React code. DO NOT call `setReactShim` within any React components.
-
-# Examples
-
-- Counter – [sandbox](https://codesandbox.io/p/sandbox/reactish-counter-z42qt7) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/counter)
-- Todo app – [sandbox](https://codesandbox.io/s/reactish-todo-thyhbl) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/todo)
-- Async – [sandbox](https://codesandbox.io/s/reactish-async-2cghkg) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/async)

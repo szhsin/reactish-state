@@ -27,6 +27,7 @@ const Cart = ({ useDeps }: { useDeps?: boolean }) => {
         };
       }
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useDeps ? [quantity] : undefined
   );
   return (

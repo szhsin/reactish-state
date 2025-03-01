@@ -1,7 +1,7 @@
 {
   "name": "reactish-state",
-  "version": "0.11.2",
-  "description": "Simple, decentralized state management for React.",
+  "version": "1.0.0",
+  "description": "Simple, decentralized (atomic) state management for React.",
   "author": "Zheng Song",
   "license": "MIT",
   "repository": {
@@ -37,7 +37,7 @@
     "lint:fix": "eslint --fix .",
     "pret": "prettier -c .",
     "pret:fix": "prettier -w .",
-    "build": "run-s pret lint clean types bundle",
+    "build": "run-s pret clean types lint bundle",
     "test": "jest",
     "test:watch": "jest --watch",
     "eg": "npm run dev --prefix examples"
