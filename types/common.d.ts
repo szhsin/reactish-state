@@ -3,30 +3,36 @@ export type Setter<T> = (newValue: T | ((value: T) => T), action?: string | {
     type: string;
     [key: string]: unknown;
 }) => void;
-export type Listener = () => void;
-export type Subscriber = (listener: Listener) => () => void;
-export interface Reactish<T> {
+export type Unsubscriber = () => void;
+export type StateListener<T> = (nextValue: T, prevValue: T) => void;
+export type StateSubscriber<T> = (listener: StateListener<T>) => Unsubscriber;
+export interface State<T> {
     get: Getter<T>;
-    subscribe: Subscriber;
+    set: Setter<T>;
+    subscribe: StateSubscriber<T>;
+}
+export type SelectorListener = () => void;
+export type SelectorSubscriber = (listener: SelectorListener) => Unsubscriber;
+export interface Selector<T> {
+    get: Getter<T>;
+    subscribe: SelectorSubscriber;
 }
 export interface Config {
     key?: string;
 }
 export interface Middleware {
-    <T>(api: Reactish<T> & {
-        set: Setter<T>;
-    }, config?: Config): Setter<T>;
+    <T>(state: State<T>, config?: Config): Setter<T>;
 }
 export interface Plugin {
-    <T>(reactish: Reactish<T>, config?: Config): void;
+    <T>(selector: Selector<T>, config?: Config): void;
 }
-export type ReactishArray = Reactish<unknown>[];
-export type ReactishValueArray<RA extends ReactishArray> = {
-    [index in keyof RA]: ReturnType<RA[index]['get']>;
+export type SelectorArray = Selector<unknown>[];
+export type SelectorValueArray<TArray extends SelectorArray> = {
+    [index in keyof TArray]: ReturnType<TArray[index]['get']>;
 };
-export type SelectorFunc<RA extends ReactishArray, T> = (...args: ReactishValueArray<RA>) => T;
-export type SelectorParams<RA extends ReactishArray, T> = [...RA, SelectorFunc<RA, T>];
-export interface Selector {
-    <RA extends ReactishArray, T>(...items: SelectorParams<RA, T>): Reactish<T>;
-    <RA extends ReactishArray, T>(...items: [...SelectorParams<RA, T>, Config]): Reactish<T>;
+export type SelectorFunc<TArray extends SelectorArray, T> = (...args: SelectorValueArray<TArray>) => T;
+export type SelectorParams<TArray extends SelectorArray, T> = [...TArray, SelectorFunc<TArray, T>];
+export interface SelectorBuilder {
+    <RA extends SelectorArray, T>(...items: SelectorParams<RA, T>): Selector<T>;
+    <RA extends SelectorArray, T>(...items: [...SelectorParams<RA, T>, Config]): Selector<T>;
 }

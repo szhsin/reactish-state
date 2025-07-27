@@ -16,10 +16,10 @@ const useSelector = (selectorParamFactory, deps) => {
     const {
       cache
     } = context;
-    const reactishValues = utils.getReactishValues(items);
-    const args = reactishValues.concat(deps || selectorFunc);
+    const selectorValues = utils.getSelectorValues(items);
+    const args = selectorValues.concat(deps || selectorFunc);
     if (cache && utils.isEqual(args, cache.args)) return cache.val;
-    const val = selectorFunc(...reactishValues);
+    const val = selectorFunc(...selectorValues);
     context.cache = {
       args,
       val

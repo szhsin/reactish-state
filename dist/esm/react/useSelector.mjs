@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createSubscriber, getReactishValues, isEqual } from '../utils.mjs';
+import { createSubscriber, getSelectorValues, isEqual } from '../utils.mjs';
 import { useSnapshot } from './useSnapshot.mjs';
 
 const useSelector = (selectorParamFactory, deps) => {
@@ -14,10 +14,10 @@ const useSelector = (selectorParamFactory, deps) => {
     const {
       cache
     } = context;
-    const reactishValues = getReactishValues(items);
-    const args = reactishValues.concat(deps || selectorFunc);
+    const selectorValues = getSelectorValues(items);
+    const args = selectorValues.concat(deps || selectorFunc);
     if (cache && isEqual(args, cache.args)) return cache.val;
-    const val = selectorFunc(...reactishValues);
+    const val = selectorFunc(...selectorValues);
     context.cache = {
       args,
       val

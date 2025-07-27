@@ -1,3 +1,3 @@
-import type { ReactishArray, SelectorParams } from '../common';
-declare const useSelector: <RA extends ReactishArray, T>(selectorParamFactory: () => SelectorParams<RA, T>, deps?: unknown[]) => T;
+import type { SelectorArray, SelectorParams } from '../common';
+declare const useSelector: <TArray extends SelectorArray, T>(selectorParamFactory: () => SelectorParams<TArray, T>, deps?: unknown[]) => T;
 export { useSelector };

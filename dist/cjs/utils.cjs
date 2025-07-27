@@ -10,8 +10,8 @@ const createSubscriber = items => listener => {
   const unsubscribers = items.map(item => item.subscribe(listener));
   return () => unsubscribers.forEach(unsubscribe => unsubscribe());
 };
-const getReactishValues = items => items.map(item => item.get());
+const getSelectorValues = items => items.map(item => item.get());
 
 exports.createSubscriber = createSubscriber;
-exports.getReactishValues = getReactishValues;
+exports.getSelectorValues = getSelectorValues;
 exports.isEqual = isEqual;

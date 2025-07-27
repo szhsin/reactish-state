@@ -1,3 +1,3 @@
-import type { Reactish } from '../common';
-declare const useSnapshot: <T>({ subscribe, get }: Reactish<T>) => T;
+import type { Selector } from '../common';
+declare const useSnapshot: <T>({ subscribe, get }: Selector<T>) => T;
 export { useSnapshot };

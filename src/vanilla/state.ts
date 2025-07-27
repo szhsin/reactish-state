@@ -1,25 +1,25 @@
-import type { Reactish, Setter, Listener, Subscriber, Config, Middleware } from '../common';
+import type { State, Setter, StateListener, StateSubscriber, Config, Middleware } from '../common';
 
 type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
-type VanillaState<T> = Reactish<T> & { set: Setter<T> };
-type State<T, A> = Omit<A, keyof VanillaState<T>> & VanillaState<T>;
+type StateWithAction<T, A> = Omit<A, keyof State<T>> & State<T>;
 
 const createState =
   ({ middleware }: { middleware?: Middleware } = {}) =>
   <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => {
     type F = (value: T) => T;
     let value = initialValue;
-    const listeners = new Set<Listener>();
+    const listeners = new Set<StateListener<T>>();
 
     const get = () => value;
     let set = (newValue: T | F) => {
       const nextValue = typeof newValue === 'function' ? (newValue as F)(value) : newValue;
       if (!Object.is(value, nextValue)) {
+        const prevValue = value;
         value = nextValue;
-        listeners.forEach((listener) => listener());
+        listeners.forEach((listener) => listener(nextValue, prevValue));
       }
     };
-    const subscribe: Subscriber = (listener) => {
+    const subscribe: StateSubscriber<T> = (listener) => {
       listeners.add(listener);
       return () => listeners.delete(listener);
     };
@@ -30,7 +30,7 @@ const createState =
       get,
       set,
       subscribe
-    } as State<T, A>;
+    } as StateWithAction<T, A>;
   };
 
 const state = createState();

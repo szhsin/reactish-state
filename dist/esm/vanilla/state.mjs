@@ -7,8 +7,9 @@ const createState = ({
   let set = newValue => {
     const nextValue = typeof newValue === 'function' ? newValue(value) : newValue;
     if (!Object.is(value, nextValue)) {
+      const prevValue = value;
       value = nextValue;
-      listeners.forEach(listener => listener());
+      listeners.forEach(listener => listener(nextValue, prevValue));
     }
   };
   const subscribe = listener => {

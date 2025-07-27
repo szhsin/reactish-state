@@ -15,7 +15,7 @@ const createSelector = ({
   let cache;
   const selector = {
     get: () => {
-      const args = utils.getReactishValues(items);
+      const args = utils.getSelectorValues(items);
       if (cache && utils.isEqual(args, cache.args)) return cache.val;
       const val = selectorFunc(...args);
       cache = {
