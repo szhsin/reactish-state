@@ -1,7 +1,6 @@
-import type { Plugin, Selector } from '../common';
+import type { Plugin, SelectorBuilder } from '../common';
 declare const createSelector: ({ plugin }?: {
     plugin?: Plugin;
-}) => Selector;
-declare const selector: Selector;
-export type { Selector };
+}) => SelectorBuilder;
+declare const selector: SelectorBuilder;
 export { selector, createSelector };

@@ -1,4 +1,4 @@
-import { createSubscriber, getReactishValues, isEqual } from '../utils.mjs';
+import { createSubscriber, getSelectorValues, isEqual } from '../utils.mjs';
 
 const createSelector = ({
   plugin
@@ -13,7 +13,7 @@ const createSelector = ({
   let cache;
   const selector = {
     get: () => {
-      const args = getReactishValues(items);
+      const args = getSelectorValues(items);
       if (cache && isEqual(args, cache.args)) return cache.val;
       const val = selectorFunc(...args);
       cache = {

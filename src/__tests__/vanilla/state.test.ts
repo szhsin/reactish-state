@@ -6,18 +6,25 @@ test('state should notify listeners when updated', () => {
   const testState = state({ count: 0 });
   const unsub = testState.subscribe(listener);
   testState.subscribe(secondListener);
+  testState.subscribe((nextValue) => {
+    expect(nextValue).toEqual(testState.get());
+  });
   expect(testState.get()).toEqual({ count: 0 });
 
   testState.set((state) => ({ count: state.count + 1 }));
   expect(testState.get()).toEqual({ count: 1 });
   expect(listener).toHaveBeenCalledTimes(1);
+  expect(listener).toHaveBeenLastCalledWith({ count: 1 }, { count: 0 });
   expect(secondListener).toHaveBeenCalledTimes(1);
+  expect(secondListener).toHaveBeenLastCalledWith({ count: 1 }, { count: 0 });
 
   const newState = { count: 5 };
   testState.set(newState);
   expect(testState.get()).toEqual({ count: 5 });
   expect(listener).toHaveBeenCalledTimes(2);
+  expect(listener).toHaveBeenLastCalledWith({ count: 5 }, { count: 1 });
   expect(secondListener).toHaveBeenCalledTimes(2);
+  expect(secondListener).toHaveBeenLastCalledWith({ count: 5 }, { count: 1 });
 
   testState.set(newState);
   expect(testState.get()).toEqual({ count: 5 });
@@ -28,6 +35,7 @@ test('state should notify listeners when updated', () => {
   testState.set({ count: 10 });
   expect(listener).toHaveBeenCalledTimes(2);
   expect(secondListener).toHaveBeenCalledTimes(3);
+  expect(secondListener).toHaveBeenLastCalledWith({ count: 10 }, { count: 5 });
 });
 
 test('state can bind actions', () => {
