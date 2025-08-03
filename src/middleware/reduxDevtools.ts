@@ -29,7 +29,9 @@ const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
       set(...args);
       mergedState[key] = get();
       devtools.send(
-        typeof action === 'string' ? { type: action } : action || { type: `SET_${key}`, value },
+        typeof action === 'string'
+          ? { type: action }
+          : (action as { type: string }) || { type: `SET_${key}`, value },
         mergedState
       );
     };

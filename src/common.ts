@@ -1,8 +1,5 @@
 export type Getter<T> = () => T;
-export type Setter<T> = (
-  newValue: T | ((value: T) => T),
-  action?: string | { type: string; [key: string]: unknown }
-) => void;
+export type Setter<T> = (newValue: T | ((value: T) => T), context?: unknown) => void;
 export type Unsubscriber = () => void;
 
 export type StateListener<T> = (nextValue: T, prevValue: T) => void;
@@ -12,6 +9,8 @@ export interface State<T> {
   set: Setter<T>;
   subscribe: StateSubscriber<T>;
 }
+export type ActionBuilder<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
+export type StateWithAction<T, A> = Omit<A, keyof State<T>> & State<T>;
 
 export type SelectorListener = () => void;
 export type SelectorSubscriber = (listener: SelectorListener) => Unsubscriber;

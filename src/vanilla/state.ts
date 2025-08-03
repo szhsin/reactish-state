@@ -1,11 +1,15 @@
-import type { State, Setter, StateListener, StateSubscriber, Config, Middleware } from '../common';
-
-type ActionCreator<T, A> = ((set: Setter<T>, get: () => T) => A) | null | undefined;
-type StateWithAction<T, A> = Omit<A, keyof State<T>> & State<T>;
+import type {
+  ActionBuilder,
+  StateWithAction,
+  StateListener,
+  StateSubscriber,
+  Config,
+  Middleware
+} from '../common';
 
 const createState =
   ({ middleware }: { middleware?: Middleware } = {}) =>
-  <T, A>(initialValue: T, actionCreator?: ActionCreator<T, A>, config?: Config) => {
+  <T, A>(initialValue: T, actionBuilder?: ActionBuilder<T, A>, config?: Config) => {
     type F = (value: T) => T;
     let value = initialValue;
     const listeners = new Set<StateListener<T>>();
@@ -26,7 +30,7 @@ const createState =
     if (middleware) set = middleware({ set, get, subscribe }, config);
 
     return {
-      ...actionCreator?.(set, get),
+      ...actionBuilder?.(set, get),
       get,
       set,
       subscribe
@@ -34,6 +38,6 @@ const createState =
   };
 
 const state = createState();
+type StateBuilder = typeof state;
 
-export type { State, ActionCreator };
-export { state, createState };
+export { state, createState, type StateBuilder };

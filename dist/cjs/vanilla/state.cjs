@@ -2,7 +2,7 @@
 
 const createState = ({
   middleware
-} = {}) => (initialValue, actionCreator, config) => {
+} = {}) => (initialValue, actionBuilder, config) => {
   let value = initialValue;
   const listeners = new Set();
   const get = () => value;
@@ -24,7 +24,7 @@ const createState = ({
     subscribe
   }, config);
   return {
-    ...actionCreator?.(set, get),
+    ...actionBuilder?.(set, get),
     get,
     set,
     subscribe
