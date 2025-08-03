@@ -1,6 +1,6 @@
 {
   "name": "reactish-state",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple, decentralized (atomic) state management for React.",
   "author": "Zheng Song",
   "license": "MIT",
@@ -91,10 +91,10 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-replace": "^6.0.2",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^30.0.0",
-    "@types/react": "^19.1.8",
+    "@types/react": "^19.1.9",
     "@types/use-sync-external-store": "^1.5.0",
     "babel-plugin-pure-annotations": "^0.1.2",
     "deplift": "^1.0.1",
@@ -110,9 +110,9 @@
     "jest-environment-jsdom": "^30.0.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "rollup": "^4.45.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "rollup": "^4.46.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0"
   }
