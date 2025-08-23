@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import type { SelectorSubscriber, SelectorArray, SelectorFunc, SelectorParams } from '../common';
+import type { SelectorSubscriber, SelectorArray, SelectorFunc, SelectorParams } from '../types';
 import { isEqual, createSubscriber, getSelectorValues } from '../utils';
 import { useSnapshot } from './useSnapshot';
 
-const useSelector = <TArray extends SelectorArray, T>(
-  selectorParamFactory: () => SelectorParams<TArray, T>,
+const useSelector = <TArray extends SelectorArray, TValue>(
+  selectorParamFactory: () => SelectorParams<TArray, TValue>,
   deps?: unknown[]
 ) => {
   const items = selectorParamFactory();
   const cutoff = items.length - 1;
-  const selectorFunc = items[cutoff] as SelectorFunc<TArray, T>;
+  const selectorFunc = items[cutoff] as SelectorFunc<TArray, TValue>;
   items.length = cutoff;
 
-  const [context] = useState<{ cache?: { args: unknown[]; val: T }; sub: SelectorSubscriber }>(
+  const [context] = useState<{ cache?: { args: unknown[]; val: TValue }; sub: SelectorSubscriber }>(
     () => ({
       sub: createSubscriber(items as SelectorArray)
     })

@@ -1,9 +1,9 @@
-import type { Middleware } from '../common';
+import type { Middleware } from '../types';
 
-const applyMiddleware: (
-  middlewares: (Middleware | undefined)[],
+const applyMiddleware: <TConfig>(
+  middlewares: (Middleware<TConfig> | undefined)[],
   options?: { fromRight?: boolean }
-) => Middleware =
+) => Middleware<TConfig> =
   (middlewares, { fromRight } = {}) =>
   (api, config) =>
     middlewares[fromRight ? 'reduceRight' : 'reduce'](

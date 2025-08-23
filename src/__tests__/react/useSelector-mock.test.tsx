@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Selector } from '../../common';
+import { Selector } from '../../types';
 import { state, useSelector, useSnapshot } from '../../';
 
 jest.mock('../../react/useSnapshot', () => ({

@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import type { Middleware } from '../common';
+import type { Middleware } from '../types';
 
 const immer: Middleware =
   ({ set }) =>

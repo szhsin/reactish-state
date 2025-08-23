@@ -1,3 +1,3 @@
-import type { SelectorArray, SelectorParams } from '../common';
-declare const useSelector: <TArray extends SelectorArray, T>(selectorParamFactory: () => SelectorParams<TArray, T>, deps?: unknown[]) => T;
+import type { SelectorArray, SelectorParams } from '../types';
+declare const useSelector: <TArray extends SelectorArray, TValue>(selectorParamFactory: () => SelectorParams<TArray, TValue>, deps?: unknown[]) => TValue;
 export { useSelector };

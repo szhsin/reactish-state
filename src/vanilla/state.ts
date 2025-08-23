@@ -1,29 +1,32 @@
 import type {
   ActionBuilder,
-  StateWithAction,
+  StateBuilder,
   StateListener,
   StateSubscriber,
-  Config,
   Middleware
-} from '../common';
+} from '../types';
 
-const createState =
-  ({ middleware }: { middleware?: Middleware } = {}) =>
-  <T, A>(initialValue: T, actionBuilder?: ActionBuilder<T, A>, config?: Config) => {
-    type F = (value: T) => T;
+const createState = <TConfig>({ middleware }: { middleware?: Middleware<TConfig> } = {}) =>
+  (<TValue, TAction, TContext>(
+    initialValue: TValue,
+    actionBuilder?: ActionBuilder<TValue, TAction, TContext>,
+    config?: TConfig
+  ) => {
+    type SetterFunction = (prev: TValue) => TValue;
     let value = initialValue;
-    const listeners = new Set<StateListener<T>>();
+    const listeners = new Set<StateListener<TValue>>();
 
     const get = () => value;
-    let set = (newValue: T | F) => {
-      const nextValue = typeof newValue === 'function' ? (newValue as F)(value) : newValue;
+    let set = (newValue: TValue | SetterFunction) => {
+      const nextValue =
+        typeof newValue === 'function' ? (newValue as SetterFunction)(value) : newValue;
       if (!Object.is(value, nextValue)) {
         const prevValue = value;
         value = nextValue;
         listeners.forEach((listener) => listener(nextValue, prevValue));
       }
     };
-    const subscribe: StateSubscriber<T> = (listener) => {
+    const subscribe: StateSubscriber<TValue> = (listener) => {
       listeners.add(listener);
       return () => listeners.delete(listener);
     };
@@ -34,10 +37,9 @@ const createState =
       get,
       set,
       subscribe
-    } as StateWithAction<T, A>;
-  };
+    };
+  }) as StateBuilder<TConfig>;
 
 const state = createState();
-type StateBuilder = typeof state;
 
-export { state, createState, type StateBuilder };
+export { state, createState };

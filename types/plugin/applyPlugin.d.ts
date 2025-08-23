@@ -1,3 +1,3 @@
-import type { Plugin } from '../common';
-declare const applyPlugin: (plugins: (Plugin | undefined)[]) => Plugin;
+import type { Plugin } from '../types';
+declare const applyPlugin: <TConfig>(plugins: (Plugin<TConfig> | undefined)[]) => Plugin<TConfig>;
 export { applyPlugin };

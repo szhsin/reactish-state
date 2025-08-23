@@ -1,4 +1,4 @@
-import type { Middleware } from '../../common';
+import type { Middleware } from '../../types';
 import { createState } from '../../';
 import { applyMiddleware } from '../../middleware';
 

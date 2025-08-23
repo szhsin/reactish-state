@@ -1,7 +1,6 @@
-import type { ActionBuilder, StateWithAction, Config, Middleware } from '../common';
-declare const createState: ({ middleware }?: {
-    middleware?: Middleware;
-}) => <T, A>(initialValue: T, actionBuilder?: ActionBuilder<T, A>, config?: Config) => StateWithAction<T, A>;
-declare const state: <T, A>(initialValue: T, actionBuilder?: ActionBuilder<T, A>, config?: Config) => StateWithAction<T, A>;
-type StateBuilder = typeof state;
-export { state, createState, type StateBuilder };
+import type { StateBuilder, Middleware } from '../types';
+declare const createState: <TConfig>({ middleware }?: {
+    middleware?: Middleware<TConfig>;
+}) => StateBuilder<TConfig>;
+declare const state: StateBuilder<unknown>;
+export { state, createState };

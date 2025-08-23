@@ -1,7 +1,7 @@
 import type {} from '@redux-devtools/extension';
-import type { Middleware } from '../common';
+import type { Middleware, Config } from '../types';
 
-type ReduxDevtools = (options?: { name?: string }) => Middleware | undefined;
+type ReduxDevtools = (options?: { name?: string }) => Middleware<Config> | undefined;
 
 const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];

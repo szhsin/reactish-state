@@ -1,5 +1,5 @@
-import type { Middleware } from '../common';
-declare const applyMiddleware: (middlewares: (Middleware | undefined)[], options?: {
+import type { Middleware } from '../types';
+declare const applyMiddleware: <TConfig>(middlewares: (Middleware<TConfig> | undefined)[], options?: {
     fromRight?: boolean;
-}) => Middleware;
+}) => Middleware<TConfig>;
 export { applyMiddleware };

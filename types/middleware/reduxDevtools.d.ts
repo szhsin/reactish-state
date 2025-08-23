@@ -1,7 +1,7 @@
-import type { Middleware } from '../common';
+import type { Middleware, Config } from '../types';
 type ReduxDevtools = (options?: {
     name?: string;
-}) => Middleware | undefined;
+}) => Middleware<Config> | undefined;
 declare const reduxDevtools: ReduxDevtools;
 export type { ReduxDevtools };
 export { reduxDevtools };
