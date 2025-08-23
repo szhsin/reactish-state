@@ -648,8 +648,6 @@ const myTodos = state<string[], { add: (newTodo: string) => void }>(
 );
 ```
 
-However, if you choose this method, you need to specify the types for both the state value and actions.
-
 # Examples
 
 - Counter – [sandbox](https://codesandbox.io/p/sandbox/reactish-counter-z42qt7) | [source](https://github.com/szhsin/reactish-state/tree/master/examples/examples/counter)

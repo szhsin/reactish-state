@@ -1,4 +1,4 @@
-import type { SelectorSubscriber, SelectorArray, SelectorValueArray } from './common';
+import type { SelectorSubscriber, SelectorArray, SelectorValueArray } from './types';
 
 export const isEqual = (args1: unknown[], args2: unknown[]) => {
   for (let i = 0; i < args1.length; i++) {

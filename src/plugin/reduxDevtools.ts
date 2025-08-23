@@ -1,7 +1,7 @@
 import type {} from '@redux-devtools/extension';
-import type { Plugin } from '../common';
+import type { Plugin, Config } from '../types';
 
-type ReduxDevtools = (options?: { name?: string }) => Plugin | undefined;
+type ReduxDevtools = (options?: { name?: string }) => Plugin<Config> | undefined;
 
 const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];

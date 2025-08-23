@@ -1,4 +1,86 @@
-import { state, createState } from '../../';
+import { state, createState, Config } from '../../';
+
+test('function overloads and type correctness', () => {
+  const s1 = state('s1');
+  expect(s1.get().trim()).toBe('s1');
+
+  const s2 = state<string>();
+  expect(s2.get()?.trim()).toBeUndefined();
+
+  const s2ctx = state<string, number>();
+  expect(s2ctx.get()?.trim()).toBeUndefined();
+  s2ctx.set('context', 1);
+
+  const s3 = state([] as string[]);
+  expect(s3.get()[0]?.trim()).toBeUndefined();
+
+  const s4 = state([] as string[], (set, get) => ({
+    append: (newValue: string) => set([...get(), newValue])
+  }));
+  s4.append('s4');
+  expect(s4.get()[0].trim()).toBe('s4');
+
+  // Custom actions must not override built-in state properties
+  const s5 = state([] as string[], (set, get) => ({
+    append: (newValue: string) => set([...get(), newValue]),
+    set: () => set([])
+  }));
+  s5.append('tmp');
+  expect(s5.get()).toEqual(['tmp']);
+  s5.set(['s5']);
+  expect(s5.get()[0].trim()).toBe('s5');
+
+  const s6 = state<string[], { append: (newValue: string) => void }>([], (set, get) => ({
+    append: (newValue) => set([...get(), newValue])
+  }));
+  s6.append('s6');
+  expect(s6.get()[0].trim()).toBe('s6');
+
+  const s6ctx = state<string[], { append: (newValue: string) => void }, number>([], (set, get) => ({
+    append: (newValue) => set([...get(), newValue])
+  }));
+  s6ctx.append('s6');
+  expect(s6ctx.get()[0].trim()).toBe('s6');
+  s6ctx.set(['context'], 1);
+
+  const s7 = state<string[]>([], null, { key: 's7' });
+  expect(s7.get()[0]?.trim()).toBeUndefined();
+
+  const s7ctx = state<string[], number>([], null, { key: 's7' });
+  expect(s7ctx.get()[0]?.trim()).toBeUndefined();
+  s7ctx.set(['context'], 1);
+
+  const s8 = state<string | undefined>(undefined, undefined, { key: 's8' });
+  expect(s8.get()?.trim()).toBeUndefined();
+
+  const s8ctx = state<string | undefined, number>(undefined, undefined, { key: 's8' });
+  expect(s8ctx.get()?.trim()).toBeUndefined();
+  s8ctx.set('context', 1);
+
+  const s9 = state<string[], { append: (newValue: string) => void }>(
+    [],
+    (set, get) => ({
+      append: (newValue) => set([...get(), newValue])
+    }),
+    { key: 's9' }
+  );
+  s9.append('s9');
+  expect(s9.get()[0].trim()).toBe('s9');
+
+  const s9ctx = state<string[], { append: (newValue: string) => void }, number>(
+    [],
+    (set, get) => ({
+      append: (newValue) => set([...get(), newValue])
+    }),
+    { key: 's9' }
+  );
+  s9ctx.append('s9');
+  expect(s9ctx.get()[0].trim()).toBe('s9');
+  s9ctx.set(['context'], 1);
+
+  const s10 = state('s10', undefined);
+  expect(s10.get().trim()).toBe('s10');
+});
 
 test('state should notify listeners when updated', () => {
   const listener = jest.fn();
@@ -66,7 +148,7 @@ test('state can bind actions', () => {
 
 test('state can be enhanced with middleware', () => {
   const middleware = jest.fn();
-  const state = createState({
+  const state = createState<Config>({
     middleware:
       ({ set, get }, config) =>
       (...arg) => {

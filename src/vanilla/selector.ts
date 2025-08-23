@@ -1,14 +1,14 @@
-import type { Plugin, Config, SelectorArray, SelectorFunc, SelectorBuilder } from '../common';
+import type { Plugin, SelectorArray, SelectorFunc, SelectorBuilder } from '../types';
 import { isEqual, createSubscriber, getSelectorValues } from '../utils';
 
-const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
-  (<TArray extends SelectorArray, T>(...items: unknown[]) => {
+const createSelector = <TConfig>({ plugin }: { plugin?: Plugin<TConfig> } = {}) =>
+  (<TArray extends SelectorArray, TValue>(...items: unknown[]) => {
     const { length } = items;
     const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
-    const selectorFunc = items[cutoff] as SelectorFunc<TArray, T>;
-    const config = items[cutoff + 1] as Config | undefined;
+    const selectorFunc = items[cutoff] as SelectorFunc<TArray, TValue>;
+    const config = items[cutoff + 1] as TConfig;
     items.length = cutoff;
-    let cache: { args: unknown[]; val: T } | undefined;
+    let cache: { args: unknown[]; val: TValue } | undefined;
 
     const selector = {
       get: () => {
@@ -23,7 +23,7 @@ const createSelector = ({ plugin }: { plugin?: Plugin } = {}) =>
 
     plugin?.(selector, config);
     return selector;
-  }) as SelectorBuilder;
+  }) as SelectorBuilder<TConfig>;
 
 const selector = createSelector();
 

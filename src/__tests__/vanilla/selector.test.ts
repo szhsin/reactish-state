@@ -1,5 +1,5 @@
 import { state } from '../../vanilla/state';
-import { selector, createSelector } from '../../';
+import { selector, createSelector, Config } from '../../';
 
 test('selector should update when the base state has changed', () => {
   const price = state(7);
@@ -61,7 +61,7 @@ test('selector should return cached result when base state has not changed', () 
 
 test('selector can be enhanced with plugin', () => {
   const plugin = jest.fn();
-  const selector = createSelector({
+  const selector = createSelector<Config>({
     plugin: ({ get, subscribe }, config) => {
       const onChange = () => {
         plugin(get(), config?.key);

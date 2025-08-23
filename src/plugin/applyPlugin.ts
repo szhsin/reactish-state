@@ -1,6 +1,7 @@
-import type { Plugin } from '../common';
+import type { Plugin } from '../types';
 
-const applyPlugin: (plugins: (Plugin | undefined)[]) => Plugin = (plugins) => (selector, config) =>
-  plugins.forEach((plugin) => plugin?.(selector, config));
+const applyPlugin: <TConfig>(plugins: (Plugin<TConfig> | undefined)[]) => Plugin<TConfig> =
+  (plugins) => (selector, config) =>
+    plugins.forEach((plugin) => plugin?.(selector, config));
 
 export { applyPlugin };

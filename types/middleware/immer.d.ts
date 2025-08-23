@@ -1,3 +1,3 @@
-import type { Middleware } from '../common';
+import type { Middleware } from '../types';
 declare const immer: Middleware;
 export { immer };

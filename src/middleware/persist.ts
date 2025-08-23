@@ -1,6 +1,6 @@
-import type { Middleware, Setter } from '../common';
+import type { Middleware, Setter, Config } from '../types';
 
-interface PersistMiddleware extends Middleware {
+interface PersistMiddleware extends Middleware<Config> {
   hydrate(this: void): void;
 }
 

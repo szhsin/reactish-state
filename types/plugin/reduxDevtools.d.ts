@@ -1,7 +1,7 @@
-import type { Plugin } from '../common';
+import type { Plugin, Config } from '../types';
 type ReduxDevtools = (options?: {
     name?: string;
-}) => Plugin | undefined;
+}) => Plugin<Config> | undefined;
 declare const reduxDevtools: ReduxDevtools;
 export type { ReduxDevtools };
 export { reduxDevtools };
