@@ -6,6 +6,13 @@ const createState = ({
   let value = initialValue;
   const listeners = new Set();
   const get = () => value;
+  const readonlyState = {
+    get,
+    subscribe: listener => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    }
+  };
   let set = newValue => {
     const nextValue = typeof newValue === 'function' ? newValue(value) : newValue;
     if (!Object.is(value, nextValue)) {
@@ -14,20 +21,14 @@ const createState = ({
       listeners.forEach(listener => listener(nextValue, prevValue));
     }
   };
-  const subscribe = listener => {
-    listeners.add(listener);
-    return () => listeners.delete(listener);
-  };
   if (middleware) set = middleware({
-    set,
-    get,
-    subscribe
+    ...readonlyState,
+    set
   }, config);
   return {
     ...actionBuilder?.(set, get),
-    get,
-    set,
-    subscribe
+    ...readonlyState,
+    set
   };
 };
 const state = /*#__PURE__*/createState();

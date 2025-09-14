@@ -3,9 +3,7 @@ import { createSubscriber, getSelectorValues, isEqual } from '../utils.mjs';
 const createSelector = ({
   plugin
 } = {}) => (...items) => {
-  const {
-    length
-  } = items;
+  const length = items.length;
   const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
   const selectorFunc = items[cutoff];
   const config = items[cutoff + 1];
@@ -14,13 +12,10 @@ const createSelector = ({
   const selector = {
     get: () => {
       const args = getSelectorValues(items);
-      if (cache && isEqual(args, cache.args)) return cache.val;
-      const val = selectorFunc(...args);
-      cache = {
-        args,
-        val
-      };
-      return val;
+      if (cache && isEqual(args, cache[0])) return cache[1];
+      const value = selectorFunc(...args);
+      cache = [args, value];
+      return value;
     },
     subscribe: createSubscriber(items)
   };

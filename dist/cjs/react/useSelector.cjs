@@ -9,26 +9,20 @@ const useSelector = (selectorParamFactory, deps) => {
   const cutoff = items.length - 1;
   const selectorFunc = items[cutoff];
   items.length = cutoff;
-  const [context] = React.useState(() => ({
-    sub: utils.createSubscriber(items)
-  }));
-  const get = () => {
-    const {
-      cache
-    } = context;
-    const selectorValues = utils.getSelectorValues(items);
-    const args = selectorValues.concat(deps || selectorFunc);
-    if (cache && utils.isEqual(args, cache.args)) return cache.val;
-    const val = selectorFunc(...selectorValues);
-    context.cache = {
-      args,
-      val
-    };
-    return val;
-  };
+  const [context] = React.useState(() =>
+  // eslint-disable-next-line no-sparse-arrays
+  [, utils.createSubscriber(items)]);
   return useSnapshot.useSnapshot({
-    get,
-    subscribe: context.sub
+    get: () => {
+      const [cache] = context;
+      const selectorValues = utils.getSelectorValues(items);
+      const args = selectorValues.concat(deps || selectorFunc);
+      if (cache && utils.isEqual(args, cache[0])) return cache[1];
+      const value = selectorFunc(...selectorValues);
+      context[0] = [args, value];
+      return value;
+    },
+    subscribe: context[1]
   });
 };
 
