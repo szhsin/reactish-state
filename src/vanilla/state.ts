@@ -1,8 +1,10 @@
 import type {
   ActionBuilder,
+  Getter,
+  Setter,
+  State,
   StateBuilder,
   StateListener,
-  StateSubscriber,
   Middleware
 } from '../types';
 
@@ -16,8 +18,16 @@ const createState = <TConfig>({ middleware }: { middleware?: Middleware<TConfig>
     let value = initialValue;
     const listeners = new Set<StateListener<TValue>>();
 
-    const get = () => value;
-    let set = (newValue: TValue | SetterFunction) => {
+    const get: Getter<TValue> = () => value;
+    const readonlyState: Omit<State<TValue, TContext>, 'set'> = {
+      get,
+      subscribe: (listener) => {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      }
+    };
+
+    let set: Setter<TValue, TContext> = (newValue: TValue | SetterFunction) => {
       const nextValue =
         typeof newValue === 'function' ? (newValue as SetterFunction)(value) : newValue;
       if (!Object.is(value, nextValue)) {
@@ -26,17 +36,12 @@ const createState = <TConfig>({ middleware }: { middleware?: Middleware<TConfig>
         listeners.forEach((listener) => listener(nextValue, prevValue));
       }
     };
-    const subscribe: StateSubscriber<TValue> = (listener) => {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    };
-    if (middleware) set = middleware({ set, get, subscribe }, config);
+    if (middleware) set = middleware({ ...readonlyState, set }, config);
 
     return {
       ...actionBuilder?.(set, get),
-      get,
-      set,
-      subscribe
+      ...readonlyState,
+      set
     };
   }) as StateBuilder<TConfig>;
 

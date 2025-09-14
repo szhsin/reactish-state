@@ -2,7 +2,7 @@
 
 > Simple, decentralized (atomic) state management for React.
 
-[![NPM](https://img.shields.io/npm/v/reactish-state.svg)](https://www.npmjs.com/package/reactish-state) [![NPM](https://img.shields.io/bundlephobia/minzip/reactish-state)](https://bundlephobia.com/package/reactish-state) [![bundlejs](https://img.shields.io/badge/bundlejs-.com-blue.svg)](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D)
+[![NPM](https://img.shields.io/npm/v/reactish-state.svg)](https://www.npmjs.com/package/reactish-state) [![bundlejs](https://deno.bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D&badge=simple)](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D) [![NPM](https://img.shields.io/bundlephobia/minzip/reactish-state)](https://bundlephobia.com/package/reactish-state)
 
 💡 [Quick examples](#examples) &nbsp;&nbsp; 🔧 [TypeScript usage](#typescript-usage)
 

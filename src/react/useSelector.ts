@@ -12,23 +12,23 @@ const useSelector = <TArray extends SelectorArray, TValue>(
   const selectorFunc = items[cutoff] as SelectorFunc<TArray, TValue>;
   items.length = cutoff;
 
-  const [context] = useState<{ cache?: { args: unknown[]; val: TValue }; sub: SelectorSubscriber }>(
-    () => ({
-      sub: createSubscriber(items as SelectorArray)
-    })
+  const [context] = useState<[readonly [unknown[], TValue] | undefined, SelectorSubscriber]>(() =>
+    // eslint-disable-next-line no-sparse-arrays
+    [, createSubscriber(items as SelectorArray)]
   );
 
-  const get = () => {
-    const { cache } = context;
-    const selectorValues = getSelectorValues<TArray>(items as SelectorArray);
-    const args = selectorValues.concat(deps || selectorFunc);
-    if (cache && isEqual(args, cache.args)) return cache.val;
-    const val = selectorFunc(...selectorValues);
-    context.cache = { args, val };
-    return val;
-  };
-
-  return useSnapshot({ get, subscribe: context.sub });
+  return useSnapshot<TValue>({
+    get: () => {
+      const [cache] = context;
+      const selectorValues = getSelectorValues<TArray>(items as SelectorArray);
+      const args = selectorValues.concat(deps || selectorFunc);
+      if (cache && isEqual(args, cache[0])) return cache[1];
+      const value = selectorFunc(...selectorValues);
+      context[0] = [args, value];
+      return value;
+    },
+    subscribe: context[1]
+  });
 };
 
 export { useSelector };
