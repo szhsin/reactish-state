@@ -50,23 +50,23 @@
     },
     "./middleware": {
       "types": "./types/middleware/index.d.ts",
-      "require": "./dist/middleware/cjs/index.cjs",
-      "default": "./dist/middleware/esm/index.mjs"
+      "require": "./dist/cjs/middleware/index.cjs",
+      "default": "./dist/esm/middleware/index.mjs"
     },
     "./middleware/immer": {
       "types": "./types/middleware/immer.d.ts",
-      "require": "./dist/middleware/cjs/immer.cjs",
-      "default": "./dist/middleware/esm/immer.mjs"
+      "require": "./dist/cjs/middleware/immer.cjs",
+      "default": "./dist/esm/middleware/immer.mjs"
     },
     "./plugin": {
       "types": "./types/plugin/index.d.ts",
-      "require": "./dist/plugin/cjs/index.cjs",
-      "default": "./dist/plugin/esm/index.mjs"
+      "require": "./dist/cjs/plugin/index.cjs",
+      "default": "./dist/esm/plugin/index.mjs"
     },
     "./shim": {
       "types": "./types/shim/index.d.ts",
-      "require": "./dist/shim/cjs/index.cjs",
-      "default": "./dist/shim/esm/index.mjs"
+      "require": "./dist/cjs/shim/index.cjs",
+      "default": "./dist/esm/shim/index.mjs"
     },
     "./package.json": "./package.json"
   },

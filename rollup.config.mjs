@@ -31,14 +31,14 @@ const createBuild = ({ inPath = '', outPath = inPath, inFile = 'index.ts' } = {}
   input: `src/${inPath}${inFile}`,
   output: [
     {
-      dir: `dist/${outPath}cjs`,
+      dir: `dist/cjs/${outPath}`,
       format: 'cjs',
       interop: 'default',
       entryFileNames: '[name].cjs',
       preserveModules: true
     },
     {
-      dir: `dist/${outPath}esm`,
+      dir: `dist/esm/${outPath}`,
       format: 'es',
       entryFileNames: '[name].mjs',
       preserveModules: true
