@@ -1,7 +1,5 @@
-import type { Middleware, Config } from '../types';
-type ReduxDevtools = (options?: {
+import type { Middleware, Metadata } from '../types';
+declare const reduxDevtools: <TStateMeta extends Metadata>({ name }?: {
     name?: string;
-}) => Middleware<Config> | undefined;
-declare const reduxDevtools: ReduxDevtools;
-export type { ReduxDevtools };
+}) => Middleware<TStateMeta> | undefined;
 export { reduxDevtools };

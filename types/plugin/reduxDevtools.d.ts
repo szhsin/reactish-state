@@ -1,7 +1,5 @@
-import type { Plugin, Config } from '../types';
-type ReduxDevtools = (options?: {
+import type { Plugin, Metadata } from '../types';
+declare const reduxDevtools: <TSelectorMeta extends Metadata>({ name }?: {
     name?: string;
-}) => Plugin<Config> | undefined;
-declare const reduxDevtools: ReduxDevtools;
-export type { ReduxDevtools };
+}) => Plugin<TSelectorMeta> | undefined;
 export { reduxDevtools };

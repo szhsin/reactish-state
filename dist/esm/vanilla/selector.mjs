@@ -6,7 +6,7 @@ const createSelector = ({
   const length = items.length;
   const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
   const selectorFunc = items[cutoff];
-  const config = items[cutoff + 1];
+  const metadata = items[cutoff + 1];
   items.length = cutoff;
   let cache;
   const selector = {
@@ -17,10 +17,12 @@ const createSelector = ({
       cache = [args, value];
       return value;
     },
-    subscribe: createSubscriber(items)
+    subscribe: createSubscriber(items),
+    meta: () => metadata
   };
-  plugin?.(selector, config);
+  plugin?.(selector);
   return selector;
+  // Wrap TSelectorMeta in a tuple to prevent conditional type distribution;
 };
 const selector = /*#__PURE__*/createSelector();
 

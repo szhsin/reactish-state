@@ -1,5 +1,5 @@
 import type {} from '@redux-devtools/extension';
-import { createState } from '../../';
+import { createState, StateBuilder } from '../../';
 import { reduxDevtools } from '../../middleware';
 
 describe('reduxDevtools', () => {
@@ -45,8 +45,8 @@ describe('reduxDevtools', () => {
     expect(quantity.get()).toBe(5);
   });
 
-  test('should warn if a key is not provided in config', () => {
-    const state = createState({ middleware: reduxDevtools() });
+  test('should warn if a key is not provided in metadata', () => {
+    const state = createState({ middleware: reduxDevtools() }) as StateBuilder;
     expect(() => state('no key')).toThrow();
     state('with key', null, { key: 'some-key' });
   });

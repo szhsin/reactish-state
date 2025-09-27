@@ -1,7 +1,8 @@
 import type { Plugin } from '../types';
 
-const applyPlugin: <TConfig>(plugins: (Plugin<TConfig> | undefined)[]) => Plugin<TConfig> =
-  (plugins) => (selector, config) =>
-    plugins.forEach((plugin) => plugin?.(selector, config));
+const applyPlugin: <TSelectorMeta>(
+  plugins: (Plugin<TSelectorMeta> | undefined)[]
+) => Plugin<TSelectorMeta> = (plugins) => (selector) =>
+  plugins.forEach((plugin) => plugin?.(selector));
 
 export { applyPlugin };

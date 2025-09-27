@@ -2,9 +2,9 @@
 
 const applyMiddleware = (middlewares, {
   fromRight
-} = {}) => (api, config) => middlewares[fromRight ? 'reduceRight' : 'reduce']((set, middleware) => middleware ? middleware({
+} = {}) => api => middlewares[fromRight ? 'reduceRight' : 'reduce']((set, middleware) => middleware ? middleware({
   ...api,
   set
-}, config) : set, api.set);
+}) : set, api.set);
 
 exports.applyMiddleware = applyMiddleware;

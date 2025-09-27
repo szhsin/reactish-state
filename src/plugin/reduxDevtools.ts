@@ -1,9 +1,9 @@
 import type {} from '@redux-devtools/extension';
-import type { Plugin, Config } from '../types';
+import type { Plugin, Metadata } from '../types';
 
-type ReduxDevtools = (options?: { name?: string }) => Plugin<Config> | undefined;
-
-const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
+const reduxDevtools = <TSelectorMeta extends Metadata>({ name }: { name?: string } = {}):
+  | Plugin<TSelectorMeta>
+  | undefined => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];
   if (
     process.env.NODE_ENV === 'production' ||
@@ -15,11 +15,11 @@ const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   const devtools = devtoolsExt.connect({ name });
   const mergedState: { [index: string]: unknown } = {};
 
-  return ({ get, subscribe }, config) => {
-    const key = config?.key;
-    if (!key)
+  return ({ get, subscribe, meta }) => {
+    const key = meta()?.key;
+    if (process.env.NODE_ENV !== 'production' && !key)
       throw new Error(
-        '[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` plugin is used.'
+        '[reactish-state] selector should be provided with a string `key` in the config object when the `reduxDevtools` plugin is used.'
       );
 
     const updateState = () => {
@@ -32,5 +32,4 @@ const reduxDevtools: ReduxDevtools = ({ name } = {}) => {
   };
 };
 
-export type { ReduxDevtools };
 export { reduxDevtools };
