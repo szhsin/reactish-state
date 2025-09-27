@@ -386,12 +386,12 @@ console.log(countState.get()); // Print 3
 
 ## Middleware
 
-You can enhance the functionality of state with middleware. Instead of using the `state` export, use the `createState` export from the library. Middleware is a function that receives `set`, `get`, and `subscribe`, and should return a new set function.
+You can enhance the functionality of state with middleware. Instead of using the `state` export, use the `stateBuilder` export from the library. Middleware is a function that receives `set`, `get`, and `subscribe`, and should return a new set function.
 
 ```js
-import { createState } from "reactish-state";
+import { stateBuilder } from "reactish-state";
 
-const state = createState({
+const state = stateBuilder({
   middleware:
     ({ set, get }) =>
     (...args) => {
@@ -420,13 +420,13 @@ filterState.set("COMPLETED"); // Print "New state 'COMPLETED'"
 You can save the state to browser storage using the `persist` middleware.
 
 ```js
-import { createState } from "reactish-state";
+import { stateBuilder } from "reactish-state";
 import { persist } from "reactish-state/middleware";
 
 // Create the persist middleware,
 // optionally provide a `prefix` to prepend to the keys in storage
 const persistMiddleware = persist({ prefix: "myApp-" });
-const state = createState({ middleware: persistMiddleware });
+const state = stateBuilder({ middleware: persistMiddleware });
 
 const countState = state(
   0,
@@ -457,10 +457,10 @@ const persistMiddleware = persist({ getStorage: () => sessionStorage });
 You can update state mutably using the `immer` middleware.
 
 ```js
-import { createState } from "reactish-state";
+import { stateBuilder } from "reactish-state";
 import { immer } from "reactish-state/middleware/immer";
 
-const state = createState({ middleware: immer });
+const state = stateBuilder({ middleware: immer });
 
 let todoId = 1;
 const todos = state([], (set) => ({
@@ -488,10 +488,10 @@ todos.toggle(1);
 This middleware provides integration with the Redux DevTools browser extension. Individual states are combined into a single object in Redux DevTools for easy inspection.
 
 ```js
-import { createState } from "reactish-state";
+import { stateBuilder } from "reactish-state";
 import { reduxDevtools } from "reactish-state/middleware";
 
-const state = createState({ middleware: reduxDevtools({ name: "todoApp" }) });
+const state = stateBuilder({ middleware: reduxDevtools({ name: "todoApp" }) });
 
 const todos = state(
   [],
@@ -523,12 +523,12 @@ const filter = state("ALL", null, { key: "filter" });
 
 ## Using multiple middleware
 
-Middleware is chainable. You can use the `applyMiddleware` utility to chain multiple middleware and pass the result to `createState`.
+Middleware is chainable. You can use the `applyMiddleware` utility to chain multiple middleware and pass the result to `stateBuilder`.
 
 ```js
 import { applyMiddleware } from "reactish-state/middleware";
 
-const state = createState({
+const state = stateBuilder({
   middleware: applyMiddleware([immer, reduxDevtools(), persist()])
 });
 ```
@@ -538,8 +538,8 @@ const state = createState({
 This is naturally achievable thanks to the decentralized state model.
 
 ```js
-const persistState = createState({ middleware: persist() });
-const immerState = createState({ middleware: immer });
+const persistState = stateBuilder({ middleware: persist() });
+const immerState = stateBuilder({ middleware: immer });
 
 const visibilityFilter = persistState("ALL"); // Will be persisted
 const todos = immerState([]); // Can be mutated
@@ -549,12 +549,12 @@ This also eliminates the need to implement a whitelist or blacklist in the persi
 
 ## Plugins
 
-While middleware enhances state, plugins allow you to hook into selectors. The key difference is that plugins don’t return a `set` function, as selectors are read-only. Similarly, you use the `createSelector` export from the library instead of `selector`.
+While middleware enhances state, plugins allow you to hook into selectors. The key difference is that plugins don’t return a `set` function, as selectors are read-only. Similarly, you use the `selectorBuilder` export from the library instead of `selector`.
 
 ```js
-import { state, createSelector } from "reactish-state";
+import { state, selectorBuilder } from "reactish-state";
 
-const selector = createSelector({
+const selector = selectorBuilder({
   plugin: ({ get, subscribe }, config) => {
     subscribe(() => {
       // Log the selector value every time it changes
@@ -587,10 +587,10 @@ Likewise, there is an `applyPlugin` function for applying multiple plugins.
 Individual selectors are combined into a single object in Redux DevTools for easy inspection.
 
 ```js
-import { createSelector } from "reactish-state";
+import { selectorBuilder } from "reactish-state";
 import { reduxDevtools } from "reactish-state/plugin";
 
-const selector = createSelector({ plugin: reduxDevtools() });
+const selector = selectorBuilder({ plugin: reduxDevtools() });
 // Then use the `selector` as usual...
 ```
 

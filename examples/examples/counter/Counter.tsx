@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createState, selector, useSnapshot } from 'reactish-state';
+import { stateBuilder, selector, useSnapshot } from 'reactish-state';
 import { applyMiddleware, persist, reduxDevtools } from 'reactish-state/middleware';
 import styles from './styles.module.css';
 
@@ -16,12 +16,9 @@ const reducer = (state: number, { type, by = 1 }: { type: ActionTypes; by?: numb
 
 const persistMiddleware = persist({ prefix: 'counter-', getStorage: () => sessionStorage });
 
-const counter = createState({
-  middleware: applyMiddleware([
-    reduxDevtools({ name: 'counterApp-state' }),
-    persistMiddleware.middleware
-  ])
-})(
+const counter = stateBuilder(
+  applyMiddleware([reduxDevtools({ name: 'counterApp-state' }), persistMiddleware.middleware])
+)(
   0,
   (set, get) => ({
     // Calling `set` to set a new state

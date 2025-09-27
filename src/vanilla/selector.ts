@@ -8,9 +8,7 @@ import type {
 } from '../types';
 import { isEqual, createSubscriber, getSelectorValues } from '../utils';
 
-const createSelector = <TSelectorMeta = never>({
-  plugin
-}: { plugin?: Plugin<TSelectorMeta> } = {}) =>
+const selectorBuilder = <TSelectorMeta = never>(plugin?: Plugin<TSelectorMeta>) =>
   (<TArray extends SelectorArray, TValue, TMeta extends TSelectorMeta>(...items: unknown[]) => {
     const length = items.length;
     const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
@@ -36,6 +34,6 @@ const createSelector = <TSelectorMeta = never>({
     // Wrap TSelectorMeta in a tuple to prevent conditional type distribution;
   }) as [TSelectorMeta] extends [never] ? SelectorBuilder : SelectorBuilderWithMeta<TSelectorMeta>;
 
-const selector = createSelector();
+const selector = selectorBuilder();
 
-export { selector, createSelector };
+export { selector, selectorBuilder };

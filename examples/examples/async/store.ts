@@ -1,7 +1,7 @@
-import { createState, selector } from 'reactish-state';
+import { stateBuilder, selector } from 'reactish-state';
 import { reduxDevtools } from 'reactish-state/middleware';
 
-const state = createState({ middleware: reduxDevtools({ name: 'github' }) });
+const state = stateBuilder(reduxDevtools({ name: 'github' }));
 
 type GitHubRepoRes = { id: number; name: string; description: string; stargazers_count: number }[];
 type GitHubUserRes = { name: string; repos_url: string };

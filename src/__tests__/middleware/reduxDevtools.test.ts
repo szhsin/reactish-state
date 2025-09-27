@@ -1,5 +1,5 @@
 import type {} from '@redux-devtools/extension';
-import { createState, StateBuilder } from '../../';
+import { stateBuilder, StateBuilder } from '../../';
 import { reduxDevtools } from '../../middleware';
 
 describe('reduxDevtools', () => {
@@ -22,7 +22,7 @@ describe('reduxDevtools', () => {
   });
 
   test('should send actions', () => {
-    const state = createState({ middleware: reduxDevtools({ name: 'my-app' }) });
+    const state = stateBuilder(reduxDevtools({ name: 'my-app' }));
     const price = state(0.99, null, { key: 'price' });
     const quantity = state(1, null, { key: 'qty' });
 
@@ -46,7 +46,7 @@ describe('reduxDevtools', () => {
   });
 
   test('should warn if a key is not provided in metadata', () => {
-    const state = createState({ middleware: reduxDevtools() }) as StateBuilder;
+    const state = stateBuilder(reduxDevtools()) as StateBuilder;
     expect(() => state('no key')).toThrow();
     state('with key', null, { key: 'some-key' });
   });

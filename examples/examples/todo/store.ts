@@ -1,16 +1,12 @@
-import { createState, createSelector } from 'reactish-state';
+import { stateBuilder, selectorBuilder } from 'reactish-state';
 import { persist, reduxDevtools, applyMiddleware } from 'reactish-state/middleware';
 import { immer } from 'reactish-state/middleware/immer';
 import { reduxDevtools as devtoolsPlugin } from 'reactish-state/plugin';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
-const state = createState({
-  middleware: applyMiddleware([
-    reduxDevtools({ name: 'todoApp-state' }),
-    persistMiddleware.middleware,
-    immer
-  ])
-});
+const state = stateBuilder(
+  applyMiddleware([reduxDevtools({ name: 'todoApp-state' }), persistMiddleware.middleware, immer])
+);
 
 interface Todo {
   id: number;
@@ -61,7 +57,7 @@ const getTodoListByFilter = (todoList: Todo[], filter: VisibilityFilter) => {
   }
 };
 
-const selector = createSelector({ plugin: devtoolsPlugin({ name: 'todoApp-selector' }) });
+const selector = selectorBuilder(devtoolsPlugin({ name: 'todoApp-selector' }));
 const visibleTodoList = selector(todoListState, visibilityFilterState, getTodoListByFilter, {
   key: 'visibleTodos'
 });

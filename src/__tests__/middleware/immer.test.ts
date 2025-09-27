@@ -1,8 +1,8 @@
-import { createState } from '../../';
+import { stateBuilder } from '../../';
 import { immer } from '../../middleware/immer';
 
 test('immer', () => {
-  const state = createState({ middleware: immer });
+  const state = stateBuilder(immer);
 
   const listener = jest.fn();
   const container = state({ deep: { nested: { value: 1 } } });

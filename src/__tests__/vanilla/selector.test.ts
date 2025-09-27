@@ -1,5 +1,5 @@
 import { state } from '../../vanilla/state';
-import { selector, createSelector, Metadata } from '../../';
+import { selector, selectorBuilder, Metadata } from '../../';
 
 test('selector should update when the base state has changed', () => {
   const price = state(7);
@@ -61,14 +61,12 @@ test('selector should return cached result when base state has not changed', () 
 
 test('selector can be enhanced with plugin', () => {
   const plugin = jest.fn();
-  const selector = createSelector<Metadata>({
-    plugin: ({ get, subscribe, meta }) => {
-      const onChange = () => {
-        plugin(get(), meta().key);
-      };
-      onChange();
-      subscribe(onChange);
-    }
+  const selector = selectorBuilder<Metadata>(({ get, subscribe, meta }) => {
+    const onChange = () => {
+      plugin(get(), meta().key);
+    };
+    onChange();
+    subscribe(onChange);
   });
 
   const count = state(1);
