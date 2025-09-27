@@ -1,5 +1,5 @@
 import type { Plugin } from '../../types';
-import { state, createSelector } from '../../';
+import { state, selectorBuilder } from '../../';
 import { applyPlugin } from '../../plugin';
 
 const plugin = jest.fn();
@@ -12,9 +12,9 @@ const createPlugin: <TMeta = never>(name: string) => Plugin<TMeta> =
   };
 
 test('applyPlugin without metadata', () => {
-  const selector = createSelector({
-    plugin: applyPlugin([createPlugin('plugin 1'), createPlugin('plugin 2'), undefined])
-  });
+  const selector = selectorBuilder(
+    applyPlugin([createPlugin('plugin 1'), createPlugin('plugin 2'), undefined])
+  );
 
   const count = state(1);
   selector(count, (count) => count * 2);
@@ -27,13 +27,9 @@ test('applyPlugin without metadata', () => {
 });
 
 test('applyPlugin with metadata', () => {
-  const selector = createSelector({
-    plugin: applyPlugin([
-      createPlugin<string>('plugin 1'),
-      createPlugin<string>('plugin 2'),
-      undefined
-    ])
-  });
+  const selector = selectorBuilder(
+    applyPlugin([createPlugin<string>('plugin 1'), createPlugin<string>('plugin 2'), undefined])
+  );
 
   const count = state(1);
   selector(count, (count) => count * 2, 'double');

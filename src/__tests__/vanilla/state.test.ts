@@ -1,4 +1,4 @@
-import { state, createState, Metadata } from '../../';
+import { state, stateBuilder, Metadata } from '../../';
 
 test('function overloads and type correctness', () => {
   const s1 = state('s1');
@@ -174,13 +174,9 @@ test('state can bind actions', () => {
 
 test('state can be enhanced with middleware', () => {
   const middleware = jest.fn();
-  const state = createState<Metadata>({
-    middleware:
-      ({ set, get, meta }) =>
-      (...arg) => {
-        set(...arg);
-        middleware(get(), meta().key);
-      }
+  const state = stateBuilder<Metadata>(({ set, get, meta }) => (...arg) => {
+    set(...arg);
+    middleware(get(), meta().key);
   });
 
   const key = 'count';

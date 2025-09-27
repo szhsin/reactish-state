@@ -9,9 +9,7 @@ import type {
   Middleware
 } from '../types';
 
-const createState = <TStateMeta = never>({
-  middleware
-}: { middleware?: Middleware<TStateMeta> } = {}) =>
+const stateBuilder = <TStateMeta = never>(middleware?: Middleware<TStateMeta>) =>
   (<TValue, TAction, TMeta extends TStateMeta, TContext>(
     initialValue: TValue,
     actionBuilder: ActionBuilder<TValue, TAction, TContext> | null | undefined,
@@ -50,6 +48,6 @@ const createState = <TStateMeta = never>({
     // Wrap TStateMeta in a tuple to prevent conditional type distribution
   }) as [TStateMeta] extends [never] ? StateBuilder : StateBuilderWithMeta<TStateMeta>;
 
-const state = createState();
+const state = stateBuilder();
 
-export { state, createState };
+export { state, stateBuilder };

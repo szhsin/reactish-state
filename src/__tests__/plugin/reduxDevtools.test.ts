@@ -1,4 +1,4 @@
-import { state, createSelector, SelectorBuilder } from '../../';
+import { state, selectorBuilder, SelectorBuilder } from '../../';
 import { reduxDevtools } from '../../plugin';
 
 describe('reduxDevtools', () => {
@@ -20,7 +20,7 @@ describe('reduxDevtools', () => {
   });
 
   test('should merge selector and send to the dev tool', () => {
-    const selector = createSelector({ plugin: reduxDevtools({ name: 'my-app' }) });
+    const selector = selectorBuilder(reduxDevtools({ name: 'my-app' }));
     const count = state(1);
     selector(count, (count) => count * 2, { key: 'double' });
     selector(count, (count) => count * 3, { key: 'triple' });
@@ -35,7 +35,7 @@ describe('reduxDevtools', () => {
   });
 
   test('should warn if a key is not provided in metadata', () => {
-    const selector = createSelector({ plugin: reduxDevtools() }) as SelectorBuilder;
+    const selector = selectorBuilder(reduxDevtools()) as SelectorBuilder;
     expect(() => selector(state(1), (count) => count * 2)).toThrow();
   });
 });

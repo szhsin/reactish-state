@@ -1,4 +1,4 @@
-import { createState, StateBuilder } from '../../';
+import { stateBuilder, StateBuilder } from '../../';
 import { persist } from '../../middleware';
 
 test('persist should load and save data to storage', () => {
@@ -11,7 +11,7 @@ test('persist should load and save data to storage', () => {
   (global.localStorage as Pick<Storage, 'getItem' | 'setItem'>) = { getItem, setItem };
 
   const { middleware, hydrate } = persist({ prefix: 'cat-' });
-  const state = createState({ middleware });
+  const state = stateBuilder(middleware);
 
   const colour = state('Ginger', null, { key: 'colour', extraProp: 'allowed' });
   const age = state(1, null, { key: 'age' });
@@ -39,7 +39,7 @@ test('persist should load and save data to storage', () => {
 });
 
 test('persist should warn if a key is not provided in config', () => {
-  const state = createState(persist()) as StateBuilder;
+  const state = stateBuilder(persist().middleware) as StateBuilder;
   expect(() => state('no key')).toThrow();
   state('with key', null, { key: 'some-key' });
 });

@@ -8,10 +8,10 @@ var shim = require('./react/shim.cjs');
 
 
 
-exports.createState = state.createState;
 exports.state = state.state;
-exports.createSelector = selector.createSelector;
+exports.stateBuilder = state.stateBuilder;
 exports.selector = selector.selector;
+exports.selectorBuilder = selector.selectorBuilder;
 exports.useSnapshot = useSnapshot.useSnapshot;
 exports.useSelector = useSelector.useSelector;
 exports.setReactShim = shim.setReactShim;

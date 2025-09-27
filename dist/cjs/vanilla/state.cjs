@@ -1,8 +1,6 @@
 'use strict';
 
-const createState = ({
-  middleware
-} = {}) => (initialValue, actionBuilder, metadata) => {
+const stateBuilder = middleware => (initialValue, actionBuilder, metadata) => {
   let value = initialValue;
   const listeners = new Set();
   const get = () => value;
@@ -33,7 +31,7 @@ const createState = ({
   };
   // Wrap TStateMeta in a tuple to prevent conditional type distribution
 };
-const state = /*#__PURE__*/createState();
+const state = /*#__PURE__*/stateBuilder();
 
-exports.createState = createState;
 exports.state = state;
+exports.stateBuilder = stateBuilder;

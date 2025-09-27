@@ -1,5 +1,5 @@
 import type { Middleware } from '../../types';
-import { createState } from '../../';
+import { stateBuilder } from '../../';
 import { applyMiddleware } from '../../middleware';
 
 const middleware = jest.fn();
@@ -19,9 +19,7 @@ const middlewares = [
 ];
 
 test('applyMiddleware from left', () => {
-  const state = createState({
-    middleware: applyMiddleware(middlewares)
-  });
+  const state = stateBuilder(applyMiddleware(middlewares));
 
   const power = state('off');
   expect(middleware).toHaveBeenCalledTimes(0);
@@ -33,9 +31,7 @@ test('applyMiddleware from left', () => {
 });
 
 test('applyMiddleware from right', () => {
-  const state = createState({
-    middleware: applyMiddleware(middlewares, { fromRight: true })
-  });
+  const state = stateBuilder(applyMiddleware(middlewares, { fromRight: true }));
 
   const power = state('off');
   expect(middleware).toHaveBeenCalledTimes(0);
@@ -47,13 +43,9 @@ test('applyMiddleware from right', () => {
 });
 
 test('applyMiddleware with state metadata', () => {
-  const state = createState({
-    middleware: applyMiddleware([
-      createMiddleware<string>('mw 1'),
-      undefined,
-      createMiddleware<string>('mw 2')
-    ])
-  });
+  const state = stateBuilder(
+    applyMiddleware([createMiddleware<string>('mw 1'), undefined, createMiddleware<string>('mw 2')])
+  );
 
   const metadata = '230V AC';
   const power = state('off', undefined, metadata);

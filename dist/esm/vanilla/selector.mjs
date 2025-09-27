@@ -1,8 +1,6 @@
 import { createSubscriber, getSelectorValues, isEqual } from '../utils.mjs';
 
-const createSelector = ({
-  plugin
-} = {}) => (...items) => {
+const selectorBuilder = plugin => (...items) => {
   const length = items.length;
   const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
   const selectorFunc = items[cutoff];
@@ -24,6 +22,6 @@ const createSelector = ({
   return selector;
   // Wrap TSelectorMeta in a tuple to prevent conditional type distribution;
 };
-const selector = /*#__PURE__*/createSelector();
+const selector = /*#__PURE__*/selectorBuilder();
 
-export { createSelector, selector };
+export { selector, selectorBuilder };
