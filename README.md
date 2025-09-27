@@ -6,18 +6,19 @@
 
 💡 [Quick examples](#examples) &nbsp;&nbsp; 🔧 [TypeScript usage](#typescript-usage)
 
-## ✨Highlights✨
+## ✨ Highlights ✨
 
-- Decentralized state management
-- Unopinionated and easy-to-use API
-- No need to wrap app in Context or prop drilling
+- Decentralized (atomic) state management
+- Simple, unopinionated API
+- No Context wrapper or prop drilling required
 - React components re-render only on changes
 - Compatible with React 18/19 concurrent rendering
-- Selectors are memoized by default
-- Feature extensible with middleware or plugins
+- Built-in memoized selectors
+- Extensible with middleware and plugins
 - State persistable to browser storage
-- Support for Redux dev tools via middleware
-- [Less than 1KB](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D): simple and small
+- Redux DevTools support via middleware
+- Fully compatible with React Compiler
+- Ultra-lightweight: [<1KB](https://bundlejs.com/?q=reactish-state&treeshake=%5B*%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%5D%7D%7D)
 
 ## Install
 
@@ -25,7 +26,38 @@
 npm install reactish-state
 ```
 
-## Quick start
+## Table of Contents
+
+- [Quick start](#quick-start)
+  - [State](#we-begin-by-creating-some-state)
+  - [State with actions](#a-state-can-also-have-custom-actions-bound-to-it)
+  - [Selectors](#selector-can-create-derived-state)
+  - [Usage in React](#use-the-state-and-selectors-in-your-react-components)
+- [Why another library?](#why-another-state-management-library)
+- [Why decentralized?](#why-decentralized-state-management)
+- [Why not Zustand?](#why-choose-this-over-zustand)
+- [Recipes](#recipes)
+  - [Immutable updates](#state-should-be-updated-immutably)
+  - [Memoized selectors](#selectors-are-memoized)
+  - [Async updates](#async-state-updates)
+  - [Accessing other state in actions](#accessing-other-state-or-selectors-inside-actions)
+  - [Usage outside React](#interacting-with-state-or-selectors-outside-react)
+  - [Destructuring actions](#destructuring-actions-for-easier-access)
+  - [useSelector](#selector-that-depends-on-props-or-local-state)
+  - [Redux-like reducers](#still-perfer-redux-like-reducers)
+- [Middleware](#middleware)
+  - [Persist middleware](#persist-middleware)
+  - [Immer middleware](#immer-middleware)
+  - [Redux devtools middleware](#redux-devtools-middleware)
+  - [Multiple middleware](#using-multiple-middleware)
+  - [Different middleware](#using-different-middleware-in-different-states)
+- [Plugins](#plugins)
+  - [Redux devtools plugin](#redux-devtools-plugin)
+- [TypeScript usage](#typescript-usage)
+- [Examples](#examples)
+- [React 16/17 setup](#react-1617-setup)
+
+# Quick start
 
 ### We begin by creating some state
 
@@ -384,21 +416,17 @@ dispatch({ type: "DECREASE", by: 7 });
 console.log(countState.get()); // Print 3
 ```
 
-## Middleware
+# Middleware
 
-You can enhance the functionality of state with middleware. Instead of using the `state` export, use the `stateBuilder` export from the library. Middleware is a function that receives `set`, `get`, and `subscribe`, and should return a new set function.
+You can enhance state functionality using middleware. Instead of the `state` export, use the `stateBuilder` export from the library. A middleware is a function that receives a state object and returns a new `set` function, which can add custom behavior while still calling the current `set` in the middleware chain.
 
 ```js
 import { stateBuilder } from "reactish-state";
 
-const state = stateBuilder({
-  middleware:
-    ({ set, get }) =>
-    (...args) => {
-      set(...args);
-      // Log the state every time after calling `set`
-      console.log("New state", get());
-    }
+const state = stateBuilder(({ set, get }) => (...args) => {
+  set(...args);
+  // Log the state every time after calling `set`
+  console.log("New state", get());
 });
 
 // Now the `state` function has middleware wired up
@@ -426,7 +454,7 @@ import { persist } from "reactish-state/middleware";
 // Create the persist middleware,
 // optionally provide a `prefix` to prepend to the keys in storage
 const persistMiddleware = persist({ prefix: "myApp-" });
-const state = stateBuilder({ middleware: persistMiddleware });
+const state = stateBuilder(persistMiddleware.middleware);
 
 const countState = state(
   0,
@@ -460,7 +488,7 @@ You can update state mutably using the `immer` middleware.
 import { stateBuilder } from "reactish-state";
 import { immer } from "reactish-state/middleware/immer";
 
-const state = stateBuilder({ middleware: immer });
+const state = stateBuilder(immer);
 
 let todoId = 1;
 const todos = state([], (set) => ({
@@ -491,7 +519,7 @@ This middleware provides integration with the Redux DevTools browser extension. 
 import { stateBuilder } from "reactish-state";
 import { reduxDevtools } from "reactish-state/middleware";
 
-const state = stateBuilder({ middleware: reduxDevtools({ name: "todoApp" }) });
+const state = stateBuilder(reduxDevtools({ name: "todoApp" }));
 
 const todos = state(
   [],
@@ -528,9 +556,9 @@ Middleware is chainable. You can use the `applyMiddleware` utility to chain mult
 ```js
 import { applyMiddleware } from "reactish-state/middleware";
 
-const state = stateBuilder({
-  middleware: applyMiddleware([immer, reduxDevtools(), persist()])
-});
+const state = stateBuilder(
+  applyMiddleware([reduxDevtools(), persist().middleware, immer])
+);
 ```
 
 ## Using different middleware in different states
@@ -538,44 +566,38 @@ const state = stateBuilder({
 This is naturally achievable thanks to the decentralized state model.
 
 ```js
-const persistState = stateBuilder({ middleware: persist() });
-const immerState = stateBuilder({ middleware: immer });
+const persistableState = stateBuilder(persist().middleware);
+const immerState = stateBuilder(immer);
 
-const visibilityFilter = persistState("ALL"); // Will be persisted
+const visibilityFilter = persistableState("ALL"); // Will be persisted
 const todos = immerState([]); // Can be mutated
 ```
 
 This also eliminates the need to implement a whitelist or blacklist in the persist middleware.
 
-## Plugins
+# Plugins
 
 While middleware enhances state, plugins allow you to hook into selectors. The key difference is that plugins don’t return a `set` function, as selectors are read-only. Similarly, you use the `selectorBuilder` export from the library instead of `selector`.
 
 ```js
 import { state, selectorBuilder } from "reactish-state";
 
-const selector = selectorBuilder({
-  plugin: ({ get, subscribe }, config) => {
-    subscribe(() => {
-      // Log the selector value every time it changes
-      // `config` can hold contextual data from the selector
-      console.log(`${config?.key} selector:`, get());
-    });
-  }
+const selector = selectorBuilder(({ get, subscribe, meta }) => {
+  subscribe(() => {
+    // Log the selector value every time it changes
+    // `meta` returns metadata of the selector
+    console.log(`${meta()} selector:`, get());
+  });
 });
 
 const countState = state(0);
 const doubleSelector = selector(
   countState,
   (count) => count * 2,
-  // Provide contextual data in the last parameter to identify the selector
-  {
-    key: "double"
-  }
+  // Provide metadata in the last parameter to identify the selector
+  "double"
 );
-const squareSelector = selector(countState, (count) => count * count, {
-  key: "square"
-});
+const squareSelector = selector(countState, (count) => count * count, "square");
 
 countState.set(5); // Logs - double selector: 10, square selector: 25
 ```
@@ -590,7 +612,7 @@ Individual selectors are combined into a single object in Redux DevTools for eas
 import { selectorBuilder } from "reactish-state";
 import { reduxDevtools } from "reactish-state/plugin";
 
-const selector = selectorBuilder({ plugin: reduxDevtools() });
+const selector = selectorBuilder(reduxDevtools());
 // Then use the `selector` as usual...
 ```
 
