@@ -5,7 +5,11 @@ import { reduxDevtools as devtoolsPlugin } from 'reactish-state/plugin';
 
 const persistMiddleware = persist({ prefix: 'todoApp-' });
 const state = createState({
-  middleware: applyMiddleware([immer, reduxDevtools({ name: 'todoApp-state' }), persistMiddleware])
+  middleware: applyMiddleware([
+    reduxDevtools({ name: 'todoApp-state' }),
+    persistMiddleware.middleware,
+    immer
+  ])
 });
 
 interface Todo {

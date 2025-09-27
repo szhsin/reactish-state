@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Selector } from '../../types';
+import { Observable } from '../../types';
 import { state, useSelector, useSnapshot } from '../../';
 
 jest.mock('../../react/useSnapshot', () => ({
@@ -39,7 +39,7 @@ test.each([true, false])(
 
     expect(cartRender).toHaveBeenCalledTimes(2);
     expect(useSnapshot).toHaveBeenCalledTimes(2);
-    const { calls } = (useSnapshot as jest.Mock<void, [Selector<unknown>]>).mock;
+    const { calls } = (useSnapshot as jest.Mock<void, [Observable<unknown>]>).mock;
     expect(calls[0][0].get).not.toBe(calls[1][0].get);
     expect(calls[0][0].subscribe).toBe(calls[1][0].subscribe);
   }

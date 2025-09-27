@@ -1,4 +1,4 @@
-import { createState } from '../../';
+import { createState, StateBuilder } from '../../';
 import { persist } from '../../middleware';
 
 test('persist should load and save data to storage', () => {
@@ -10,17 +10,17 @@ test('persist should load and save data to storage', () => {
   const setItem = jest.fn();
   (global.localStorage as Pick<Storage, 'getItem' | 'setItem'>) = { getItem, setItem };
 
-  const middleware = persist({ prefix: 'cat-' });
+  const { middleware, hydrate } = persist({ prefix: 'cat-' });
   const state = createState({ middleware });
 
-  const colour = state('Ginger', null, { key: 'colour' });
+  const colour = state('Ginger', null, { key: 'colour', extraProp: 'allowed' });
   const age = state(1, null, { key: 'age' });
   const sex = state('Female', null, { key: 'sex' });
   expect(colour.get()).toBe('Ginger');
   expect(age.get()).toBe(1);
   expect(sex.get()).toBe('Female');
 
-  middleware.hydrate();
+  hydrate();
   expect(colour.get()).toBe('Calico');
   expect(age.get()).toBeUndefined();
   expect(sex.get()).toBe('Female');
@@ -39,7 +39,7 @@ test('persist should load and save data to storage', () => {
 });
 
 test('persist should warn if a key is not provided in config', () => {
-  const state = createState({ middleware: persist() });
+  const state = createState(persist()) as StateBuilder;
   expect(() => state('no key')).toThrow();
   state('with key', null, { key: 'some-key' });
 });

@@ -2,12 +2,13 @@
 
 const createState = ({
   middleware
-} = {}) => (initialValue, actionBuilder, config) => {
+} = {}) => (initialValue, actionBuilder, metadata) => {
   let value = initialValue;
   const listeners = new Set();
   const get = () => value;
   const readonlyState = {
     get,
+    meta: () => metadata,
     subscribe: listener => {
       listeners.add(listener);
       return () => listeners.delete(listener);
@@ -24,12 +25,13 @@ const createState = ({
   if (middleware) set = middleware({
     ...readonlyState,
     set
-  }, config);
+  });
   return {
     ...actionBuilder?.(set, get),
     ...readonlyState,
     set
   };
+  // Wrap TStateMeta in a tuple to prevent conditional type distribution
 };
 const state = /*#__PURE__*/createState();
 

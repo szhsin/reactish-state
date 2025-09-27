@@ -1,3 +1,3 @@
-import type { Selector } from '../types';
-declare const useSnapshot: <TValue>({ subscribe, get }: Selector<TValue>) => TValue;
+import type { Observable } from '../types';
+declare const useSnapshot: <TValue>({ subscribe, get }: Observable<TValue>) => TValue;
 export { useSnapshot };

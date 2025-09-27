@@ -1,3 +1,3 @@
-const applyPlugin = plugins => (selector, config) => plugins.forEach(plugin => plugin?.(selector, config));
+const applyPlugin = plugins => selector => plugins.forEach(plugin => plugin?.(selector));
 
 export { applyPlugin };

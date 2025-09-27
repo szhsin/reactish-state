@@ -1,16 +1,25 @@
-import type { Plugin, Selector, SelectorArray, SelectorFunc, SelectorBuilder } from '../types';
+import type {
+  Plugin,
+  Selector,
+  SelectorArray,
+  SelectorFunc,
+  SelectorBuilder,
+  SelectorBuilderWithMeta
+} from '../types';
 import { isEqual, createSubscriber, getSelectorValues } from '../utils';
 
-const createSelector = <TConfig>({ plugin }: { plugin?: Plugin<TConfig> } = {}) =>
-  (<TArray extends SelectorArray, TValue>(...items: unknown[]) => {
+const createSelector = <TSelectorMeta = never>({
+  plugin
+}: { plugin?: Plugin<TSelectorMeta> } = {}) =>
+  (<TArray extends SelectorArray, TValue, TMeta extends TSelectorMeta>(...items: unknown[]) => {
     const length = items.length;
     const cutoff = typeof items[length - 1] === 'function' ? length - 1 : length - 2;
     const selectorFunc = items[cutoff] as SelectorFunc<TArray, TValue>;
-    const config = items[cutoff + 1] as TConfig;
+    const metadata = items[cutoff + 1] as TMeta;
     items.length = cutoff;
     let cache: readonly [unknown[], TValue] | undefined;
 
-    const selector: Selector<TValue> = {
+    const selector: Selector<TValue, TMeta> = {
       get: () => {
         const args = getSelectorValues<TArray>(items as SelectorArray);
         if (cache && isEqual(args, cache[0])) return cache[1];
@@ -18,12 +27,14 @@ const createSelector = <TConfig>({ plugin }: { plugin?: Plugin<TConfig> } = {}) 
         cache = [args, value];
         return value;
       },
-      subscribe: createSubscriber(items as SelectorArray)
+      subscribe: createSubscriber(items as SelectorArray),
+      meta: () => metadata
     };
 
-    plugin?.(selector, config);
+    plugin?.(selector);
     return selector;
-  }) as SelectorBuilder<TConfig>;
+    // Wrap TSelectorMeta in a tuple to prevent conditional type distribution;
+  }) as [TSelectorMeta] extends [never] ? SelectorBuilder : SelectorBuilderWithMeta<TSelectorMeta>;
 
 const selector = createSelector();
 

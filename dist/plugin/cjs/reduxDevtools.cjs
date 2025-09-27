@@ -11,10 +11,11 @@ const reduxDevtools = ({
   const mergedState = {};
   return ({
     get,
-    subscribe
-  }, config) => {
-    const key = config?.key;
-    if (!key) throw new Error('[reactish-state] state should be provided with a string `key` in the config object when the `reduxDevtools` plugin is used.');
+    subscribe,
+    meta
+  }) => {
+    const key = meta()?.key;
+    if (process.env.NODE_ENV !== 'production' && !key) throw new Error('[reactish-state] selector should be provided with a string `key` in the config object when the `reduxDevtools` plugin is used.');
     const updateState = () => {
       mergedState[key] = get();
       devtools.init(mergedState);

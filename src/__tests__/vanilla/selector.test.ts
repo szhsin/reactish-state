@@ -1,5 +1,5 @@
 import { state } from '../../vanilla/state';
-import { selector, createSelector, Config } from '../../';
+import { selector, createSelector, Metadata } from '../../';
 
 test('selector should update when the base state has changed', () => {
   const price = state(7);
@@ -61,10 +61,10 @@ test('selector should return cached result when base state has not changed', () 
 
 test('selector can be enhanced with plugin', () => {
   const plugin = jest.fn();
-  const selector = createSelector<Config>({
-    plugin: ({ get, subscribe }, config) => {
+  const selector = createSelector<Metadata>({
+    plugin: ({ get, subscribe, meta }) => {
       const onChange = () => {
-        plugin(get(), config?.key);
+        plugin(get(), meta().key);
       };
       onChange();
       subscribe(onChange);
@@ -72,7 +72,7 @@ test('selector can be enhanced with plugin', () => {
   });
 
   const count = state(1);
-  const double = selector(count, (count) => count * 2, { key: 'double' });
+  const double = selector(count, (count) => count * 2, { key: 'double', allowExtraProp: true });
 
   expect(double.get()).toBe(2);
   expect(plugin).toHaveBeenLastCalledWith(2, 'double');

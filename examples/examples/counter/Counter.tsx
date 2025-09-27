@@ -17,7 +17,10 @@ const reducer = (state: number, { type, by = 1 }: { type: ActionTypes; by?: numb
 const persistMiddleware = persist({ prefix: 'counter-', getStorage: () => sessionStorage });
 
 const counter = createState({
-  middleware: applyMiddleware([reduxDevtools({ name: 'counterApp-state' }), persistMiddleware])
+  middleware: applyMiddleware([
+    reduxDevtools({ name: 'counterApp-state' }),
+    persistMiddleware.middleware
+  ])
 })(
   0,
   (set, get) => ({

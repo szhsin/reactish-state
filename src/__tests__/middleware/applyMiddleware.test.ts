@@ -3,15 +3,20 @@ import { createState } from '../../';
 import { applyMiddleware } from '../../middleware';
 
 const middleware = jest.fn();
-const createMiddleware: (arg: unknown) => Middleware =
-  (arg) =>
-  ({ set }) =>
+const createMiddleware: <TStateMeta = never>(name: string) => Middleware<TStateMeta> =
+  (name) =>
+  ({ set, meta }) =>
   (...args) => {
     set(...args);
-    middleware(arg, ...args);
+    middleware(name, meta(), ...args);
   };
 
-const middlewares = [createMiddleware(1), createMiddleware(2), createMiddleware(3), undefined];
+const middlewares = [
+  createMiddleware('mw 1'),
+  createMiddleware('mw 2'),
+  createMiddleware('mw 3'),
+  undefined
+];
 
 test('applyMiddleware from left', () => {
   const state = createState({
@@ -22,9 +27,9 @@ test('applyMiddleware from left', () => {
   expect(middleware).toHaveBeenCalledTimes(0);
   power.set('on');
   expect(middleware).toHaveBeenCalledTimes(3);
-  expect(middleware).toHaveBeenNthCalledWith(1, 1, 'on');
-  expect(middleware).toHaveBeenNthCalledWith(2, 2, 'on');
-  expect(middleware).toHaveBeenNthCalledWith(3, 3, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(1, 'mw 1', undefined, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(2, 'mw 2', undefined, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(3, 'mw 3', undefined, 'on');
 });
 
 test('applyMiddleware from right', () => {
@@ -36,7 +41,25 @@ test('applyMiddleware from right', () => {
   expect(middleware).toHaveBeenCalledTimes(0);
   power.set('on');
   expect(middleware).toHaveBeenCalledTimes(3);
-  expect(middleware).toHaveBeenNthCalledWith(1, 3, 'on');
-  expect(middleware).toHaveBeenNthCalledWith(2, 2, 'on');
-  expect(middleware).toHaveBeenNthCalledWith(3, 1, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(1, 'mw 3', undefined, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(2, 'mw 2', undefined, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(3, 'mw 1', undefined, 'on');
+});
+
+test('applyMiddleware with state metadata', () => {
+  const state = createState({
+    middleware: applyMiddleware([
+      createMiddleware<string>('mw 1'),
+      undefined,
+      createMiddleware<string>('mw 2')
+    ])
+  });
+
+  const metadata = '230V AC';
+  const power = state('off', undefined, metadata);
+  expect(middleware).toHaveBeenCalledTimes(0);
+  power.set('on');
+  expect(middleware).toHaveBeenCalledTimes(2);
+  expect(middleware).toHaveBeenNthCalledWith(1, 'mw 1', metadata, 'on');
+  expect(middleware).toHaveBeenNthCalledWith(2, 'mw 2', metadata, 'on');
 });
