@@ -1,9 +1,9 @@
+
 'use strict';
+let immer = require("immer");
 
-var immer$1 = require('immer');
+//#region src/middleware/immer.ts
+const immer$1 = ({ set }) => (value, context) => set(typeof value === "function" ? (0, immer.produce)(value) : value, context);
 
-const immer = ({
-  set
-}) => (value, context) => set(typeof value === 'function' ? immer$1.produce(value) : value, context);
-
-exports.immer = immer;
+//#endregion
+exports.immer = immer$1;

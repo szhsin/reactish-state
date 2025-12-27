@@ -1,7 +1,5 @@
+
 'use strict';
+const require_reactShim = require('./reactShim.cjs');
 
-var reactShim = require('./reactShim.cjs');
-
-
-
-exports.reactShim = reactShim.reactShim;
+exports.reactShim = require_reactShim.reactShim;

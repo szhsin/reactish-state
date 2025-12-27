@@ -8,7 +8,8 @@
     "strict": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom", "@redux-devtools/extension"]
   },
   "include": ["./src/"]
 }

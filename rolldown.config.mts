@@ -1,19 +1,15 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { babel } from '@rollup/plugin-babel';
+import { defineConfig, type RolldownOptions } from 'rolldown';
+import { addDirective } from 'rollup-plugin-add-directive';
 
-/**
- * @returns {import('rollup').RollupOptions}
- */
-const createBuild = ({ inPath = '', outPath = inPath, inFile = 'index.ts' } = {}) => ({
+const createBuild = ({
+  inPath = '',
+  outPath = inPath,
+  inFile = 'index.ts'
+}: { inPath?: string; outPath?: string; inFile?: string } = {}): RolldownOptions => ({
   external: ['react', 'react-dom', 'use-sync-external-store/shim', 'immer'],
   plugins: [
-    nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
-    babel({
-      babelHelpers: 'bundled',
-      extensions: ['.ts', '.tsx', '.js', '.jsx']
-    }),
     {
-      name: 'rollup-plugin-replace-code',
+      name: 'rolldown-plugin-replace-code',
       renderChunk: (code, chunk) => {
         if (!chunk.name.endsWith('reactShim')) return null;
 
@@ -33,23 +29,31 @@ const createBuild = ({ inPath = '', outPath = inPath, inFile = 'index.ts' } = {}
     {
       dir: `dist/cjs/${outPath}`,
       format: 'cjs',
-      interop: 'default',
       entryFileNames: '[name].cjs',
-      preserveModules: true
+      preserveModules: true,
+      // Temporary workaround until this issue is fixed:
+      // https://github.com/rolldown/rolldown/issues/5865
+      plugins: [addDirective({ directive: "'use strict';" })]
     },
     {
       dir: `dist/esm/${outPath}`,
-      format: 'es',
+      format: 'esm',
       entryFileNames: '[name].mjs',
       preserveModules: true
     }
-  ]
+  ],
+  transform: {
+    target: ['es2020'],
+    assumptions: {
+      noDocumentAll: true
+    }
+  }
 });
 
-export default [
+export default defineConfig([
   createBuild(),
   createBuild({ inPath: 'middleware/' }),
   createBuild({ inPath: 'middleware/', inFile: 'immer.ts' }),
   createBuild({ inPath: 'plugin/' }),
   createBuild({ inPath: 'shim/' })
-];
+]);

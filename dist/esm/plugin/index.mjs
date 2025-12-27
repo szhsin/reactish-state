@@ -1,2 +1,4 @@
-export { applyPlugin } from './applyPlugin.mjs';
-export { reduxDevtools } from './reduxDevtools.mjs';
+import { applyPlugin } from "./applyPlugin.mjs";
+import { reduxDevtools } from "./reduxDevtools.mjs";
+
+export { applyPlugin, reduxDevtools };

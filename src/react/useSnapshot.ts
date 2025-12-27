@@ -1,3 +1,5 @@
+'use client';
+
 import type { Observable } from '../types';
 import { useSyncExternalStore } from './shim';
 

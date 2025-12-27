@@ -1,9 +1,7 @@
+
 'use strict';
+const require_applyPlugin = require('./applyPlugin.cjs');
+const require_reduxDevtools = require('./reduxDevtools.cjs');
 
-var applyPlugin = require('./applyPlugin.cjs');
-var reduxDevtools = require('./reduxDevtools.cjs');
-
-
-
-exports.applyPlugin = applyPlugin.applyPlugin;
-exports.reduxDevtools = reduxDevtools.reduxDevtools;
+exports.applyPlugin = require_applyPlugin.applyPlugin;
+exports.reduxDevtools = require_reduxDevtools.reduxDevtools;

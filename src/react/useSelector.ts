@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import type { SelectorSubscriber, SelectorArray, SelectorFunc, SelectorParams } from '../types';
 import { isEqual, createSubscriber, getSelectorValues } from '../utils';

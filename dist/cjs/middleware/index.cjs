@@ -1,11 +1,9 @@
+
 'use strict';
+const require_applyMiddleware = require('./applyMiddleware.cjs');
+const require_persist = require('./persist.cjs');
+const require_reduxDevtools = require('./reduxDevtools.cjs');
 
-var applyMiddleware = require('./applyMiddleware.cjs');
-var persist = require('./persist.cjs');
-var reduxDevtools = require('./reduxDevtools.cjs');
-
-
-
-exports.applyMiddleware = applyMiddleware.applyMiddleware;
-exports.persist = persist.persist;
-exports.reduxDevtools = reduxDevtools.reduxDevtools;
+exports.applyMiddleware = require_applyMiddleware.applyMiddleware;
+exports.persist = require_persist.persist;
+exports.reduxDevtools = require_reduxDevtools.reduxDevtools;

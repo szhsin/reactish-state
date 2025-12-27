@@ -1,4 +1,3 @@
-import type {} from '@redux-devtools/extension';
 import type { Plugin, Metadata } from '../types';
 
 const reduxDevtools = <TSelectorMeta extends Metadata>({ name }: { name?: string } = {}):
