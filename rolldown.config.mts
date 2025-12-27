@@ -46,6 +46,9 @@ const createBuild = ({
     target: ['es2020'],
     assumptions: {
       noDocumentAll: true
+    },
+    define: {
+      'process.env.NODE_ENV': 'process.env.NODE_ENV'
     }
   }
 });
