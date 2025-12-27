@@ -2,12 +2,12 @@ import { stateBuilder, StateBuilder } from '../../';
 import { persist } from '../../middleware';
 
 test('persist should load and save data to storage', () => {
-  const getItem = jest
-    .fn<string | null, string[]>()
+  const getItem = vi
+    .fn<(key: string) => string | null>()
     .mockImplementation((key) =>
       key === 'cat-colour' ? '"Calico"' : key === 'cat-age' ? 'undefined' : null
     );
-  const setItem = jest.fn();
+  const setItem = vi.fn();
   (global.localStorage as Pick<Storage, 'getItem' | 'setItem'>) = { getItem, setItem };
 
   const { middleware, hydrate } = persist({ prefix: 'cat-' });
@@ -40,6 +40,6 @@ test('persist should load and save data to storage', () => {
 
 test('persist should warn if a key is not provided in config', () => {
   const state = stateBuilder(persist().middleware) as StateBuilder;
-  expect(() => state('no key')).toThrow();
+  expect(() => state('no key')).toThrow('[reactish-state]');
   state('with key', null, { key: 'some-key' });
 });

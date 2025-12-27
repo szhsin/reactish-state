@@ -1,17 +1,17 @@
-/**
- * @jest-environment jsdom
- */
+// @vitest-environment jsdom
+
 import * as React from 'react';
+import { Mock } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Observable } from '../../types';
 import { state, useSelector, useSnapshot } from '../../';
 
-jest.mock('../../react/useSnapshot', () => ({
-  useSnapshot: jest.fn()
+vi.mock('../../react/useSnapshot', () => ({
+  useSnapshot: vi.fn()
 }));
 
 const price = state(0);
-const cartRender = jest.fn();
+const cartRender = vi.fn();
 
 const Cart = ({ useDeps }: { useDeps?: boolean }) => {
   cartRender();
@@ -39,7 +39,7 @@ test.each([true, false])(
 
     expect(cartRender).toHaveBeenCalledTimes(2);
     expect(useSnapshot).toHaveBeenCalledTimes(2);
-    const { calls } = (useSnapshot as jest.Mock<void, [Observable<unknown>]>).mock;
+    const { calls } = (useSnapshot as Mock<(observable: Observable<unknown>) => unknown>).mock;
     expect(calls[0][0].get).not.toBe(calls[1][0].get);
     expect(calls[0][0].subscribe).toBe(calls[1][0].subscribe);
   }

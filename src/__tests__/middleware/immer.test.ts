@@ -4,7 +4,7 @@ import { immer } from '../../middleware/immer';
 test('immer', () => {
   const state = stateBuilder(immer);
 
-  const listener = jest.fn();
+  const listener = vi.fn();
   const container = state({ deep: { nested: { value: 1 } } });
   container.subscribe(listener);
   expect(listener).toHaveBeenCalledTimes(0);

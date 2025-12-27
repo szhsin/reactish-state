@@ -1,11 +1,15 @@
 import { state, useSnapshot } from '../../';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useSyncExternalStore: undefined
-}));
+vi.mock('react', async () => {
+  const originalModule = await vi.importActual<{ default: { useSyncExternalStore: unknown } }>(
+    'react'
+  );
+  return {
+    ...originalModule,
+    default: { ...originalModule.default, useSyncExternalStore: undefined }
+  };
+});
 
 test('Missing shim', () => {
-  expect(() => useSnapshot(state(0))).toThrow(Error);
+  expect(() => useSnapshot(state(0))).toThrow('[reactish-state]');
 });

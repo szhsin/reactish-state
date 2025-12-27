@@ -2,7 +2,7 @@ import type { Middleware } from '../../types';
 import { stateBuilder } from '../../';
 import { applyMiddleware } from '../../middleware';
 
-const middleware = jest.fn();
+const middleware = vi.fn();
 const createMiddleware: <TStateMeta = never>(name: string) => Middleware<TStateMeta> =
   (name) =>
   ({ set, meta }) =>

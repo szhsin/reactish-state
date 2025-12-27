@@ -1,11 +1,10 @@
-import type {} from '@redux-devtools/extension';
 import { stateBuilder, StateBuilder } from '../../';
 import { reduxDevtools } from '../../middleware';
 
 describe('reduxDevtools', () => {
-  const init = jest.fn();
-  const send = jest.fn();
-  const connect = jest.fn().mockReturnValue({ init, send });
+  const init = vi.fn();
+  const send = vi.fn();
+  const connect = vi.fn().mockReturnValue({ init, send });
 
   beforeAll(() => {
     (global.window as {
@@ -47,7 +46,7 @@ describe('reduxDevtools', () => {
 
   test('should warn if a key is not provided in metadata', () => {
     const state = stateBuilder(reduxDevtools()) as StateBuilder;
-    expect(() => state('no key')).toThrow();
+    expect(() => state('no key')).toThrow('[reactish-state]');
     state('with key', null, { key: 'some-key' });
   });
 });
