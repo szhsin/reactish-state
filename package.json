@@ -1,6 +1,6 @@
 {
   "name": "reactish-state",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Simple, decentralized (atomic) state management for React.",
   "author": "Zheng Song",
   "license": "MIT",
@@ -90,7 +90,6 @@
     "@types/use-sync-external-store": "^1.5.0",
     "@vitest/coverage-istanbul": "^4.0.16",
     "@vitest/eslint-plugin": "^1.6.4",
-    "babel-plugin-pure-annotations": "^0.1.2",
     "deplift": "^1.0.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
