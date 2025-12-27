@@ -109,8 +109,8 @@ test('function overloads and type correctness', () => {
 });
 
 test('state should notify listeners when updated', () => {
-  const listener = jest.fn();
-  const secondListener = jest.fn();
+  const listener = vi.fn();
+  const secondListener = vi.fn();
   const testState = state({ count: 0 });
   const unsub = testState.subscribe(listener);
   testState.subscribe(secondListener);
@@ -147,7 +147,7 @@ test('state should notify listeners when updated', () => {
 });
 
 test('state can bind actions', () => {
-  const listener = jest.fn();
+  const listener = vi.fn();
   const testState = state(0, (set, get) => ({
     increase: (by = 1) => set((state) => state + by),
     decrease: (by = 1) => set(get() - by),
@@ -173,7 +173,7 @@ test('state can bind actions', () => {
 });
 
 test('state can be enhanced with middleware', () => {
-  const middleware = jest.fn();
+  const middleware = vi.fn();
   const state = stateBuilder<Metadata>(({ set, get, meta }) => (...arg) => {
     set(...arg);
     middleware(get(), meta().key);

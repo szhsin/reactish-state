@@ -1,14 +1,13 @@
-/**
- * @jest-environment jsdom
- */
+// @vitest-environment jsdom
+
 import * as React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import { state, useSnapshot, useSelector } from '../../';
 
 const price = state(0);
 const shipping = state(0);
-const cartSelector = jest.fn();
-const cartRender = jest.fn();
+const cartSelector = vi.fn();
+const cartRender = vi.fn();
 
 const Cart = ({ useDeps }: { useDeps?: boolean }) => {
   cartRender();

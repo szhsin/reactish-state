@@ -8,13 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "^16.0.7",
+    "next": "^16.1.1",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
     "reactish-state": "file:.."
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "typescript": "file:../node_modules/typescript"

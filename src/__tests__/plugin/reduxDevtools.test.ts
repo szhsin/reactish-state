@@ -2,8 +2,8 @@ import { state, selectorBuilder, SelectorBuilder } from '../../';
 import { reduxDevtools } from '../../plugin';
 
 describe('reduxDevtools', () => {
-  const init = jest.fn();
-  const connect = jest.fn().mockReturnValue({ init });
+  const init = vi.fn();
+  const connect = vi.fn().mockReturnValue({ init });
 
   beforeAll(() => {
     (global.window as {
@@ -36,7 +36,7 @@ describe('reduxDevtools', () => {
 
   test('should warn if a key is not provided in metadata', () => {
     const selector = selectorBuilder(reduxDevtools()) as SelectorBuilder;
-    expect(() => selector(state(1), (count) => count * 2)).toThrow();
+    expect(() => selector(state(1), (count) => count * 2)).toThrow('[reactish-state]');
   });
 });
 

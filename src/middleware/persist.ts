@@ -38,8 +38,9 @@ const persist = <TStateMeta extends Metadata>({
       states.forEach(([key, set]) => {
         try {
           const value = getStorage().getItem(key);
-          value != null &&
+          if (value != null) {
             set(value !== 'undefined' ? JSON.parse(value) : undefined, `HYDRATE_${key}`);
+          }
         } catch {
           /* continue regardless of error */
         }

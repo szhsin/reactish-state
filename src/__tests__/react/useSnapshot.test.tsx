@@ -1,6 +1,5 @@
-/**
- * @jest-environment jsdom
- */
+// @vitest-environment jsdom
+
 import { render, renderHook, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import { state, selector, useSnapshot } from '../../';
 
@@ -30,7 +29,7 @@ describe('Render behaviour', () => {
   });
 
   test('Single subscriber', () => {
-    const renderCounter = jest.fn();
+    const renderCounter = vi.fn();
     const Counter = () => {
       renderCounter();
       return (
@@ -41,13 +40,13 @@ describe('Render behaviour', () => {
       );
     };
 
-    const renderDouble = jest.fn();
+    const renderDouble = vi.fn();
     const Double = () => {
       renderDouble();
       return <div data-testid="double">{useSnapshot(double).value}</div>;
     };
 
-    const renderRemainder = jest.fn();
+    const renderRemainder = vi.fn();
     const Remainder = () => {
       renderRemainder();
       return <div data-testid="remainder">{useSnapshot(remainder)}</div>;
@@ -109,7 +108,7 @@ describe('Render behaviour', () => {
   });
 
   test('Miltiple subscribers on the same base state', async () => {
-    const renderer = jest.fn();
+    const renderer = vi.fn();
     const Miltiple = () => {
       renderer();
       return (

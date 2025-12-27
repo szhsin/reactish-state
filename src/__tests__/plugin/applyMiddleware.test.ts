@@ -2,7 +2,7 @@ import type { Plugin } from '../../types';
 import { state, selectorBuilder } from '../../';
 import { applyPlugin } from '../../plugin';
 
-const plugin = jest.fn();
+const plugin = vi.fn();
 const createPlugin: <TMeta = never>(name: string) => Plugin<TMeta> =
   (name) =>
   ({ get, subscribe, meta }) => {

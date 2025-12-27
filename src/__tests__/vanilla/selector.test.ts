@@ -8,8 +8,8 @@ test('selector should update when the base state has changed', () => {
   const subtotal = selector(price, quantity, (price, quantity) => price * quantity);
   const total = selector(subtotal, shipping, (subtotal, shipping) => subtotal + shipping);
 
-  const subtotalListener = jest.fn();
-  const totalListener = jest.fn();
+  const subtotalListener = vi.fn();
+  const totalListener = vi.fn();
   subtotal.subscribe(subtotalListener);
   const unsub = total.subscribe(totalListener);
   expect(subtotal.get()).toBe(7);
@@ -42,7 +42,7 @@ test('selector should update when the base state has changed', () => {
 });
 
 test('selector should return cached result when base state has not changed', () => {
-  const selectorFunc = jest.fn();
+  const selectorFunc = vi.fn();
   const rectangle = state({ width: 4, height: 3 });
   const geometry = selector(rectangle, ({ width, height }) => {
     selectorFunc();
@@ -60,7 +60,7 @@ test('selector should return cached result when base state has not changed', () 
 });
 
 test('selector can be enhanced with plugin', () => {
-  const plugin = jest.fn();
+  const plugin = vi.fn();
   const selector = selectorBuilder<Metadata>(({ get, subscribe, meta }) => {
     const onChange = () => {
       plugin(get(), meta().key);

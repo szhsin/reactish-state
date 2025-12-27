@@ -1,4 +1,3 @@
-import type {} from '@redux-devtools/extension';
 import type { Middleware, Metadata } from '../types';
 
 const reduxDevtools = <TStateMeta extends Metadata>({ name }: { name?: string } = {}):
