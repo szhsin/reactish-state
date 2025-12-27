@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "oxc", "typescript", "import", "jsdoc", "vitest", "react"],
+  "jsPlugins": ["eslint-plugin-react-hooks-addons"],
+  "ignorePatterns": [
+    "**/coverage/",
+    "**/dist/",
+    "**/types/",
+    "**/build/",
+    "**/static/",
+    "**/.next/",
+    "**/*.d.ts"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "import/no-unassigned-import": ["error", { "allow": ["**/*.{css,scss}"] }],
+    "typescript/no-unsafe-type-assertion": "off",
+    "typescript/require-await": "error",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": [
+      "error",
+      {
+        "additionalHooks": "useSelector"
+      }
+    ],
+    "react-hooks-addons/no-unused-deps": "error"
+  },
+  "overrides": [
+    {
+      "files": ["examples/**/*"],
+      "rules": {
+        "no-console": 0
+      }
+    }
+  ]
+}

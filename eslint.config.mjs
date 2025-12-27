@@ -1,19 +1,18 @@
 // @ts-check
-
+import { defineConfig } from 'eslint/config';
 import eslint from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import vitest from '@vitest/eslint-plugin';
 import prettier from 'eslint-config-prettier';
-import jest from 'eslint-plugin-jest';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactHooksAddons from 'eslint-plugin-react-hooks-addons';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  jest.configs['flat/recommended'],
-  jest.configs['flat/style'],
+  tseslint.configs.recommendedTypeChecked,
+  vitest.configs.recommended,
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
   reactHooksAddons.configs.recommended,
@@ -39,7 +38,7 @@ export default tseslint.config(
       sourceType: 'module',
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*.?(c|m)js', 'examples/*.?(c|m)js']
+          allowDefaultProject: ['*.?(c|m)[jt]s', 'examples/*.?(c|m)js']
         },
         tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
@@ -49,12 +48,10 @@ export default tseslint.config(
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.jest
+        ...globals.vitest
       }
     },
     plugins: {
-      jest,
-      react,
       // @ts-ignore
       'react-hooks': reactHooks
     },
@@ -73,7 +70,6 @@ export default tseslint.config(
           additionalHooks: 'useSelector'
         }
       ],
-      'react-hooks-addons/no-unused-deps': 'error',
       '@typescript-eslint/ban-ts-comment': 0,
       '@typescript-eslint/no-unused-expressions': [
         'error',
