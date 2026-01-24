@@ -8,7 +8,7 @@ const selectorBuilder = (plugin) => ((...items) => {
 	const metadata = items[cutoff + 1];
 	items.length = cutoff;
 	let cache;
-	const selector$1 = {
+	const selector = {
 		get: () => {
 			const args = getSelectorValues(items);
 			if (cache && isEqual(args, cache[0])) return cache[1];
@@ -19,8 +19,8 @@ const selectorBuilder = (plugin) => ((...items) => {
 		subscribe: createSubscriber(items),
 		meta: () => metadata
 	};
-	plugin?.(selector$1);
-	return selector$1;
+	plugin?.(selector);
+	return selector;
 });
 const selector = selectorBuilder();
 
