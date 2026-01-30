@@ -1,5 +1,6 @@
 
 'use strict';
+Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 let immer = require("immer");
 
 //#region src/middleware/immer.ts
