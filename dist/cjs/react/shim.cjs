@@ -1,8 +1,8 @@
 
 'use strict';
-const require_rolldown_runtime = require('../_virtual/rolldown_runtime.cjs');
+const require_runtime = require('../_virtual/_rolldown/runtime.cjs');
 let react = require("react");
-react = require_rolldown_runtime.__toESM(react);
+react = require_runtime.__toESM(react);
 
 //#region src/react/shim.ts
 let useSyncExternalStore = react.default.useSyncExternalStore;
