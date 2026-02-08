@@ -14,8 +14,8 @@
     "reactish-state": "file:.."
   },
   "devDependencies": {
-    "@types/node": "^25.1.0",
-    "@types/react": "^19.2.10",
+    "@types/node": "^25.2.2",
+    "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "typescript": "file:../node_modules/typescript"
   }
