@@ -10,14 +10,14 @@ vi.mock('../../react/useSnapshot', () => ({
   useSnapshot: vi.fn()
 }));
 
-const price = state(0);
+const price$ = state(0);
 const cartRender = vi.fn();
 
 const Cart = ({ useDeps }: { useDeps?: boolean }) => {
   cartRender();
   const [quantity, setQuantity] = React.useState(1);
   const total = useSelector(
-    () => [price, (price) => price * quantity],
+    () => [price$, (price) => price * quantity],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useDeps ? [quantity] : undefined
   );

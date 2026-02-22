@@ -16,7 +16,7 @@ const reducer = (state: number, { type, by = 1 }: { type: ActionTypes; by?: numb
 
 const persistMiddleware = persist({ prefix: 'counter-', getStorage: () => sessionStorage });
 
-const counter = stateBuilder(
+const count$ = stateBuilder(
   applyMiddleware([reduxDevtools({ name: 'counterApp-state' }), persistMiddleware.middleware])
 )(
   0,
@@ -35,11 +35,11 @@ const counter = stateBuilder(
 );
 
 // selector is a piece of derived state from one or more states
-const double = selector(counter, (state) => state * 2);
+const double$ = selector(count$, (state) => state * 2);
 
 // selector can be derived from other selectors
-const quadruple = selector(double, (state) => state * 2);
-const summarySelector = selector(counter, double, quadruple, (count, double, quadruple) => ({
+const quadruple$ = selector(double$, (state) => state * 2);
+const summary$ = selector(count$, double$, quadruple$, (count, double, quadruple) => ({
   count,
   double,
   quadruple,
@@ -48,9 +48,9 @@ const summarySelector = selector(counter, double, quadruple, (count, double, qua
 
 const Counter = ({ id = 1 }: { id: number | string }) => {
   const [step, setStep] = useState(1);
-  const count = useSnapshot(counter);
-  const summary = useSnapshot(summarySelector);
-  const { increase, increaseBy, reset, dispatch } = counter;
+  const count = useSnapshot(count$);
+  const summary = useSnapshot(summary$);
+  const { increase, increaseBy, reset, dispatch } = count$;
 
   console.log(`#${id} count: ${count}`, 'summary:', summary);
 
@@ -66,7 +66,7 @@ const Counter = ({ id = 1 }: { id: number | string }) => {
       </div>
 
       <div>
-        <button onClick={() => counter.set(count - step)}>- {step}</button>
+        <button onClick={() => count$.set(count - step)}>- {step}</button>
         <button onClick={() => increaseBy(step)}>+ {step}</button>
         <button onClick={() => increase()}>+ 1</button>
         <button onClick={() => dispatch({ type: 'INCREASE', by: 7 })}>+ 7</button>

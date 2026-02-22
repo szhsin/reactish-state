@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useSnapshot } from 'reactish-state';
-import { user, topRepositories } from './store';
+import { user$, topRepositories$ } from './store';
 import styles from './styles.module.css';
 
 export default function AsyncExample() {
   const [userName, setUserName] = useState('szhsin');
-  const { loading, data, error } = useSnapshot(user);
-  const topRepos = useSnapshot(topRepositories);
+  const { loading, data, error } = useSnapshot(user$);
+  const topRepos = useSnapshot(topRepositories$);
 
   useEffect(() => {
-    void user.fetch('szhsin');
+    void user$.fetch('szhsin');
   }, []);
 
   const renderUser = () => {
@@ -43,7 +43,7 @@ export default function AsyncExample() {
           onChange={(e) => setUserName(e.target.value)}
         />
       </label>
-      <button onClick={() => void user.fetch(userName)} disabled={loading || !userName.length}>
+      <button onClick={() => void user$.fetch(userName)} disabled={loading || !userName.length}>
         Fetch
       </button>
       {renderUser()}

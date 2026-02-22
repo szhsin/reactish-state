@@ -16,11 +16,11 @@ test('applyPlugin without metadata', () => {
     applyPlugin([createPlugin('plugin 1'), createPlugin('plugin 2'), undefined])
   );
 
-  const count = state(1);
-  selector(count, (count) => count * 2);
+  const count$ = state(1);
+  selector(count$, (count) => count * 2);
 
   expect(plugin).toHaveBeenCalledTimes(0);
-  count.set(5);
+  count$.set(5);
   expect(plugin).toHaveBeenCalledTimes(2);
   expect(plugin).toHaveBeenNthCalledWith(1, 'plugin 1', undefined, 10);
   expect(plugin).toHaveBeenNthCalledWith(2, 'plugin 2', undefined, 10);
@@ -31,11 +31,11 @@ test('applyPlugin with metadata', () => {
     applyPlugin([createPlugin<string>('plugin 1'), createPlugin<string>('plugin 2'), undefined])
   );
 
-  const count = state(1);
-  selector(count, (count) => count * 2, 'double');
+  const count$ = state(1);
+  selector(count$, (count) => count * 2, 'double');
 
   expect(plugin).toHaveBeenCalledTimes(0);
-  count.set(5);
+  count$.set(5);
   expect(plugin).toHaveBeenCalledTimes(2);
   expect(plugin).toHaveBeenNthCalledWith(1, 'plugin 1', 'double', 10);
   expect(plugin).toHaveBeenNthCalledWith(2, 'plugin 2', 'double', 10);

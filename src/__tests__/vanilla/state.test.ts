@@ -111,36 +111,36 @@ test('function overloads and type correctness', () => {
 test('state should notify listeners when updated', () => {
   const listener = vi.fn();
   const secondListener = vi.fn();
-  const testState = state({ count: 0 });
-  const unsub = testState.subscribe(listener);
-  testState.subscribe(secondListener);
-  testState.subscribe((nextValue) => {
-    expect(nextValue).toEqual(testState.get());
+  const wrapper$ = state({ count: 0 });
+  const unsub = wrapper$.subscribe(listener);
+  wrapper$.subscribe(secondListener);
+  wrapper$.subscribe((nextValue) => {
+    expect(nextValue).toEqual(wrapper$.get());
   });
-  expect(testState.get()).toEqual({ count: 0 });
+  expect(wrapper$.get()).toEqual({ count: 0 });
 
-  testState.set((state) => ({ count: state.count + 1 }));
-  expect(testState.get()).toEqual({ count: 1 });
+  wrapper$.set((wrapper) => ({ count: wrapper.count + 1 }));
+  expect(wrapper$.get()).toEqual({ count: 1 });
   expect(listener).toHaveBeenCalledTimes(1);
   expect(listener).toHaveBeenLastCalledWith({ count: 1 }, { count: 0 });
   expect(secondListener).toHaveBeenCalledTimes(1);
   expect(secondListener).toHaveBeenLastCalledWith({ count: 1 }, { count: 0 });
 
-  const newState = { count: 5 };
-  testState.set(newState);
-  expect(testState.get()).toEqual({ count: 5 });
+  const newValue = { count: 5 };
+  wrapper$.set(newValue);
+  expect(wrapper$.get()).toEqual({ count: 5 });
   expect(listener).toHaveBeenCalledTimes(2);
   expect(listener).toHaveBeenLastCalledWith({ count: 5 }, { count: 1 });
   expect(secondListener).toHaveBeenCalledTimes(2);
   expect(secondListener).toHaveBeenLastCalledWith({ count: 5 }, { count: 1 });
 
-  testState.set(newState);
-  expect(testState.get()).toEqual({ count: 5 });
+  wrapper$.set(newValue);
+  expect(wrapper$.get()).toEqual({ count: 5 });
   expect(listener).toHaveBeenCalledTimes(2);
   expect(secondListener).toHaveBeenCalledTimes(2);
 
   unsub();
-  testState.set({ count: 10 });
+  wrapper$.set({ count: 10 });
   expect(listener).toHaveBeenCalledTimes(2);
   expect(secondListener).toHaveBeenCalledTimes(3);
   expect(secondListener).toHaveBeenLastCalledWith({ count: 10 }, { count: 5 });
@@ -148,24 +148,24 @@ test('state should notify listeners when updated', () => {
 
 test('state can bind actions', () => {
   const listener = vi.fn();
-  const testState = state(0, (set, get) => ({
-    increase: (by = 1) => set((state) => state + by),
+  const count$ = state(0, (set, get) => ({
+    increase: (by = 1) => set((count) => count + by),
     decrease: (by = 1) => set(get() - by),
     reset: () => set(0)
   }));
-  testState.subscribe(listener);
-  expect(testState.get()).toBe(0);
+  count$.subscribe(listener);
+  expect(count$.get()).toBe(0);
 
-  const { increase, decrease, reset } = testState;
+  const { increase, decrease, reset } = count$;
   increase();
   increase();
-  expect(testState.get()).toBe(2);
+  expect(count$.get()).toBe(2);
 
   decrease(5);
-  expect(testState.get()).toBe(-3);
+  expect(count$.get()).toBe(-3);
 
   reset();
-  expect(testState.get()).toBe(0);
+  expect(count$.get()).toBe(0);
   expect(listener).toHaveBeenCalledTimes(4);
 
   reset();
@@ -174,20 +174,20 @@ test('state can bind actions', () => {
 
 test('state can be enhanced with middleware', () => {
   const middleware = vi.fn();
-  const state = stateBuilder<Metadata>(({ set, get, meta }) => (...arg) => {
+  const myState = stateBuilder<Metadata>(({ set, get, meta }) => (...arg) => {
     set(...arg);
     middleware(get(), meta().key);
   });
 
   const key = 'count';
-  const testState = state(0, null, { key, allowExtraProp: true });
+  const count$ = myState(0, null, { key, allowExtraProp: true });
 
-  testState.set(5);
-  expect(testState.get()).toBe(5);
+  count$.set(5);
+  expect(count$.get()).toBe(5);
   expect(middleware).toHaveBeenLastCalledWith(5, key);
 
-  testState.set((state) => state + 2);
-  expect(testState.get()).toBe(7);
+  count$.set((count) => count + 2);
+  expect(count$.get()).toBe(7);
   expect(middleware).toHaveBeenLastCalledWith(7, key);
 
   expect(middleware).toHaveBeenCalledTimes(2);

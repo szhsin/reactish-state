@@ -4,8 +4,8 @@ import * as React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import { state, useSnapshot, useSelector } from '../../';
 
-const price = state(0);
-const shipping = state(0);
+const price$ = state(0);
+const shipping$ = state(0);
 const cartSelector = vi.fn();
 const cartRender = vi.fn();
 
@@ -15,14 +15,14 @@ const Cart = ({ useDeps }: { useDeps?: boolean }) => {
   const [quantity, setQuantity] = React.useState(1);
   const { subtotal, total } = useSelector(
     () => [
-      price,
-      shipping,
+      price$,
+      shipping$,
       (price, shipping) => {
         cartSelector();
-        const subtotal = price * quantity;
+        const subtotalAmt = price * quantity;
         return {
-          subtotal,
-          total: subtotal + shipping
+          subtotal: subtotalAmt,
+          total: subtotalAmt + shipping
         };
       }
     ],
@@ -37,7 +37,7 @@ const Cart = ({ useDeps }: { useDeps?: boolean }) => {
       <button data-testid="add" onClick={() => setQuantity((q) => q + 1)}>
         Add quantity
       </button>
-      <div data-testid="shipping">{useSnapshot(shipping)}</div>
+      <div data-testid="shipping">{useSnapshot(shipping$)}</div>
       <div data-testid="subtotal">{subtotal}</div>
       <div data-testid="total">{total}</div>
     </>
@@ -46,8 +46,8 @@ const Cart = ({ useDeps }: { useDeps?: boolean }) => {
 
 describe('useSelector', () => {
   beforeEach(() => {
-    price.set(7);
-    shipping.set(5);
+    price$.set(7);
+    shipping$.set(5);
   });
 
   test('with deps', async () => {
@@ -67,7 +67,7 @@ describe('useSelector', () => {
     expect(cartSelector).toHaveBeenCalledTimes(2);
 
     act(() => {
-      price.set(10);
+      price$.set(10);
     });
     expect(screen.getByTestId('shipping')).toHaveTextContent('5');
     expect(screen.getByTestId('subtotal')).toHaveTextContent('20');
@@ -77,7 +77,7 @@ describe('useSelector', () => {
 
     // miltiple subscribers on the same base state (shipping) cause a single re-render
     act(() => {
-      shipping.set(7);
+      shipping$.set(7);
     });
     expect(screen.getByTestId('shipping')).toHaveTextContent('7');
     expect(screen.getByTestId('subtotal')).toHaveTextContent('20');
@@ -86,7 +86,7 @@ describe('useSelector', () => {
     expect(cartSelector).toHaveBeenCalledTimes(4);
 
     // async update should cause a single re-render on React 16,17,18
-    setTimeout(() => shipping.set(9), 100);
+    setTimeout(() => shipping$.set(9), 100);
     await waitFor(() => expect(screen.getByTestId('shipping')).toHaveTextContent('9'));
     expect(cartRender).toHaveBeenCalledTimes(5);
     expect(cartSelector).toHaveBeenCalledTimes(5);
@@ -112,7 +112,7 @@ describe('useSelector', () => {
     expect(cartRender).toHaveBeenCalledTimes(2);
 
     act(() => {
-      shipping.set(10);
+      shipping$.set(10);
     });
     expect(screen.getByTestId('shipping')).toHaveTextContent('10');
     expect(screen.getByTestId('subtotal')).toHaveTextContent('14');
