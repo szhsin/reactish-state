@@ -4,28 +4,28 @@ import { render, renderHook, screen, act, fireEvent, waitFor } from '@testing-li
 import { state, selector, useSnapshot } from '../../';
 
 test('useSnapshot', () => {
-  const testState = state(1);
-  const { result } = renderHook(() => useSnapshot(testState));
+  const testState$ = state(1);
+  const { result } = renderHook(() => useSnapshot(testState$));
   expect(result.current).toBe(1);
 
   act(() => {
-    testState.set(2);
+    testState$.set(2);
   });
   expect(result.current).toBe(2);
 });
 
 describe('Render behaviour', () => {
-  const count = state(1, (set) => ({
+  const count$ = state(1, (set) => ({
     increase: (by = 1) => set((count) => count + by),
     reset: () => set(1)
   }));
 
   // Boxing the value in an object is not necessary, but we do it here to verify selector caching.
-  const double = selector(count, (count) => ({ value: count * 2 }));
-  const remainder = selector(count, (count) => count % 2);
+  const double$ = selector(count$, (count) => ({ value: count * 2 }));
+  const remainder$ = selector(count$, (count) => count % 2);
 
   beforeEach(() => {
-    count.reset();
+    count$.reset();
   });
 
   test('Single subscriber', () => {
@@ -34,8 +34,8 @@ describe('Render behaviour', () => {
       renderCounter();
       return (
         <div>
-          <div data-testid="count">{useSnapshot(count)}</div>
-          <button onClick={() => count.increase()}>Increase</button>
+          <div data-testid="count">{useSnapshot(count$)}</div>
+          <button onClick={() => count$.increase()}>Increase</button>
         </div>
       );
     };
@@ -43,13 +43,13 @@ describe('Render behaviour', () => {
     const renderDouble = vi.fn();
     const Double = () => {
       renderDouble();
-      return <div data-testid="double">{useSnapshot(double).value}</div>;
+      return <div data-testid="double">{useSnapshot(double$).value}</div>;
     };
 
     const renderRemainder = vi.fn();
     const Remainder = () => {
       renderRemainder();
-      return <div data-testid="remainder">{useSnapshot(remainder)}</div>;
+      return <div data-testid="remainder">{useSnapshot(remainder$)}</div>;
     };
 
     render(
@@ -75,7 +75,7 @@ describe('Render behaviour', () => {
     expect(renderRemainder).toHaveBeenCalledTimes(2);
 
     act(() => {
-      count.increase(2);
+      count$.increase(2);
     });
     expect(screen.getByTestId('count')).toHaveTextContent('4');
     expect(screen.getByTestId('double')).toHaveTextContent('8');
@@ -85,7 +85,7 @@ describe('Render behaviour', () => {
     expect(renderRemainder).toHaveBeenCalledTimes(2);
 
     act(() => {
-      count.set(5);
+      count$.set(5);
     });
     expect(screen.getByTestId('count')).toHaveTextContent('5');
     expect(screen.getByTestId('double')).toHaveTextContent('10');
@@ -97,7 +97,7 @@ describe('Render behaviour', () => {
     // Set the same value again
     // Components should not re-render if an update does not result in a state change
     act(() => {
-      count.set(5);
+      count$.set(5);
     });
     expect(screen.getByTestId('count')).toHaveTextContent('5');
     expect(screen.getByTestId('double')).toHaveTextContent('10');
@@ -114,9 +114,9 @@ describe('Render behaviour', () => {
       return (
         <div>
           <div data-testid="miltiple">
-            {useSnapshot(count)} {useSnapshot(double).value} {useSnapshot(remainder)}
+            {useSnapshot(count$)} {useSnapshot(double$).value} {useSnapshot(remainder$)}
           </div>
-          <button onClick={() => count.increase()}>Increase</button>
+          <button onClick={() => count$.increase()}>Increase</button>
         </div>
       );
     };
@@ -130,7 +130,7 @@ describe('Render behaviour', () => {
     expect(renderer).toHaveBeenCalledTimes(2);
 
     // async update should cause a single re-render on React 16,17,18
-    setTimeout(() => count.increase(), 100);
+    setTimeout(() => count$.increase(), 100);
     await waitFor(() => expect(screen.getByTestId('miltiple')).toHaveTextContent('3 6 1'));
     expect(renderer).toHaveBeenCalledTimes(3);
   });

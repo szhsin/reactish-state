@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 // Component-scoped derived states which depend on props or local states can be created by the `useSelector` hook
 const TodoList = ({ filter = 'ALL' }: { filter?: VisibilityFilter }) => {
-  const todos = useSelector(
+  const filteredTodos = useSelector(
     () => [todoListState, (todos) => getTodoListByFilter(todos, filter)],
     [filter]
   );
@@ -13,9 +13,9 @@ const TodoList = ({ filter = 'ALL' }: { filter?: VisibilityFilter }) => {
     <>
       <hr />
       <h2>{filter} todos</h2>
-      {todos.length ? (
+      {filteredTodos.length ? (
         <ul className={styles.todos}>
-          {todos.map(({ id, text, isCompleted }) => (
+          {filteredTodos.map(({ id, text, isCompleted }) => (
             <li key={id} className={`${styles.todoItem} ${isCompleted && styles.completed}`}>
               {text}
             </li>

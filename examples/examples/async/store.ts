@@ -17,7 +17,7 @@ interface UserState {
 
 const fetchHelper = <T>(url: string) => fetch(url).then((res) => res.json()) as Promise<T>;
 
-const user = state(
+const user$ = state(
   {} as UserState,
   (set) => ({
     fetch: async (userName: string) => {
@@ -45,11 +45,11 @@ const user = state(
   { key: 'user' }
 );
 
-const topRepositories = selector(user, (user) =>
+const topRepositories$ = selector(user$, (user) =>
   user.data?.repos
     .slice()
     .sort((repo1, repo2) => repo2.stargazers_count - repo1.stargazers_count)
     .slice(0, 5)
 );
 
-export { user, topRepositories };
+export { user$, topRepositories$ };

@@ -21,15 +21,15 @@ describe('reduxDevtools', () => {
 
   test('should merge selector and send to the dev tool', () => {
     const selector = selectorBuilder(reduxDevtools({ name: 'my-app' }));
-    const count = state(1);
-    selector(count, (count) => count * 2, { key: 'double' });
-    selector(count, (count) => count * 3, { key: 'triple' });
+    const count$ = state(1);
+    selector(count$, (count) => count * 2, { key: 'double' });
+    selector(count$, (count) => count * 3, { key: 'triple' });
 
     expect(connect).toHaveBeenLastCalledWith({ name: 'my-app' });
     expect(init).toHaveBeenLastCalledWith({ double: 2, triple: 3 });
     expect(init).toHaveBeenCalledTimes(2);
 
-    count.set(2);
+    count$.set(2);
     expect(init).toHaveBeenLastCalledWith({ double: 4, triple: 6 });
     expect(init).toHaveBeenCalledTimes(4);
   });

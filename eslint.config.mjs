@@ -5,7 +5,6 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import vitest from '@vitest/eslint-plugin';
 import prettier from 'eslint-config-prettier';
-import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactHooksAddons from 'eslint-plugin-react-hooks-addons';
 
@@ -13,8 +12,6 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   vitest.configs.recommended,
-  react.configs.flat.recommended,
-  react.configs.flat['jsx-runtime'],
   reactHooksAddons.configs.recommended,
   prettier,
   {
