@@ -1,9 +1,7 @@
-'use client';
-
+"use client";
 import { createSubscriber, getSelectorValues, isEqual } from "../utils.mjs";
 import { useSnapshot } from "./useSnapshot.mjs";
 import { useState } from "react";
-
 //#region src/react/useSelector.ts
 const useSelector = (selectorParamFactory, deps) => {
 	const items = selectorParamFactory();
@@ -24,6 +22,5 @@ const useSelector = (selectorParamFactory, deps) => {
 		subscribe: context[1]
 	});
 };
-
 //#endregion
 export { useSelector };

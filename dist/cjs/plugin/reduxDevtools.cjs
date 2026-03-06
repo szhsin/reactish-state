@@ -1,6 +1,4 @@
-
-'use strict';
-
+"use strict";
 //#region src/plugin/reduxDevtools.ts
 const reduxDevtools = ({ name } = {}) => {
 	let devtoolsExt;
@@ -18,6 +16,5 @@ const reduxDevtools = ({ name } = {}) => {
 		subscribe(updateState);
 	};
 };
-
 //#endregion
 exports.reduxDevtools = reduxDevtools;

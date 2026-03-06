@@ -1,6 +1,4 @@
-
-'use strict';
-
+"use strict";
 //#region src/vanilla/state.ts
 const stateBuilder = (middleware) => ((initialValue, actionBuilder, metadata) => {
 	let value = initialValue;
@@ -33,7 +31,6 @@ const stateBuilder = (middleware) => ((initialValue, actionBuilder, metadata) =>
 	};
 });
 const state = stateBuilder();
-
 //#endregion
 exports.state = state;
 exports.stateBuilder = stateBuilder;

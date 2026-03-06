@@ -1,6 +1,4 @@
-
-'use strict';
-
+"use strict";
 //#region src/middleware/reduxDevtools.ts
 const reduxDevtools = ({ name } = {}) => {
 	let devtoolsExt;
@@ -22,6 +20,5 @@ const reduxDevtools = ({ name } = {}) => {
 		};
 	};
 };
-
 //#endregion
 exports.reduxDevtools = reduxDevtools;

@@ -3,6 +3,5 @@ const applyMiddleware = (middlewares, { fromRight } = {}) => (api) => middleware
 	...api,
 	set
 }) : set, api.set);
-
 //#endregion
 export { applyMiddleware };

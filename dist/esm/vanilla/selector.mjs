@@ -1,5 +1,4 @@
 import { createSubscriber, getSelectorValues, isEqual } from "../utils.mjs";
-
 //#region src/vanilla/selector.ts
 const selectorBuilder = (plugin) => ((...items) => {
 	const length = items.length;
@@ -23,6 +22,5 @@ const selectorBuilder = (plugin) => ((...items) => {
 	return selector;
 });
 const selector = selectorBuilder();
-
 //#endregion
 export { selector, selectorBuilder };

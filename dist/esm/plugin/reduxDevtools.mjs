@@ -15,6 +15,5 @@ const reduxDevtools = ({ name } = {}) => {
 		subscribe(updateState);
 	};
 };
-
 //#endregion
 export { reduxDevtools };

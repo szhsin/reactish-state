@@ -25,6 +25,5 @@ const persist = ({ prefix, getStorage = () => localStorage } = {}) => {
 		}
 	};
 };
-
 //#endregion
 export { persist };

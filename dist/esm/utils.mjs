@@ -8,6 +8,5 @@ const createSubscriber = (items) => (listener) => {
 	return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
 };
 const getSelectorValues = (items) => items.map((item) => item.get());
-
 //#endregion
 export { createSubscriber, getSelectorValues, isEqual };

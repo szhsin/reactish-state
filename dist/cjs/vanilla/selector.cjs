@@ -1,7 +1,5 @@
-
-'use strict';
-const require_utils = require('../utils.cjs');
-
+"use strict";
+const require_utils = require("../utils.cjs");
 //#region src/vanilla/selector.ts
 const selectorBuilder = (plugin) => ((...items) => {
 	const length = items.length;
@@ -25,7 +23,6 @@ const selectorBuilder = (plugin) => ((...items) => {
 	return selector;
 });
 const selector = selectorBuilder();
-
 //#endregion
 exports.selector = selector;
 exports.selectorBuilder = selectorBuilder;
