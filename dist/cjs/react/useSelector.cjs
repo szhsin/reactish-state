@@ -1,12 +1,9 @@
-
-'use strict';
-'use client';
-
-const require_runtime = require('../_virtual/_rolldown/runtime.cjs');
-const require_utils = require('../utils.cjs');
-const require_useSnapshot = require('./useSnapshot.cjs');
+"use strict";
+"use client";
+require("../_virtual/_rolldown/runtime.cjs");
+const require_utils = require("../utils.cjs");
+const require_useSnapshot = require("./useSnapshot.cjs");
 let react = require("react");
-
 //#region src/react/useSelector.ts
 const useSelector = (selectorParamFactory, deps) => {
 	const items = selectorParamFactory();
@@ -27,6 +24,5 @@ const useSelector = (selectorParamFactory, deps) => {
 		subscribe: context[1]
 	});
 };
-
 //#endregion
 exports.useSelector = useSelector;

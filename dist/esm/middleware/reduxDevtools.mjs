@@ -19,6 +19,5 @@ const reduxDevtools = ({ name } = {}) => {
 		};
 	};
 };
-
 //#endregion
 export { reduxDevtools };

@@ -1,6 +1,4 @@
-
-'use strict';
-
+"use strict";
 //#region src/utils.ts
 const isEqual = (args1, args2) => {
 	for (let i = 0; i < args1.length; i++) if (!Object.is(args1[i], args2[i])) return false;
@@ -11,7 +9,6 @@ const createSubscriber = (items) => (listener) => {
 	return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
 };
 const getSelectorValues = (items) => items.map((item) => item.get());
-
 //#endregion
 exports.createSubscriber = createSubscriber;
 exports.getSelectorValues = getSelectorValues;

@@ -30,6 +30,5 @@ const stateBuilder = (middleware) => ((initialValue, actionBuilder, metadata) =>
 	};
 });
 const state = stateBuilder();
-
 //#endregion
 export { state, stateBuilder };
