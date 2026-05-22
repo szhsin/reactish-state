@@ -17,9 +17,13 @@
   },
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
+    "eslint/no-underscore-dangle": "off",
     "import/no-unassigned-import": ["error", { "allow": ["**/*.{css,scss}"] }],
+    "typescript/consistent-return": "off",
     "typescript/no-unsafe-type-assertion": "off",
+    "typescript/no-unnecessary-type-parameters": "off",
     "typescript/require-await": "error",
+    "vitest/require-mock-type-parameters": "off",
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": [

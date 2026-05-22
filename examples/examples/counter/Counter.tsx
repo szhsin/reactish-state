@@ -46,7 +46,7 @@ const summary$ = selector(count$, double$, quadruple$, (count, double, quadruple
   sum: count + double + quadruple
 }));
 
-const Counter = ({ id = 1 }: { id: number | string }) => {
+const Counter = ({ id = 1 }: { id?: number | string }) => {
   const [step, setStep] = useState(1);
   const count = useSnapshot(count$);
   const summary = useSnapshot(summary$);
