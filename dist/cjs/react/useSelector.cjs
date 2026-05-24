@@ -1,6 +1,5 @@
 "use strict";
 "use client";
-require("../_virtual/_rolldown/runtime.cjs");
 const require_utils = require("../utils.cjs");
 const require_useSnapshot = require("./useSnapshot.cjs");
 let react = require("react");
