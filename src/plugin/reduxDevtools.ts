@@ -1,8 +1,7 @@
 import type { Plugin, Metadata } from '../types';
 
 const reduxDevtools = <TSelectorMeta extends Metadata>({ name }: { name?: string } = {}):
-  | Plugin<TSelectorMeta>
-  | undefined => {
+  Plugin<TSelectorMeta> | undefined => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];
   if (
     process.env.NODE_ENV === 'production' ||

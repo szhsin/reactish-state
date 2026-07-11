@@ -1,8 +1,7 @@
 import type { Middleware, Metadata } from '../types';
 
 const reduxDevtools = <TStateMeta extends Metadata>({ name }: { name?: string } = {}):
-  | Middleware<TStateMeta>
-  | undefined => {
+  Middleware<TStateMeta> | undefined => {
   let devtoolsExt: Window['__REDUX_DEVTOOLS_EXTENSION__'];
   if (
     process.env.NODE_ENV === 'production' ||
