@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "^16.2.10",
+    "next": "^16.2.11",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
     "reactish-state": "file:.."
