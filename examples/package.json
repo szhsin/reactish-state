@@ -8,15 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "^16.2.11",
+    "next": "^16.3.0",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
     "reactish-state": "file:.."
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "typescript": "file:../node_modules/typescript"
   }
 }
