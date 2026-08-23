@@ -25,6 +25,7 @@
     "typescript/require-await": "error",
     "vitest/require-mock-type-parameters": "off",
     "react/react-in-jsx-scope": "off",
+    "react/immutability": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": [
       "error",
