@@ -12,7 +12,12 @@
     "esModuleInterop": true,
     "moduleResolution": "bundler",
     "target": "esnext",
-    "types": ["node", "vitest/globals", "@testing-library/jest-dom", "@redux-devtools/extension"]
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom/vitest",
+      "@redux-devtools/extension"
+    ]
   },
   "include": ["./src/"]
 }
