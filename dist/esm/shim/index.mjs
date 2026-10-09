@@ -1,2 +1,1 @@
-import { reactShim } from "./reactShim.mjs";
-export { reactShim };
+export { reactShim } from "./reactShim.mjs";
