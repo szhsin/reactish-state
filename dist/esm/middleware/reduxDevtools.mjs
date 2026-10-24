@@ -1,4 +1,4 @@
-//#region src/middleware/reduxDevtools.ts
+// src/middleware/reduxDevtools.ts
 const reduxDevtools = ({ name } = {}) => {
 	let devtoolsExt;
 	if (process.env.NODE_ENV === "production" || typeof window === "undefined" || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return;
@@ -19,5 +19,4 @@ const reduxDevtools = ({ name } = {}) => {
 		};
 	};
 };
-//#endregion
 export { reduxDevtools };

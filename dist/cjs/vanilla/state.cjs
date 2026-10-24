@@ -1,5 +1,5 @@
 "use strict";
-//#region src/vanilla/state.ts
+// src/vanilla/state.ts
 const stateBuilder = (middleware) => ((initialValue, actionBuilder, metadata) => {
 	let value = initialValue;
 	const listeners = /* @__PURE__ */ new Set();
@@ -31,6 +31,5 @@ const stateBuilder = (middleware) => ((initialValue, actionBuilder, metadata) =>
 	};
 });
 const state = stateBuilder();
-//#endregion
 exports.state = state;
 exports.stateBuilder = stateBuilder;

@@ -1,5 +1,5 @@
 import { createSubscriber, getSelectorValues, isEqual } from "../utils.mjs";
-//#region src/vanilla/selector.ts
+// src/vanilla/selector.ts
 const selectorBuilder = (plugin) => ((...items) => {
 	const length = items.length;
 	const cutoff = typeof items[length - 1] === "function" ? length - 1 : length - 2;
@@ -22,5 +22,4 @@ const selectorBuilder = (plugin) => ((...items) => {
 	return selector;
 });
 const selector = selectorBuilder();
-//#endregion
 export { selector, selectorBuilder };

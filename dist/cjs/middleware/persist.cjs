@@ -1,5 +1,5 @@
 "use strict";
-//#region src/middleware/persist.ts
+// src/middleware/persist.ts
 const persist = ({ prefix, getStorage = () => localStorage } = {}) => {
 	const states = [];
 	return {
@@ -26,5 +26,4 @@ const persist = ({ prefix, getStorage = () => localStorage } = {}) => {
 		}
 	};
 };
-//#endregion
 exports.persist = persist;

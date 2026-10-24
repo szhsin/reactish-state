@@ -1,5 +1,5 @@
 "use strict";
-//#region src/plugin/reduxDevtools.ts
+// src/plugin/reduxDevtools.ts
 const reduxDevtools = ({ name } = {}) => {
 	let devtoolsExt;
 	if (process.env.NODE_ENV === "production" || typeof window === "undefined" || !(devtoolsExt = window.__REDUX_DEVTOOLS_EXTENSION__)) return;
@@ -16,5 +16,4 @@ const reduxDevtools = ({ name } = {}) => {
 		subscribe(updateState);
 	};
 };
-//#endregion
 exports.reduxDevtools = reduxDevtools;
