@@ -1,7 +1,7 @@
 "use client";
+import { useState } from "react";
 import { createSubscriber, getSelectorValues, isEqual } from "../utils.mjs";
 import { useSnapshot } from "./useSnapshot.mjs";
-import { useState } from "react";
 // src/react/useSelector.ts
 const useSelector = (selectorParamFactory, deps) => {
 	const items = selectorParamFactory();

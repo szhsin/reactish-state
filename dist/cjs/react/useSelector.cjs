@@ -1,8 +1,8 @@
 "use strict";
 "use client";
+let react = require("react");
 const require_utils = require("../utils.cjs");
 const require_useSnapshot = require("./useSnapshot.cjs");
-let react = require("react");
 // src/react/useSelector.ts
 const useSelector = (selectorParamFactory, deps) => {
 	const items = selectorParamFactory();
